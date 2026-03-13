@@ -1,0 +1,30 @@
+---
+interface Props {
+  path: string;
+}
+
+const { path } = Astro.props;
+---
+
+<span class="view-count text-(--color-text-secondary)" data-path={path}>
+  <svg class="w-4 h-4 inline -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+  </svg>
+  <span class="count-value">-</span>
+</span>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.view-count').forEach(async (el) => {
+      const path = el.dataset.path;
+      try {
+        const res = await fetch(`https://ethan-blog.goatcounter.com/counter/${encodeURIComponent(path)}.json`);
+        if (res.ok) {
+          const data = await res.json();
+          el.querySelector('.count-value').textContent = data.count;
+        }
+      } catch {}
+    });
+  });
+</script>
