@@ -21,9 +21,9 @@ const readingTime = body ? getReadingTime(body) : '';
 const dateStr = pubDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<article class="group border border-(--color-border) rounded-xl p-5 hover:border-[var(--cat-color)] transition-colors" style={`--cat-color: ${cat.color}`}>
+<article class="group border border-(--color-border) rounded-xl p-4 sm:p-5 hover:border-[var(--cat-color)] transition-colors" style={`--cat-color: ${cat.color}`}>
   <a href={`/blog/posts/${slug}/`} class="block">
-    <div class="flex items-center gap-2 mb-2 text-sm">
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2 text-sm">
       <span class="px-2 py-0.5 rounded-md text-white text-xs font-medium" style={`background-color: ${cat.color}`}>
         {cat.label}
       </span>

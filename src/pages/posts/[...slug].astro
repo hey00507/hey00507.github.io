@@ -36,7 +36,7 @@ const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1]
   <article>
     {/* 메타 정보 */}
     <header class="mb-8">
-      <div class="flex items-center gap-2 mb-3 text-sm">
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3 text-sm">
         <a href={`/blog/${category}/`} class="px-2 py-0.5 rounded-md text-white text-xs font-medium hover:opacity-90 transition-opacity" style={`background-color: ${cat.color}`}>
           {cat.label}
         </a>
@@ -45,7 +45,7 @@ const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1]
         <span class="text-(--color-text-secondary)">·</span>
         <ViewCount path={`/blog/posts/${post.id}/`} />
       </div>
-      <h1 class="text-3xl font-bold mb-2">{title}</h1>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-2">{title}</h1>
       {bookTitle && (
         <p class="text-(--color-text-secondary) mb-1">
           📖 {bookTitle} — {bookAuthor}
@@ -103,19 +103,19 @@ const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1]
     )}
 
     {/* 이전/다음 글 */}
-    <nav class="mt-8 pt-6 border-t border-(--color-border) grid grid-cols-2 gap-4">
+    <nav class="mt-8 pt-6 border-t border-(--color-border) grid grid-cols-1 sm:grid-cols-2 gap-3">
       {prevPost ? (
-        <a href={`/blog/posts/${prevPost.id}/`} class="group p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
+        <a href={`/blog/posts/${prevPost.id}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
           <span class="text-xs text-(--color-text-secondary)">← 이전 글</span>
           <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{prevPost.data.title}</p>
         </a>
-      ) : <div />}
+      ) : <div class="hidden sm:block" />}
       {nextPost ? (
-        <a href={`/blog/posts/${nextPost.id}/`} class="group p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors text-right">
+        <a href={`/blog/posts/${nextPost.id}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors sm:text-right">
           <span class="text-xs text-(--color-text-secondary)">다음 글 →</span>
           <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{nextPost.data.title}</p>
         </a>
-      ) : <div />}
+      ) : <div class="hidden sm:block" />}
     </nav>
 
     {/* 댓글 */}
