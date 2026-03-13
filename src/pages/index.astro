@@ -1,19 +1,15 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="ko">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Ethan's Blog</title>
-	</head>
-	<body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center">
-		<main class="text-center">
-			<h1 class="text-4xl font-bold mb-4">Ethan's Blog</h1>
-			<p class="text-lg text-gray-600 dark:text-gray-400">Coming soon.</p>
-		</main>
-	</body>
-</html>
+<BaseLayout title="Ethan's Blog">
+  <section class="text-center py-20">
+    <h1 class="text-4xl font-bold mb-4">Ethan's Blog</h1>
+    <p class="text-lg text-(--color-text-secondary) mb-8">독서, 일상, 코딩에 대한 기록</p>
+    <div class="flex justify-center gap-3">
+      <a href="/blog/reading" class="px-4 py-2 rounded-lg bg-(--color-accent-reading) text-white text-sm font-medium hover:opacity-90 transition-opacity">독서</a>
+      <a href="/blog/essay" class="px-4 py-2 rounded-lg bg-(--color-accent-essay) text-white text-sm font-medium hover:opacity-90 transition-opacity">일상</a>
+      <a href="/blog/dev" class="px-4 py-2 rounded-lg bg-(--color-accent-dev) text-white text-sm font-medium hover:opacity-90 transition-opacity">코딩</a>
+    </div>
+  </section>
+</BaseLayout>

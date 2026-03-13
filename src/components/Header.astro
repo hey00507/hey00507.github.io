@@ -1,0 +1,37 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navItems = [
+  { label: '독서', href: '/blog/reading' },
+  { label: '일상', href: '/blog/essay' },
+  { label: '코딩', href: '/blog/dev' },
+  { label: 'About', href: '/blog/about' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-sm sticky top-0 z-50">
+  <nav class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="/blog/" class="text-xl font-bold hover:text-(--color-accent-dev) transition-colors">
+      Ethan's Blog
+    </a>
+
+    <div class="flex items-center gap-1">
+      {navItems.map(({ label, href }) => (
+        <a
+          href={href}
+          class:list={[
+            'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+            currentPath.startsWith(href)
+              ? 'text-(--color-text) bg-(--color-bg-secondary)'
+              : 'text-(--color-text-secondary) hover:text-(--color-text) hover:bg-(--color-bg-secondary)',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>
