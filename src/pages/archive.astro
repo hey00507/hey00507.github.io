@@ -30,7 +30,7 @@ for (const post of posts) {
           return (
             <li class="relative">
               <div class="absolute -left-[1.6rem] sm:-left-[1.85rem] top-1.5 w-3 h-3 rounded-full border-2 border-(--color-border) bg-(--color-bg)" />
-              <a href={`/blog/posts/${slugMap.get(post.id)}/`} class="group block sm:flex sm:items-baseline sm:gap-3">
+              <a href={`/posts/${slugMap.get(post.id)}/`} class="group block sm:flex sm:items-baseline sm:gap-3">
                 <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
                   <time class="text-sm text-(--color-text-secondary) shrink-0">{dateStr}</time>
                   <span class="px-1.5 py-0.5 rounded text-xs text-white shrink-0" style={`background-color: ${cat.color}`}>{cat.label}</span>

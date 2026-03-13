@@ -35,7 +35,7 @@ const currentIndex = seriesPosts.findIndex((p) => p.id === currentId);
             {isCurrent ? (
               <span class="font-medium text-(--color-text)">{post.data.title}</span>
             ) : (
-              <a href={`/blog/posts/${slugMap.get(post.id)}/`} class="text-(--color-text-secondary) hover:text-(--color-accent-dev) transition-colors">
+              <a href={`/posts/${slugMap.get(post.id)}/`} class="text-(--color-text-secondary) hover:text-(--color-accent-dev) transition-colors">
                 {post.data.title}
               </a>
             )}

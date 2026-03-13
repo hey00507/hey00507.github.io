@@ -16,7 +16,7 @@ export async function GET(context: APIContext) {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.pubDate,
-      link: `/blog/posts/${slugMap.get(post.id)}/`,
+      link: `/posts/${slugMap.get(post.id)}/`,
       categories: [post.data.category, ...post.data.tags],
     })),
   });

@@ -38,18 +38,18 @@ const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1]
 const currentSlug = slugMap.get(post.id)!;
 ---
 
-<BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={`/blog/og/${currentSlug}.png`}>
+<BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={`/og/${currentSlug}.png`}>
   <article>
     {/* 메타 정보 */}
     <header class="mb-8">
       <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3 text-sm">
-        <a href={`/blog/${category}/`} class="px-2 py-0.5 rounded-md text-white text-xs font-medium hover:opacity-90 transition-opacity" style={`background-color: ${cat.color}`}>
+        <a href={`/${category}/`} class="px-2 py-0.5 rounded-md text-white text-xs font-medium hover:opacity-90 transition-opacity" style={`background-color: ${cat.color}`}>
           {cat.label}
         </a>
         <span class="text-(--color-text-secondary)">{dateStr}</span>
         {readingTime && <span class="text-(--color-text-secondary)">· {readingTime}</span>}
         <span class="text-(--color-text-secondary)">·</span>
-        <ViewCount path={`/blog/posts/${slugMap.get(post.id)}/`} />
+        <ViewCount path={`/posts/${slugMap.get(post.id)}/`} />
       </div>
       <h1 class="text-2xl sm:text-3xl font-bold mb-2">{title}</h1>
       {bookTitle && (
@@ -60,7 +60,7 @@ const currentSlug = slugMap.get(post.id)!;
       )}
       {series && (
         <p class="text-sm text-(--color-text-secondary)">
-          📂 시리즈: <a href={`/blog/dev/series/${encodeURIComponent(series)}/`} class="hover:text-(--color-accent-dev) transition-colors">{series}</a>
+          📂 시리즈: <a href={`/dev/series/${encodeURIComponent(series)}/`} class="hover:text-(--color-accent-dev) transition-colors">{series}</a>
         </p>
       )}
       {updatedStr && (
@@ -106,7 +106,7 @@ const currentSlug = slugMap.get(post.id)!;
     {tags.length > 0 && (
       <div class="flex flex-wrap gap-2 mt-8 pt-6 border-t border-(--color-border)">
         {tags.map((tag) => (
-          <a href={`/blog/tags/${tag}/`} class="text-xs px-2.5 py-1 rounded-lg bg-(--color-bg-secondary) text-(--color-text-secondary) hover:text-(--color-text) border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
+          <a href={`/tags/${tag}/`} class="text-xs px-2.5 py-1 rounded-lg bg-(--color-bg-secondary) text-(--color-text-secondary) hover:text-(--color-text) border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
             #{tag}
           </a>
         ))}
@@ -116,13 +116,13 @@ const currentSlug = slugMap.get(post.id)!;
     {/* 이전/다음 글 */}
     <nav class="mt-8 pt-6 border-t border-(--color-border) grid grid-cols-1 sm:grid-cols-2 gap-3">
       {prevPost ? (
-        <a href={`/blog/posts/${slugMap.get(prevPost.id)}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
+        <a href={`/posts/${slugMap.get(prevPost.id)}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
           <span class="text-xs text-(--color-text-secondary)">← 이전 글</span>
           <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{prevPost.data.title}</p>
         </a>
       ) : <div class="hidden sm:block" />}
       {nextPost ? (
-        <a href={`/blog/posts/${slugMap.get(nextPost.id)}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors sm:text-right">
+        <a href={`/posts/${slugMap.get(nextPost.id)}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors sm:text-right">
           <span class="text-xs text-(--color-text-secondary)">다음 글 →</span>
           <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{nextPost.data.title}</p>
         </a>

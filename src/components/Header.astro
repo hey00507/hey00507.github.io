@@ -3,10 +3,10 @@ import ThemeToggle from './ThemeToggle.astro';
 import Search from './Search.astro';
 
 const navItems = [
-  { label: '독서', href: '/blog/reading' },
-  { label: '일상', href: '/blog/essay' },
-  { label: '코딩', href: '/blog/dev' },
-  { label: 'About', href: '/blog/about' },
+  { label: '독서', href: '/reading' },
+  { label: '일상', href: '/essay' },
+  { label: '코딩', href: '/dev' },
+  { label: 'About', href: '/about' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -14,7 +14,7 @@ const currentPath = Astro.url.pathname;
 
 <header class="border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-sm sticky top-0 z-50">
   <nav class="max-w-3xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-    <a href="/blog/" class="text-lg sm:text-xl font-bold hover:text-(--color-accent-dev) transition-colors shrink-0">
+    <a href="/" class="text-lg sm:text-xl font-bold hover:text-(--color-accent-dev) transition-colors shrink-0">
       Ethan's Blog
     </a>
 

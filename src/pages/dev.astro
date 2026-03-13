@@ -42,7 +42,7 @@ for (const [, sp] of seriesMap) {
           <h2 class="text-lg font-bold mb-4">📂 시리즈</h2>
           <div class="space-y-3">
             {[...seriesMap.entries()].map(([name, seriesPosts]) => (
-              <a href={`/blog/dev/series/${encodeURIComponent(name)}/`} class="group block p-4 rounded-xl border border-(--color-border) hover:border-(--color-accent-dev) transition-colors">
+              <a href={`/dev/series/${encodeURIComponent(name)}/`} class="group block p-4 rounded-xl border border-(--color-border) hover:border-(--color-accent-dev) transition-colors">
                 <div class="flex items-center justify-between">
                   <div>
                     <h3 class="font-semibold group-hover:text-(--color-accent-dev) transition-colors">{name}</h3>

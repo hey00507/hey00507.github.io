@@ -33,7 +33,7 @@
 
     if (!pagefindLoaded) {
       pagefindLoaded = true;
-      const base = import.meta.env?.BASE_URL || '/blog/';
+      const base = import.meta.env?.BASE_URL || '/';
       import(base + 'pagefind/pagefind-ui.js').then((mod) => {
         new mod.PagefindUI({
           element: '#search-container',

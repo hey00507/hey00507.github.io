@@ -28,7 +28,7 @@ const { posts, slugMap } = Astro.props;
 
 <BaseLayout title={`#${tag} - Ethan's Blog`}>
   <div class="mb-8">
-    <a href="/blog/tags/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 전체 태그</a>
+    <a href="/tags/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 전체 태그</a>
     <h1 class="text-3xl font-bold mt-2">#{tag}</h1>
     <p class="text-(--color-text-secondary)">{posts.length}개의 글</p>
   </div>
