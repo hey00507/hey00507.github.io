@@ -2,9 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
+import { buildSlugMap } from '../../utils/slugs';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('posts')).filter((p) => !p.data.draft);
+  const slugMap = buildSlugMap(posts);
   const tags = new Set<string>();
   for (const post of posts) {
     for (const tag of post.data.tags) tags.add(tag);
@@ -12,6 +14,7 @@ export async function getStaticPaths() {
   return [...tags].map((tag) => ({
     params: { tag },
     props: {
+      slugMap: Object.fromEntries(slugMap),
       posts: posts
         .filter((p) => p.data.tags.includes(tag))
         .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
@@ -20,7 +23,7 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
-const { posts } = Astro.props;
+const { posts, slugMap } = Astro.props;
 ---
 
 <BaseLayout title={`#${tag} - Ethan's Blog`}>
@@ -37,7 +40,7 @@ const { posts } = Astro.props;
         category={post.data.category}
         pubDate={post.data.pubDate}
         tags={post.data.tags}
-        slug={post.id}
+        slug={slugMap[post.id]}
         body={post.body}
         bookTitle={post.data.bookTitle}
         bookAuthor={post.data.bookAuthor}

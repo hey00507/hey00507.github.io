@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { buildSlugMap } from '../../../utils/slugs';
+
+export async function getStaticPaths() {
+  const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+  const slugMap = buildSlugMap(allPosts);
+  const seriesPosts = allPosts.filter((p) => p.data.series);
+
+  const seriesGroup = new Map<string, typeof seriesPosts>();
+  for (const post of seriesPosts) {
+    const s = post.data.series!;
+    if (!seriesGroup.has(s)) seriesGroup.set(s, []);
+    seriesGroup.get(s)!.push(post);
+  }
+
+  return [...seriesGroup.entries()].map(([name, posts]) => ({
+    params: { name },
+    props: {
+      name,
+      slugMap: Object.fromEntries(slugMap),
+      posts: posts.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { name, posts, slugMap } = Astro.props;
+---
+
+<BaseLayout title={`${name} - Ethan's Blog`} description={`시리즈: ${name}`}>
+  <div class="mb-8">
+    <a href="/blog/dev/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 코딩</a>
+    <h1 class="text-3xl font-bold mt-2">📂 {name}</h1>
+    <p class="text-(--color-text-secondary) mt-1">총 {posts.length}편</p>
+  </div>
+  <div class="space-y-4">
+    {posts.map((post, i) => (
+      <div class="flex gap-3 items-start">
+        <span class="shrink-0 w-7 h-7 rounded-full bg-(--color-accent-dev) text-white text-xs font-bold flex items-center justify-center mt-4">
+          {i + 1}
+        </span>
+        <div class="flex-1">
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            category={post.data.category}
+            pubDate={post.data.pubDate}
+            tags={post.data.tags}
+            slug={slugMap[post.id]}
+            body={post.body}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</BaseLayout>

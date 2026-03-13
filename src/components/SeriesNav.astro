@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import { buildSlugMap } from '../utils/slugs';
+
+interface Props {
+  series: string;
+  currentId: string;
+}
+
+const { series, currentId } = Astro.props;
+
+const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const slugMap = buildSlugMap(allPosts);
+const seriesPosts = allPosts
+  .filter((p) => p.data.series === series)
+  .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+
+const currentIndex = seriesPosts.findIndex((p) => p.id === currentId);
+---
+
+{seriesPosts.length > 1 && (
+  <nav class="mb-8 p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border)">
+    <p class="text-sm font-semibold mb-3">
+      📂 {series} ({currentIndex + 1}/{seriesPosts.length})
+    </p>
+    <ol class="space-y-1.5">
+      {seriesPosts.map((post, i) => {
+        const isCurrent = post.id === currentId;
+        const isPast = i < currentIndex;
+        return (
+          <li class="flex items-center gap-2 text-sm">
+            <span class={`shrink-0 w-5 text-center ${isPast ? 'text-green-500' : isCurrent ? 'text-(--color-accent-dev) font-bold' : 'text-(--color-text-secondary)'}`}>
+              {isPast ? '✓' : isCurrent ? '▸' : `${i + 1}`}
+            </span>
+            {isCurrent ? (
+              <span class="font-medium text-(--color-text)">{post.data.title}</span>
+            ) : (
+              <a href={`/blog/posts/${slugMap.get(post.id)}/`} class="text-(--color-text-secondary) hover:text-(--color-accent-dev) transition-colors">
+                {post.data.title}
+              </a>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </nav>
+)}

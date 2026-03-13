@@ -2,9 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
+import { buildSlugMap } from '../utils/slugs';
 
-const posts = (await getCollection('posts'))
-  .filter((p) => !p.data.draft && p.data.category === 'essay')
+const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const slugMap = buildSlugMap(allPosts);
+const posts = allPosts
+  .filter((p) => p.data.category === 'essay')
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
@@ -22,7 +25,7 @@ const posts = (await getCollection('posts'))
           category={post.data.category}
           pubDate={post.data.pubDate}
           tags={post.data.tags}
-          slug={post.id}
+          slug={slugMap.get(post.id)!}
           body={post.body}
         />
       ))}

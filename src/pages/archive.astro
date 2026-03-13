@@ -2,10 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { categories } from '../utils/categories';
+import { buildSlugMap } from '../utils/slugs';
 
-const posts = (await getCollection('posts'))
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const slugMap = buildSlugMap(allPosts);
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // 연도별 그룹핑
 const grouped = new Map<number, typeof posts>();
@@ -28,7 +29,7 @@ for (const post of posts) {
           return (
             <li class="relative">
               <div class="absolute -left-[1.6rem] sm:-left-[1.85rem] top-1.5 w-3 h-3 rounded-full border-2 border-(--color-border) bg-(--color-bg)" />
-              <a href={`/blog/posts/${post.id}/`} class="group block sm:flex sm:items-baseline sm:gap-3">
+              <a href={`/blog/posts/${slugMap.get(post.id)}/`} class="group block sm:flex sm:items-baseline sm:gap-3">
                 <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
                   <time class="text-sm text-(--color-text-secondary) shrink-0">{dateStr}</time>
                   <span class="px-1.5 py-0.5 rounded text-xs text-white shrink-0" style={`background-color: ${cat.color}`}>{cat.label}</span>
