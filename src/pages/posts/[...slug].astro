@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { categories } from '../../utils/categories';
+import { getReadingTime } from '../../utils/readingTime';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const { title, description, category, tags, pubDate, updatedDate, bookTitle, bookAuthor, rating, series } = post.data;
+const cat = categories[category];
+const readingTime = post.body ? getReadingTime(post.body) : '';
+const dateStr = pubDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+const updatedStr = updatedDate?.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+const tocHeadings = headings.filter((h) => h.depth <= 3);
+
+// 이전/다음 글
+const allPosts = (await getCollection('posts'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+const currentIndex = allPosts.findIndex((p) => p.id === post.id);
+const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+---
+
+<BaseLayout title={`${title} - Ethan's Blog`} description={description}>
+  <article>
+    {/* 메타 정보 */}
+    <header class="mb-8">
+      <div class="flex items-center gap-2 mb-3 text-sm">
+        <a href={`/blog/${category}/`} class="px-2 py-0.5 rounded-md text-white text-xs font-medium hover:opacity-90 transition-opacity" style={`background-color: ${cat.color}`}>
+          {cat.label}
+        </a>
+        <span class="text-(--color-text-secondary)">{dateStr}</span>
+        {readingTime && <span class="text-(--color-text-secondary)">· {readingTime}</span>}
+      </div>
+      <h1 class="text-3xl font-bold mb-2">{title}</h1>
+      {bookTitle && (
+        <p class="text-(--color-text-secondary) mb-1">
+          📖 {bookTitle} — {bookAuthor}
+          {rating && ` · ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`}
+        </p>
+      )}
+      {series && (
+        <p class="text-sm text-(--color-text-secondary)">📂 시리즈: {series}</p>
+      )}
+      {updatedStr && (
+        <p class="text-xs text-(--color-text-secondary) mt-2">수정: {updatedStr}</p>
+      )}
+    </header>
+
+    {/* 목차 */}
+    {tocHeadings.length > 2 && (
+      <nav class="mb-8 p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border)">
+        <p class="text-sm font-semibold mb-2">목차</p>
+        <ul class="space-y-1">
+          {tocHeadings.map((h) => (
+            <li style={`padding-left: ${(h.depth - 2) * 1}rem`}>
+              <a href={`#${h.slug}`} class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    {/* 본문 */}
+    <div class="prose dark:prose-invert max-w-none
+      prose-headings:text-(--color-text) prose-headings:font-bold
+      prose-p:text-(--color-text-secondary) prose-p:leading-relaxed
+      prose-a:text-(--color-accent-dev) prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-(--color-text)
+      prose-code:text-(--color-accent-dev) prose-code:bg-(--color-bg-secondary) prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+      prose-pre:bg-(--color-bg-secondary) prose-pre:border prose-pre:border-(--color-border) prose-pre:rounded-xl
+      prose-blockquote:border-l-[var(--color-accent-reading)] prose-blockquote:text-(--color-text-secondary)
+      prose-li:text-(--color-text-secondary)
+      prose-hr:border-(--color-border)
+    ">
+      <Content />
+    </div>
+
+    {/* 태그 */}
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-8 pt-6 border-t border-(--color-border)">
+        {tags.map((tag) => (
+          <a href={`/blog/tags/${tag}/`} class="text-xs px-2.5 py-1 rounded-lg bg-(--color-bg-secondary) text-(--color-text-secondary) hover:text-(--color-text) border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )}
+
+    {/* 이전/다음 글 */}
+    <nav class="mt-8 pt-6 border-t border-(--color-border) grid grid-cols-2 gap-4">
+      {prevPost ? (
+        <a href={`/blog/posts/${prevPost.id}/`} class="group p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
+          <span class="text-xs text-(--color-text-secondary)">← 이전 글</span>
+          <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{prevPost.data.title}</p>
+        </a>
+      ) : <div />}
+      {nextPost ? (
+        <a href={`/blog/posts/${nextPost.id}/`} class="group p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors text-right">
+          <span class="text-xs text-(--color-text-secondary)">다음 글 →</span>
+          <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{nextPost.data.title}</p>
+        </a>
+      ) : <div />}
+    </nav>
+  </article>
+</BaseLayout>
