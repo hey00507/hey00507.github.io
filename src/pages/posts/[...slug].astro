@@ -4,6 +4,7 @@ import { getCollection, render } from 'astro:content';
 import { categories } from '../../utils/categories';
 import { getReadingTime } from '../../utils/readingTime';
 import ViewCount from '../../components/ViewCount.astro';
+import Comments from '../../components/Comments.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -116,5 +117,8 @@ const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1]
         </a>
       ) : <div />}
     </nav>
+
+    {/* 댓글 */}
+    <Comments />
   </article>
 </BaseLayout>

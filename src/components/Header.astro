@@ -13,12 +13,13 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-sm sticky top-0 z-50">
-  <nav class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
-    <a href="/blog/" class="text-xl font-bold hover:text-(--color-accent-dev) transition-colors">
+  <nav class="max-w-3xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+    <a href="/blog/" class="text-lg sm:text-xl font-bold hover:text-(--color-accent-dev) transition-colors shrink-0">
       Ethan's Blog
     </a>
 
-    <div class="flex items-center gap-1">
+    {/* 데스크톱 네비게이션 */}
+    <div class="hidden sm:flex items-center gap-1">
       {navItems.map(({ label, href }) => (
         <a
           href={href}
@@ -35,5 +36,46 @@ const currentPath = Astro.url.pathname;
       <Search />
       <ThemeToggle />
     </div>
+
+    {/* 모바일 네비게이션 */}
+    <div class="flex sm:hidden items-center gap-0.5">
+      <Search />
+      <ThemeToggle />
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="메뉴"
+        class="p-2 rounded-lg text-(--color-text-secondary) hover:text-(--color-text) hover:bg-(--color-bg-secondary) transition-colors cursor-pointer"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
   </nav>
+
+  {/* 모바일 메뉴 */}
+  <div id="mobile-menu" class="hidden sm:hidden border-t border-(--color-border) bg-(--color-bg)">
+    <div class="max-w-3xl mx-auto px-4 py-2 flex flex-col">
+      {navItems.map(({ label, href }) => (
+        <a
+          href={href}
+          class:list={[
+            'px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+            currentPath.startsWith(href)
+              ? 'text-(--color-text) bg-(--color-bg-secondary)'
+              : 'text-(--color-text-secondary) hover:text-(--color-text) hover:bg-(--color-bg-secondary)',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+  </div>
 </header>
+
+<script is:inline>
+  document.getElementById('menu-toggle')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('hidden');
+  });
+</script>

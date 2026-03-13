@@ -1,0 +1,41 @@
+---
+---
+
+<section class="mt-12 pt-8 border-t border-(--color-border)">
+  <h2 class="text-lg font-semibold mb-4">댓글</h2>
+  <div id="giscus-container">
+    <script
+      is:inline
+      src="https://giscus.app/client.js"
+      data-repo="hey00507/blog"
+      data-repo-id="R_kgDORlzn4g"
+      data-category="General"
+      data-category-id="DIC_kwDORlzn4s4C4Sh4"
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="preferred_color_scheme"
+      data-lang="ko"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </div>
+</section>
+
+<script is:inline>
+  // 테마 토글 시 Giscus 테마도 동기화
+  const observer = new MutationObserver(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (iframe) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: isDark ? 'dark' : 'light' } } },
+        'https://giscus.app'
+      );
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+</script>
