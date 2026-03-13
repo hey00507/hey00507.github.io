@@ -12,7 +12,7 @@ export function buildSlugMap(posts: CollectionEntry<'posts'>[]): Map<string, str
   const byDate = new Map<string, CollectionEntry<'posts'>[]>();
   for (const post of sorted) {
     const d = post.data.pubDate;
-    const dateKey = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    const dateKey = `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}${String(d.getUTCDate()).padStart(2, '0')}`;
     if (!byDate.has(dateKey)) byDate.set(dateKey, []);
     byDate.get(dateKey)!.push(post);
   }

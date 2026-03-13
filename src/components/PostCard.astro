@@ -1,6 +1,7 @@
 ---
 import { categories } from '../utils/categories';
 import { getReadingTime } from '../utils/readingTime';
+import { formatDateTime } from '../utils/formatDate';
 
 interface Props {
   title: string;
@@ -18,7 +19,7 @@ interface Props {
 const { title, description, category, pubDate, tags, slug, body, bookTitle, bookAuthor, rating } = Astro.props;
 const cat = categories[category];
 const readingTime = body ? getReadingTime(body) : '';
-const dateStr = pubDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+const dateStr = formatDateTime(pubDate);
 ---
 
 <article class="group border border-(--color-border) rounded-xl p-4 sm:p-5 hover:border-[var(--cat-color)] transition-colors" style={`--cat-color: ${cat.color}`}>

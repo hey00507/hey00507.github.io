@@ -3,7 +3,7 @@ title: "블로그를 시작하며"
 description: "왜 지금 블로그를 시작하게 되었는지"
 category: essay
 tags: ["일상", "블로그", "회고", "claude", "obsidian"]
-pubDate: 2026-03-13
+pubDate: 2026-03-13T10:00:00
 ---
 
 오래전부터 블로그를 해봐야겠다고 생각했지만, 매번 플랫폼 고민에서 멈췄다.

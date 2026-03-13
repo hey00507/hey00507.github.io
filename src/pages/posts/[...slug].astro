@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { categories } from '../../utils/categories';
 import { getReadingTime } from '../../utils/readingTime';
+import { formatDateTime } from '../../utils/formatDate';
 import { buildSlugMap } from '../../utils/slugs';
 import ViewCount from '../../components/ViewCount.astro';
 import Comments from '../../components/Comments.astro';
@@ -22,8 +23,8 @@ const { Content, headings } = await render(post);
 const { title, description, category, tags, pubDate, updatedDate, bookTitle, bookAuthor, rating, series } = post.data;
 const cat = categories[category];
 const readingTime = post.body ? getReadingTime(post.body) : '';
-const dateStr = pubDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-const updatedStr = updatedDate?.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+const dateStr = formatDateTime(pubDate);
+const updatedStr = updatedDate ? formatDateTime(updatedDate) : undefined;
 const tocHeadings = headings.filter((h) => h.depth <= 3);
 
 // 이전/다음 글
