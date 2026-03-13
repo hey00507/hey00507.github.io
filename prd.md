@@ -121,12 +121,13 @@ series: "Astro 입문기"          # 시리즈 묶음, 선택
 - 크기: 1200x630px (OpenGraph 표준)
 
 **체크리스트:**
-- [ ] `satori` + `@resvg/resvg-js` 설치
-- [ ] OG 이미지 엔드포인트 생성 (`src/pages/og/[...slug].png.ts`)
-- [ ] 카테고리별 그라데이션 템플릿
-- [ ] BaseLayout `og:image` 메타 태그 동적 연결
-- [ ] 독서 카테고리: 책 제목/저자 추가 표시
-- [ ] 빌드 테스트 및 소셜 미디어 프리뷰 검증
+- [x] `satori` + `@resvg/resvg-js` 설치 ✅
+- [x] OG 이미지 엔드포인트 생성 (`src/pages/og/[...slug].png.ts`) ✅
+- [x] 카테고리별 그라데이션 템플릿 (독서:보라, 일상:앰버, 코딩:파랑) ✅
+- [x] BaseLayout `og:image` 메타 태그 동적 연결 + twitter:summary_large_image ✅
+- [x] 독서 카테고리: 책 제목/저자 추가 표시 ✅
+- [x] 빌드 테스트 및 소셜 미디어 프리뷰 검증 ✅
+- [x] Noto Sans KR Bold 폰트 번들 (한글 렌더링) ✅
 
 ---
 
@@ -150,11 +151,13 @@ series: "Astro 입문기"          # 시리즈 묶음, 선택
 ```
 
 **체크리스트:**
-- [ ] SeriesNav 컴포넌트 생성
-- [ ] 같은 시리즈 글 쿼리 및 순서 정렬
-- [ ] 글 상세 페이지에 시리즈 네비게이션 삽입
-- [ ] 시리즈 목록 페이지 (`/dev/series/[name]`)
-- [ ] 코딩 카테고리 페이지에 시리즈별 그룹 표시
+- [x] SeriesNav 컴포넌트 생성 ✅
+- [x] 같은 시리즈 글 쿼리 및 순서 정렬 ✅
+- [x] 글 상세 페이지에 시리즈 네비게이션 삽입 ✅
+- [x] 시리즈 목록 페이지 (`/dev/series/[name]`) ✅
+- [x] 코딩 카테고리 페이지에 시리즈별 그룹 표시 ✅
+- [x] 날짜 기반 URL 체계 (`/posts/yyyymmdd/`) ✅
+- [x] 날짜+시간 표시 형식 (`yyyy-mm-dd hh:mm:ss`) ✅
 
 ---
 
