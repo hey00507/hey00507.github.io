@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { buildSlugMap } from '../utils/slugs';
+import { buildSlugMap } from '../../utils/slugs';
 
 const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
 const slugMap = buildSlugMap(allPosts);
@@ -12,7 +12,12 @@ const posts = allPosts
 ---
 
 <BaseLayout title="독서 - Ethan's Blog" description="책 리뷰, 독후감, 인상 깊은 구절">
-  <h1 class="text-3xl font-bold mb-2">📖 독서</h1>
+  <div class="flex items-center justify-between mb-2">
+    <h1 class="text-3xl font-bold">📖 독서</h1>
+    <a href="/blog/reading/dashboard/" class="text-sm px-3 py-1.5 rounded-lg bg-(--color-bg-secondary) border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-accent-reading) hover:border-(--color-accent-reading) transition-colors">
+      📊 대시보드
+    </a>
+  </div>
   <p class="text-(--color-text-secondary) mb-8">책 리뷰, 독후감, 인상 깊은 구절</p>
   {posts.length === 0 ? (
     <p class="text-(--color-text-secondary)">아직 글이 없습니다.</p>

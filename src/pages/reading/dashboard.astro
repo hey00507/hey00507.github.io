@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { buildSlugMap } from '../../utils/slugs';
+
+const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const slugMap = buildSlugMap(allPosts);
+const books = allPosts
+  .filter((p) => p.data.category === 'reading')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 통계 계산
+const totalBooks = books.length;
+const ratings = books.map((b) => b.data.rating).filter((r): r is number => !!r);
+const avgRating = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length) : 0;
+const thisYear = new Date().getUTCFullYear();
+const thisYearBooks = books.filter((b) => b.data.pubDate.getUTCFullYear() === thisYear);
+
+// 별점 분포 (1~5)
+const ratingDist = [0, 0, 0, 0, 0];
+for (const r of ratings) ratingDist[r - 1]++;
+const maxRatingCount = Math.max(...ratingDist, 1);
+
+// 월별 독서량 (올해)
+const monthlyData = Array.from({ length: 12 }, () => 0);
+for (const book of thisYearBooks) {
+  monthlyData[book.data.pubDate.getUTCMonth()]++;
+}
+const maxMonthly = Math.max(...monthlyData, 1);
+
+// 연도별 통계
+const yearMap = new Map<number, number>();
+for (const book of books) {
+  const y = book.data.pubDate.getUTCFullYear();
+  yearMap.set(y, (yearMap.get(y) || 0) + 1);
+}
+const years = [...yearMap.entries()].sort((a, b) => b[0] - a[0]);
+
+const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+---
+
+<BaseLayout title="독서 대시보드 - Ethan's Blog" description="읽은 책 통계와 기록">
+  <div class="mb-6">
+    <a href="/blog/reading/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 독서</a>
+    <h1 class="text-3xl font-bold mt-2">📊 독서 대시보드</h1>
+  </div>
+
+  {totalBooks === 0 ? (
+    <div class="text-center py-20">
+      <p class="text-5xl mb-4">📚</p>
+      <p class="text-(--color-text-secondary) text-lg">아직 읽은 책이 없습니다.</p>
+      <p class="text-(--color-text-secondary) text-sm mt-1">첫 번째 독서 기록을 남겨보세요!</p>
+    </div>
+  ) : (
+    <>
+      {/* 요약 카드 */}
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+        <div class="p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border) text-center">
+          <p class="text-2xl font-bold text-(--color-accent-reading)">{totalBooks}</p>
+          <p class="text-xs text-(--color-text-secondary) mt-1">총 읽은 책</p>
+        </div>
+        <div class="p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border) text-center">
+          <p class="text-2xl font-bold text-(--color-accent-reading)">{avgRating.toFixed(1)}</p>
+          <p class="text-xs text-(--color-text-secondary) mt-1">평균 별점</p>
+        </div>
+        <div class="p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border) text-center">
+          <p class="text-2xl font-bold text-(--color-accent-reading)">{thisYearBooks.length}</p>
+          <p class="text-xs text-(--color-text-secondary) mt-1">{thisYear}년</p>
+        </div>
+        <div class="p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border) text-center">
+          <p class="text-2xl font-bold text-(--color-accent-reading)">{ratings.length > 0 ? '★'.repeat(Math.round(avgRating)) + '☆'.repeat(5 - Math.round(avgRating)) : '-'}</p>
+          <p class="text-xs text-(--color-text-secondary) mt-1">평균</p>
+        </div>
+      </div>
+
+      {/* 차트 섹션 */}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+        {/* 별점 분포 */}
+        <section class="p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border)">
+          <h2 class="text-sm font-semibold mb-4">별점 분포</h2>
+          <div class="space-y-2">
+            {[5, 4, 3, 2, 1].map((star) => {
+              const count = ratingDist[star - 1];
+              const pct = (count / maxRatingCount) * 100;
+              return (
+                <div class="flex items-center gap-2 text-sm">
+                  <span class="shrink-0 w-16 text-(--color-text-secondary)">{'★'.repeat(star)}{'☆'.repeat(5 - star)}</span>
+                  <div class="flex-1 h-5 bg-(--color-bg) rounded overflow-hidden">
+                    <div class="h-full rounded bg-(--color-accent-reading) transition-all" style={`width: ${pct}%`} />
+                  </div>
+                  <span class="shrink-0 w-6 text-right text-(--color-text-secondary)">{count}</span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 월별 독서량 */}
+        <section class="p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border)">
+          <h2 class="text-sm font-semibold mb-4">{thisYear}년 월별 독서량</h2>
+          <div class="flex items-end gap-1 h-32">
+            {monthlyData.map((count, i) => {
+              const pct = (count / maxMonthly) * 100;
+              return (
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <span class="text-xs text-(--color-text-secondary)">{count || ''}</span>
+                  <div class="w-full rounded-t bg-(--color-accent-reading) transition-all" style={`height: ${Math.max(pct, count > 0 ? 8 : 0)}%`} />
+                  <span class="text-xs text-(--color-text-secondary)">{i + 1}</span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </div>
+
+      {/* 연도별 통계 */}
+      {years.length > 1 && (
+        <section class="mb-10">
+          <h2 class="text-sm font-semibold mb-3">연도별 독서량</h2>
+          <div class="flex flex-wrap gap-2">
+            {years.map(([year, count]) => (
+              <div class="px-3 py-1.5 rounded-lg bg-(--color-bg-secondary) border border-(--color-border) text-sm">
+                <span class="font-medium">{year}</span>
+                <span class="text-(--color-text-secondary) ml-1">{count}권</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 최근 읽은 책 */}
+      <section>
+        <h2 class="text-sm font-semibold mb-3">최근 읽은 책</h2>
+        <div class="space-y-2">
+          {books.slice(0, 10).map((book) => (
+            <a href={`/blog/posts/${slugMap.get(book.id)}/`} class="group flex items-baseline gap-2 p-3 rounded-lg hover:bg-(--color-bg-secondary) transition-colors">
+              <span class="text-(--color-text-secondary)">📖</span>
+              <div class="flex-1 min-w-0">
+                <span class="font-medium group-hover:text-(--color-accent-reading) transition-colors">{book.data.bookTitle || book.data.title}</span>
+                {book.data.bookAuthor && (
+                  <span class="text-sm text-(--color-text-secondary)"> — {book.data.bookAuthor}</span>
+                )}
+              </div>
+              {book.data.rating && (
+                <span class="shrink-0 text-sm text-(--color-text-secondary)">
+                  {'★'.repeat(book.data.rating)}{'☆'.repeat(5 - book.data.rating)}
+                </span>
+              )}
+            </a>
+          ))}
+        </div>
+      </section>
+    </>
+  )}
+</BaseLayout>
