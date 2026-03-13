@@ -238,13 +238,13 @@ frontmatter 자동 생성 (카테고리/태그 AI 추론)
 | `#publish` (단독) | AI가 내용 분석하여 추론 | |
 
 **체크리스트:**
-- [ ] `/blog-sync` 스킬 생성
-- [ ] Obsidian vault `#publish` 태그 스캔 로직
-- [ ] 이미 투고된 글 중복 방지 (출처 추적)
-- [ ] Obsidian → Markdown 변환 (wikilink, callout, 이미지)
-- [ ] 카테고리 자동 추론 로직
-- [ ] 투고 완료 후 `#published` 태그 자동 추가
-- [ ] `claude-productivity` 레포에 스킬 반영
+- [x] `/blog-sync` 스킬 생성 ✅
+- [x] Obsidian vault `#publish` 태그 스캔 로직 ✅
+- [x] 이미 투고된 글 중복 방지 (출처 추적) ✅
+- [x] Obsidian → Markdown 변환 (wikilink, callout, 이미지) ✅
+- [x] 카테고리 자동 추론 로직 ✅
+- [x] 투고 완료 후 `#published` 태그 자동 추가 ✅
+- [x] `claude-productivity` 레포에 스킬 반영 ✅
 
 ---
 
@@ -301,13 +301,13 @@ pubDate: 2026-03-15
 ```
 
 **체크리스트:**
-- [ ] `/blog-weekly` 스킬 생성
-- [ ] 주간 범위 계산 (월~일)
-- [ ] `040.Logs/` 로그 수집 및 요약
-- [ ] Google Calendar 주간 일정 조회 연동
-- [ ] 회고 템플릿 기반 초안 생성
-- [ ] 사용자 확인 후 블로그 투고 (draft 옵션)
-- [ ] `claude-productivity` 레포에 스킬 반영
+- [x] `/blog-weekly` 스킬 생성 ✅
+- [x] 주간 범위 계산 (월~일) ✅
+- [x] `040.Logs/` 로그 수집 및 요약 ✅
+- [x] Google Calendar 주간 일정 조회 연동 ✅
+- [x] 회고 템플릿 기반 초안 생성 ✅
+- [x] 사용자 확인 후 블로그 투고 (draft 옵션) ✅
+- [x] `claude-productivity` 레포에 스킬 반영 ✅
 
 ---
 
