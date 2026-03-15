@@ -21,6 +21,18 @@
 | **일상** | `essay` | 일상 기록, 생각 정리, 에세이 |
 | **코딩** | `dev` | 기술 학습, 개발 경험, 트러블슈팅 |
 
+### 소카테고리 (M12)
+
+| 대분류 | 소분류 | slug |
+|--------|--------|------|
+| 독서 (`reading`) | 서평 | `review` |
+| | 독서노트 | `note` |
+| 일상 (`essay`) | 운동 | `workout` |
+| | 회고 | `retrospective` |
+| | 일기 | `diary` |
+| 코딩 (`dev`) | 업무 | `work` |
+| | TIL | `til` |
+
 ### 글 메타데이터 (Frontmatter)
 
 ```yaml
@@ -28,6 +40,7 @@
 title: "글 제목"
 description: "한 줄 요약"
 category: "reading" | "essay" | "dev"
+subcategory: "review"            # 선택 (M12)
 tags: ["astro", "typescript"]  # 자유 태그
 pubDate: 2026-03-12
 updatedDate: 2026-03-13        # 선택
@@ -311,6 +324,120 @@ pubDate: 2026-03-15
 
 ---
 
+#### M12: 소카테고리 시스템
+
+대분류(독서/일상/코딩) 안에 소분류를 추가하여 글을 더 세밀하게 분류한다.
+
+**소카테고리 구조:**
+
+| 대분류 | slug | 소분류 | slug | 설명 |
+|--------|------|--------|------|------|
+| 독서 | `reading` | 서평 | `review` | 책 리뷰, 독후감 |
+| | | 독서노트 | `note` | 인상 깊은 구절, 메모 |
+| 일상 | `essay` | 운동 | `workout` | 러닝, 마라톤, 운동 기록 |
+| | | 회고 | `retrospective` | 주간/월간 회고 |
+| | | 일기 | `diary` | 일상 기록, 사색 |
+| 코딩 | `dev` | 업무 | `work` | 회사/프로젝트 개발 경험 |
+| | | TIL | `til` | Today I Learned, 학습 기록 |
+
+**스키마 변경:**
+```yaml
+# content.config.ts
+category: z.enum(['reading', 'essay', 'dev'])       # 기존 유지
+subcategory: z.string().optional()                    # 신규 추가 (optional)
+```
+
+- 기존 글은 subcategory 없이 그대로 동작 (하위 호환)
+- 새 글만 선택적으로 subcategory 지정
+
+**라우팅:**
+```
+/reading/             → 독서 전체 (subcategory 유무 관계없이)
+/reading/review/      → 서평만 필터링
+/reading/note/        → 독서노트만 필터링
+/essay/               → 일상 전체
+/essay/workout/       → 운동만
+/essay/retrospective/ → 회고만
+/essay/diary/         → 일기만
+/dev/                 → 코딩 전체
+/dev/work/            → 업무만
+/dev/til/             → TIL만
+```
+
+- 동적 라우팅 (`/[category]/[subcategory]/index.astro`) + `getStaticPaths()`
+- 기존 카테고리 페이지는 전체 목록 유지
+
+**네비게이션 (헤더 드롭다운):**
+```
+Desktop:
+[독서 ▾] [일상 ▾] [코딩 ▾] [About]
+          ┌──────────┐
+          │ 전체      │
+          │ 운동      │
+          │ 회고      │
+          │ 일기      │
+          └──────────┘
+
+Mobile (햄버거 메뉴):
+│ 독서              │
+│   ├ 서평           │
+│   └ 독서노트       │
+│ 일상              │
+│   ├ 운동           │
+│   ├ 회고           │
+│   └ 일기           │
+│ 코딩              │
+│   ├ 업무           │
+│   └ TIL           │
+```
+
+- 드롭다운 hover(desktop) / accordion(mobile)
+- 각 항목 클릭 → 소카테고리 페이지로 이동
+
+**소카테고리 설정 파일:**
+```typescript
+// src/utils/subcategories.ts
+export const subcategories = {
+  reading: [
+    { slug: 'review', label: '서평' },
+    { slug: 'note', label: '독서노트' },
+  ],
+  essay: [
+    { slug: 'workout', label: '운동' },
+    { slug: 'retrospective', label: '회고' },
+    { slug: 'diary', label: '일기' },
+  ],
+  dev: [
+    { slug: 'work', label: '업무' },
+    { slug: 'til', label: 'TIL' },
+  ],
+};
+```
+
+**수정 대상 파일:**
+1. `src/content.config.ts` — subcategory 필드 추가
+2. `src/utils/subcategories.ts` — 신규 생성 (소카테고리 정의)
+3. `src/utils/categories.ts` — subcategory 관련 헬퍼 추가
+4. `src/components/Header.astro` — 드롭다운 메뉴 구현
+5. `src/pages/[category]/[subcategory]/index.astro` — 동적 소카테고리 페이지
+6. `src/components/PostCard.astro` — 소카테고리 뱃지 표시
+7. `src/pages/archive.astro` — 소카테고리 표시 추가
+8. 기존 카테고리 페이지 (`reading/`, `essay.astro`, `dev.astro`) — "전체" 동작 확인
+9. OG 이미지 생성 — 소카테고리 표시 반영
+
+**체크리스트:**
+- [ ] content.config.ts에 subcategory 필드 추가
+- [ ] subcategories.ts 설정 파일 생성
+- [ ] 동적 라우팅 페이지 구현
+- [ ] Header 드롭다운 메뉴 (desktop + mobile)
+- [ ] PostCard에 소카테고리 뱃지 표시
+- [ ] 아카이브 페이지 소카테고리 반영
+- [ ] OG 이미지에 소카테고리 표시
+- [ ] 기존 글 하위 호환 확인
+- [ ] 빌드 + 배포 테스트
+
+---
+
 ### v3.0 — 품질 개선 & 확장 (글 투고하며 점진적 개선)
 
 > 방향: 주 1~2회 글을 투고하면서 불편사항을 발견할 때마다 개선한다.
@@ -450,8 +577,9 @@ blog/
 | **M4** | 검색 (Pagefind) + RSS + SEO + Sitemap + 아카이브 | ✅ |
 | **M5** | GitHub Pages 배포 + GitHub Actions CI/CD | ✅ |
 | **M6** | Giscus 댓글 + 모바일 반응형 + GoatCounter 분석 | ✅ |
-| **M7** | OG 이미지 자동 생성 (Satori) | |
-| **M8** | 시리즈 네비게이션 | |
-| **M9** | 독서 대시보드 | |
-| **M10** | Obsidian → 블로그 자동 투고 파이프라인 (`/blog-sync`) | |
-| **M11** | 주간 회고 자동 생성 (`/blog-weekly`) | |
+| **M7** | OG 이미지 자동 생성 (Satori) | ✅ |
+| **M8** | 시리즈 네비게이션 | ✅ |
+| **M9** | 독서 대시보드 | ✅ |
+| **M10** | Obsidian → 블로그 자동 투고 파이프라인 (`/blog-sync`) | ✅ |
+| **M11** | 주간 회고 자동 생성 (`/blog-weekly`) | ✅ |
+| **M12** | 소카테고리 시스템 (드롭다운 네비 + 동적 라우팅) | |
