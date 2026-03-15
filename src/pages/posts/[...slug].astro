@@ -36,9 +36,40 @@ const currentIndex = allPosts.findIndex((p) => p.id === post.id);
 const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 const currentSlug = slugMap.get(post.id)!;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  image: `${Astro.site}og/${currentSlug}.png`,
+  datePublished: pubDate.toISOString(),
+  ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+  author: {
+    '@type': 'Person',
+    name: 'Ethan Kim',
+    url: `${Astro.site}about/`,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: 'Ethan Kim',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${Astro.site}posts/${currentSlug}/`,
+  },
+  ...(bookTitle && {
+    about: {
+      '@type': 'Book',
+      name: bookTitle,
+      ...(bookAuthor && { author: { '@type': 'Person', name: bookAuthor } }),
+    },
+  }),
+};
 ---
 
 <BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={`/og/${currentSlug}.png`}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
   <article>
     {/* 메타 정보 */}
     <header class="mb-8">
