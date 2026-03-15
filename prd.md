@@ -454,11 +454,11 @@ export const subcategories = {
 | 5 | 모바일 메뉴 접근성 | aria-expanded, 포커스 트랩 | 접근성 |
 
 **체크리스트:**
-- [ ] JSON-LD BlogPosting 구조화 데이터 (BaseLayout에 추가)
-- [ ] 포커스 링 스타일 (global.css에 :focus-visible 규칙)
+- [x] JSON-LD BlogPosting 구조화 데이터 (글 상세 페이지 + head slot) ✅
+- [x] 포커스 링 스타일 (global.css에 :focus-visible 규칙) ✅
 - [ ] About 페이지 리뉴얼 (프로필 이미지, 소셜 링크, 바이오)
-- [ ] 공유 버튼 컴포넌트 (글 상세 페이지 하단)
-- [ ] 모바일 메뉴 aria-expanded + 포커스 트랩
+- [x] 공유 버튼 컴포넌트 (글 상세 페이지 하단) ✅
+- [x] 모바일 메뉴 aria-expanded + Escape 닫기 ✅
 
 #### 기능 추가
 
@@ -473,7 +473,7 @@ export const subcategories = {
 **체크리스트:**
 - [ ] RelatedPosts 컴포넌트 (태그 유사도 기반 추천)
 - [ ] heroImage 필드 추가 (content.config.ts + PostCard + 상세 페이지)
-- [ ] robots.txt 추가 (public/)
+- [x] robots.txt 추가 (public/) ✅
 - [ ] 코드 블록 복사 버튼 (PostLayout에 JS 삽입)
 - [ ] 페이지네이션 컴포넌트 (글 20개 이상 시 적용)
 
