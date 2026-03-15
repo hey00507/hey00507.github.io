@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { buildSlugMap } from '../../utils/slugs';
+import { subcategories, getSubcategoryLabel } from '../../utils/subcategories';
+import { categories } from '../../utils/categories';
+
+export function getStaticPaths() {
+  return subcategories.reading.map((sub) => ({
+    params: { subcategory: sub.slug },
+  }));
+}
+
+const category = 'reading' as const;
+
+const { subcategory } = Astro.params;
+const subLabel = getSubcategoryLabel(category, subcategory!)!;
+const catLabel = categories[category].label;
+
+const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const slugMap = buildSlugMap(allPosts);
+const posts = allPosts
+  .filter((p) => p.data.category === category && p.data.subcategory === subcategory)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title={`${subLabel} - ${catLabel} - Ethan's Blog`} description={`${catLabel} > ${subLabel}`}>
+  <div class="mb-8">
+    <a href={`/${category}/`} class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← {catLabel}</a>
+    <h1 class="text-3xl font-bold mt-2">📖 {subLabel}</h1>
+    <p class="text-(--color-text-secondary) mt-1">{catLabel} &gt; {subLabel} · {posts.length}편</p>
+  </div>
+  {posts.length === 0 ? (
+    <p class="text-(--color-text-secondary)">아직 글이 없습니다.</p>
+  ) : (
+    <div class="space-y-4">
+      {posts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          description={post.data.description}
+          category={post.data.category}
+          subcategory={post.data.subcategory}
+          pubDate={post.data.pubDate}
+          tags={post.data.tags}
+          slug={slugMap.get(post.id)!}
+          body={post.body}
+          bookTitle={post.data.bookTitle}
+          bookAuthor={post.data.bookAuthor}
+          rating={post.data.rating}
+        />
+      ))}
+    </div>
+  )}
+</BaseLayout>

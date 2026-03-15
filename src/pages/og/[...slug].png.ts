@@ -19,6 +19,12 @@ const CATEGORY_LABELS: Record<string, string> = {
   dev: '코딩',
 };
 
+const SUBCATEGORY_LABELS: Record<string, Record<string, string>> = {
+  reading: { review: '서평', note: '독서노트' },
+  essay: { workout: '운동', retrospective: '회고', diary: '일기' },
+  dev: { work: '업무', til: 'TIL' },
+};
+
 // Noto Sans KR Bold 폰트 (프로젝트 내 번들)
 const fontPath = path.resolve(process.cwd(), 'src/assets/fonts/NotoSansKR-Bold.ttf');
 const fontData = fs.readFileSync(fontPath);
@@ -34,9 +40,10 @@ export async function getStaticPaths() {
 
 export async function GET({ props }: APIContext) {
   const { post } = props as { post: Awaited<ReturnType<typeof getCollection>>[number] };
-  const { title, description, category, pubDate, bookTitle, bookAuthor } = post.data;
+  const { title, description, category, subcategory, pubDate, bookTitle, bookAuthor } = post.data;
   const [gradFrom, gradTo] = CATEGORY_GRADIENTS[category] || ['#1e293b', '#334155'];
   const catLabel = CATEGORY_LABELS[category] || category;
+  const subLabel = subcategory ? SUBCATEGORY_LABELS[category]?.[subcategory] : undefined;
   const dateStr = formatDate(pubDate);
   const svg = await satori(
     {
@@ -77,7 +84,21 @@ export async function GET({ props }: APIContext) {
                     children: catLabel,
                   },
                 },
-              ],
+                subLabel ? {
+                  type: 'span',
+                  props: {
+                    style: {
+                      backgroundColor: 'rgba(255,255,255,0.15)',
+                      color: 'rgba(255,255,255,0.9)',
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      fontSize: '20px',
+                      fontWeight: 600,
+                    },
+                    children: subLabel,
+                  },
+                } : null,
+              ].filter(Boolean),
             },
           },
           // 중앙: 제목 + 설명

@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { buildSlugMap } from '../utils/slugs';
+import { buildSlugMap } from '../../utils/slugs';
 
 const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
 const slugMap = buildSlugMap(allPosts);
@@ -23,6 +23,7 @@ const posts = allPosts
           title={post.data.title}
           description={post.data.description}
           category={post.data.category}
+          subcategory={post.data.subcategory}
           pubDate={post.data.pubDate}
           tags={post.data.tags}
           slug={slugMap.get(post.id)!}

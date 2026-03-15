@@ -18,6 +18,7 @@ const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.
         title={post.data.title}
         description={post.data.description}
         category={post.data.category}
+        subcategory={post.data.subcategory}
         pubDate={post.data.pubDate}
         tags={post.data.tags}
         slug={slugMap.get(post.id)!}

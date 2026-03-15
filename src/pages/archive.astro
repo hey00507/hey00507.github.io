@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { categories } from '../utils/categories';
+import { getSubcategoryLabel } from '../utils/subcategories';
 import { formatMonthDay } from '../utils/formatDate';
 import { buildSlugMap } from '../utils/slugs';
 
@@ -34,6 +35,11 @@ for (const post of posts) {
                 <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
                   <time class="text-sm text-(--color-text-secondary) shrink-0">{dateStr}</time>
                   <span class="px-1.5 py-0.5 rounded text-xs text-white shrink-0" style={`background-color: ${cat.color}`}>{cat.label}</span>
+                  {post.data.subcategory && (
+                    <span class="px-1.5 py-0.5 rounded text-xs border border-(--color-border) text-(--color-text-secondary) shrink-0">
+                      {getSubcategoryLabel(post.data.category, post.data.subcategory)}
+                    </span>
+                  )}
                 </div>
                 <span class="font-medium group-hover:text-(--color-accent-dev) transition-colors">{post.data.title}</span>
               </a>

@@ -1,5 +1,6 @@
 ---
 import { categories } from '../utils/categories';
+import { getSubcategoryLabel } from '../utils/subcategories';
 import { getReadingTime } from '../utils/readingTime';
 import { formatDateTime } from '../utils/formatDate';
 
@@ -7,6 +8,7 @@ interface Props {
   title: string;
   description: string;
   category: keyof typeof categories;
+  subcategory?: string;
   pubDate: Date;
   tags: string[];
   slug: string;
@@ -16,8 +18,9 @@ interface Props {
   rating?: number;
 }
 
-const { title, description, category, pubDate, tags, slug, body, bookTitle, bookAuthor, rating } = Astro.props;
+const { title, description, category, subcategory, pubDate, tags, slug, body, bookTitle, bookAuthor, rating } = Astro.props;
 const cat = categories[category];
+const subLabel = subcategory ? getSubcategoryLabel(category, subcategory) : undefined;
 const readingTime = body ? getReadingTime(body) : '';
 const dateStr = formatDateTime(pubDate);
 ---
@@ -28,6 +31,11 @@ const dateStr = formatDateTime(pubDate);
       <span class="px-2 py-0.5 rounded-md text-white text-xs font-medium" style={`background-color: ${cat.color}`}>
         {cat.label}
       </span>
+      {subLabel && (
+        <span class="px-2 py-0.5 rounded-md text-xs font-medium border border-(--color-border) text-(--color-text-secondary)">
+          {subLabel}
+        </span>
+      )}
       <span class="text-(--color-text-secondary)">{dateStr}</span>
       {readingTime && <span class="text-(--color-text-secondary)">· {readingTime}</span>}
       <span class="view-count text-(--color-text-secondary)" data-path={`/posts/${slug}/`}>
