@@ -426,15 +426,16 @@ export const subcategories = {
 9. OG 이미지 생성 — 소카테고리 표시 반영
 
 **체크리스트:**
-- [ ] content.config.ts에 subcategory 필드 추가
-- [ ] subcategories.ts 설정 파일 생성
-- [ ] 동적 라우팅 페이지 구현
-- [ ] Header 드롭다운 메뉴 (desktop + mobile)
-- [ ] PostCard에 소카테고리 뱃지 표시
-- [ ] 아카이브 페이지 소카테고리 반영
-- [ ] OG 이미지에 소카테고리 표시
-- [ ] 기존 글 하위 호환 확인
-- [ ] 빌드 + 배포 테스트
+- [x] content.config.ts에 subcategory 필드 추가 ✅
+- [x] subcategories.ts 설정 파일 생성 ✅
+- [x] 동적 라우팅 페이지 구현 ✅
+- [x] Header 드롭다운 메뉴 (desktop + mobile) ✅
+- [x] PostCard에 소카테고리 뱃지 표시 ✅
+- [x] 아카이브 페이지 소카테고리 반영 ✅
+- [x] OG 이미지에 소카테고리 표시 ✅
+- [x] 기존 글 하위 호환 확인 ✅
+- [x] SubcategoryNav 컴포넌트 (카테고리 페이지 내 탭 네비) ✅
+- [x] 빌드 + 배포 테스트 ✅
 
 ---
 
@@ -452,6 +453,13 @@ export const subcategories = {
 | 4 | 공유 버튼 | 트위터, 링크 복사 버튼 | 글 확산 |
 | 5 | 모바일 메뉴 접근성 | aria-expanded, 포커스 트랩 | 접근성 |
 
+**체크리스트:**
+- [ ] JSON-LD BlogPosting 구조화 데이터 (BaseLayout에 추가)
+- [ ] 포커스 링 스타일 (global.css에 :focus-visible 규칙)
+- [ ] About 페이지 리뉴얼 (프로필 이미지, 소셜 링크, 바이오)
+- [ ] 공유 버튼 컴포넌트 (글 상세 페이지 하단)
+- [ ] 모바일 메뉴 aria-expanded + 포커스 트랩
+
 #### 기능 추가
 
 | # | 기능 | 설명 |
@@ -462,6 +470,13 @@ export const subcategories = {
 | 9 | 코드 블록 복사 버튼 | 개발 글 UX 개선 |
 | 10 | 글 목록 페이지네이션 | 글이 많아지면 적용 |
 
+**체크리스트:**
+- [ ] RelatedPosts 컴포넌트 (태그 유사도 기반 추천)
+- [ ] heroImage 필드 추가 (content.config.ts + PostCard + 상세 페이지)
+- [ ] robots.txt 추가 (public/)
+- [ ] 코드 블록 복사 버튼 (PostLayout에 JS 삽입)
+- [ ] 페이지네이션 컴포넌트 (글 20개 이상 시 적용)
+
 #### Long-Term
 
 | # | 기능 | 설명 |
@@ -471,6 +486,13 @@ export const subcategories = {
 | 13 | i18n (다국어) | 한/영 지원 |
 | 14 | 다크모드 코드 테마 분리 | 라이트: github-light / 다크: tokyo-night |
 | 15 | 글 스케줄링 | 특정 날짜에 자동 공개 |
+
+**체크리스트:**
+- [ ] 커스텀 도메인 설정 (CNAME + DNS)
+- [ ] 뉴스레터 구독 폼 (Buttondown 또는 ConvertKit)
+- [ ] i18n 다국어 지원 (한/영 라우팅)
+- [ ] 다크모드 코드 테마 분리 (shiki dual theme)
+- [ ] 글 스케줄링 (pubDate 미래 날짜 → 빌드 시 제외)
 
 ---
 
@@ -582,4 +604,4 @@ blog/
 | **M9** | 독서 대시보드 | ✅ |
 | **M10** | Obsidian → 블로그 자동 투고 파이프라인 (`/blog-sync`) | ✅ |
 | **M11** | 주간 회고 자동 생성 (`/blog-weekly`) | ✅ |
-| **M12** | 소카테고리 시스템 (드롭다운 네비 + 동적 라우팅) | |
+| **M12** | 소카테고리 시스템 (드롭다운 네비 + 동적 라우팅) | ✅ |
