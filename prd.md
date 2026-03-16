@@ -456,7 +456,7 @@ export const subcategories = {
 **체크리스트:**
 - [x] JSON-LD BlogPosting 구조화 데이터 (글 상세 페이지 + head slot) ✅
 - [x] 포커스 링 스타일 (global.css에 :focus-visible 규칙) ✅
-- [ ] About 페이지 리뉴얼 (프로필 이미지, 소셜 링크, 바이오)
+- [x] About 페이지 리뉴얼 (프로필 이미지, 소셜 링크, 바이오) ✅
 - [x] 공유 버튼 컴포넌트 (글 상세 페이지 하단) ✅
 - [x] 모바일 메뉴 aria-expanded + Escape 닫기 ✅
 
