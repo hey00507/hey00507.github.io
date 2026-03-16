@@ -17,14 +17,15 @@ interface Props {
   bookTitle?: string;
   bookAuthor?: string;
   rating?: number;
+  heroImage?: string;
 }
 
-const { title, description, category, subcategory, pubDate, tags, slug, body, bookTitle, bookAuthor, rating } = Astro.props;
+const { title, description, category, subcategory, pubDate, tags, slug, body, bookTitle, bookAuthor, rating, heroImage } = Astro.props;
 const cat = categories[category];
 const subLabel = subcategory ? getSubcategoryLabel(category, subcategory) : undefined;
 const readingTime = body ? getReadingTime(body) : '';
 const dateStr = formatDateTime(pubDate);
-const thumbnail = extractFirstImage(body);
+const thumbnail = heroImage || extractFirstImage(body);
 ---
 
 <article class="group border border-(--color-border) rounded-xl p-4 sm:p-5 hover:border-[var(--cat-color)] transition-colors" style={`--cat-color: ${cat.color}`}>

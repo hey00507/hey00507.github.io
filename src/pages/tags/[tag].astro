@@ -43,6 +43,7 @@ const { posts, slugMap } = Astro.props;
         tags={post.data.tags}
         slug={slugMap[post.id]}
         body={post.body}
+          heroImage={post.data.heroImage}
         bookTitle={post.data.bookTitle}
         bookAuthor={post.data.bookAuthor}
         rating={post.data.rating}

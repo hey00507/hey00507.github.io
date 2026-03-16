@@ -16,6 +16,8 @@ const posts = defineCollection({
     bookTitle: z.string().optional(),
     bookAuthor: z.string().optional(),
     rating: z.number().min(1).max(5).optional(),
+    // 공통 선택
+    heroImage: z.string().optional(),
     // 코딩 카테고리 전용
     series: z.string().optional(),
   }),
