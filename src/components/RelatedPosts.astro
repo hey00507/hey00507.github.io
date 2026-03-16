@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import { categories } from '../utils/categories';
+import { buildSlugMap } from '../utils/slugs';
+import { formatMonthDay } from '../utils/formatDate';
+
+interface Props {
+  currentId: string;
+  category: string;
+  tags: string[];
+}
+
+const { currentId, category, tags } = Astro.props;
+
+const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft && p.id !== currentId);
+const slugMap = buildSlugMap(allPosts);
+
+// 태그 유사도 + 같은 카테고리 가산점으로 점수 계산
+const scored = allPosts.map((post) => {
+  const commonTags = post.data.tags.filter((t) => tags.includes(t)).length;
+  const categoryBonus = post.data.category === category ? 1 : 0;
+  return { post, score: commonTags * 2 + categoryBonus };
+}).filter((s) => s.score > 0);
+
+scored.sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf());
+const related = scored.slice(0, 3);
+---
+
+{related.length > 0 && (
+  <section class="mt-8 pt-6 border-t border-(--color-border)">
+    <h2 class="text-base font-bold mb-4">관련 글</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {related.map(({ post }) => {
+        const cat = categories[post.data.category];
+        const dateStr = formatMonthDay(post.data.pubDate);
+        return (
+          <a
+            href={`/posts/${slugMap.get(post.id)}/`}
+            class="group p-3 rounded-xl border border-(--color-border) hover:border-[var(--cat-color)] transition-colors"
+            style={`--cat-color: ${cat.color}`}
+          >
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <span class="px-1.5 py-0.5 rounded text-xs text-white" style={`background-color: ${cat.color}`}>
+                {cat.label}
+              </span>
+              <span class="text-xs text-(--color-text-secondary)">{dateStr}</span>
+            </div>
+            <p class="text-sm font-medium group-hover:text-[var(--cat-color)] transition-colors line-clamp-2">
+              {post.data.title}
+            </p>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+)}
