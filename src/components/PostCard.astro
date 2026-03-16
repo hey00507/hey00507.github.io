@@ -3,6 +3,7 @@ import { categories } from '../utils/categories';
 import { getSubcategoryLabel } from '../utils/subcategories';
 import { getReadingTime } from '../utils/readingTime';
 import { formatDateTime } from '../utils/formatDate';
+import { extractFirstImage } from '../utils/thumbnail';
 
 interface Props {
   title: string;
@@ -23,41 +24,54 @@ const cat = categories[category];
 const subLabel = subcategory ? getSubcategoryLabel(category, subcategory) : undefined;
 const readingTime = body ? getReadingTime(body) : '';
 const dateStr = formatDateTime(pubDate);
+const thumbnail = extractFirstImage(body);
 ---
 
 <article class="group border border-(--color-border) rounded-xl p-4 sm:p-5 hover:border-[var(--cat-color)] transition-colors" style={`--cat-color: ${cat.color}`}>
-  <a href={`/posts/${slug}/`} class="block">
-    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2 text-sm">
-      <span class="px-2 py-0.5 rounded-md text-white text-xs font-medium" style={`background-color: ${cat.color}`}>
-        {cat.label}
-      </span>
-      {subLabel && (
-        <span class="px-2 py-0.5 rounded-md text-xs font-medium border border-(--color-border) text-(--color-text-secondary)">
-          {subLabel}
+  <a href={`/posts/${slug}/`} class="flex gap-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2 text-sm">
+        <span class="px-2 py-0.5 rounded-md text-white text-xs font-medium" style={`background-color: ${cat.color}`}>
+          {cat.label}
         </span>
-      )}
-      <span class="text-(--color-text-secondary)">{dateStr}</span>
-      {readingTime && <span class="text-(--color-text-secondary)">· {readingTime}</span>}
-      <span class="view-count text-(--color-text-secondary)" data-path={`/posts/${slug}/`}>
-        · <svg class="w-3.5 h-3.5 inline -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-        <span class="count-value">-</span>
-      </span>
-    </div>
-    <h2 class="text-lg font-semibold mb-1 group-hover:text-[var(--cat-color)] transition-colors">{title}</h2>
-    {bookTitle && (
-      <p class="text-sm text-(--color-text-secondary) mb-1">
-        📖 {bookTitle} — {bookAuthor}
-        {rating && ` · ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`}
-      </p>
-    )}
-    <p class="text-sm text-(--color-text-secondary) mb-3">{description}</p>
-    {tags.length > 0 && (
-      <div class="flex flex-wrap gap-1.5">
-        {tags.map((tag) => (
-          <span class="text-xs px-2 py-0.5 rounded-md bg-(--color-bg-secondary) text-(--color-text-secondary)">
-            #{tag}
+        {subLabel && (
+          <span class="px-2 py-0.5 rounded-md text-xs font-medium border border-(--color-border) text-(--color-text-secondary)">
+            {subLabel}
           </span>
-        ))}
+        )}
+        <span class="text-(--color-text-secondary)">{dateStr}</span>
+        {readingTime && <span class="text-(--color-text-secondary)">· {readingTime}</span>}
+        <span class="view-count text-(--color-text-secondary)" data-path={`/posts/${slug}/`}>
+          · <svg class="w-3.5 h-3.5 inline -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+          <span class="count-value">-</span>
+        </span>
+      </div>
+      <h2 class="text-lg font-semibold mb-1 group-hover:text-[var(--cat-color)] transition-colors">{title}</h2>
+      {bookTitle && (
+        <p class="text-sm text-(--color-text-secondary) mb-1">
+          📖 {bookTitle} — {bookAuthor}
+          {rating && ` · ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`}
+        </p>
+      )}
+      <p class="text-sm text-(--color-text-secondary) mb-3">{description}</p>
+      {tags.length > 0 && (
+        <div class="flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span class="text-xs px-2 py-0.5 rounded-md bg-(--color-bg-secondary) text-(--color-text-secondary)">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+    {thumbnail && (
+      <div class="hidden sm:block shrink-0">
+        <img
+          src={thumbnail}
+          alt=""
+          class="w-24 h-24 rounded-lg object-cover border border-(--color-border)"
+          loading="lazy"
+        />
       </div>
     )}
   </a>
