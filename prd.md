@@ -491,8 +491,8 @@ export const subcategories = {
 - [ ] 커스텀 도메인 설정 (CNAME + DNS)
 - [ ] 뉴스레터 구독 폼 (Buttondown 또는 ConvertKit)
 - [ ] i18n 다국어 지원 (한/영 라우팅)
-- [ ] 다크모드 코드 테마 분리 (shiki dual theme)
-- [ ] 글 스케줄링 (pubDate 미래 날짜 → 빌드 시 제외)
+- [x] 다크모드 코드 테마 분리 (shiki dual theme: github-light / tokyo-night) ✅
+- [x] 글 스케줄링 (getPublishedPosts 헬퍼, pubDate > now 자동 제외) ✅
 
 ---
 
