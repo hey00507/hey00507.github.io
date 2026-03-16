@@ -9,20 +9,8 @@ const posts = defineCollection({
     category: z.enum(['reading', 'essay', 'dev']),
     subcategory: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    pubDate: z.union([z.string(), z.date()]).transform((v) => {
-      if (v instanceof Date) {
-        // YAML 자동 파싱된 Date는 UTC로 해석됨 → KST(+09:00)로 보정
-        return new Date(v.getTime() - 9 * 60 * 60 * 1000);
-      }
-      return new Date(v.includes('+') || v.includes('Z') ? v : v + '+09:00');
-    }),
-    updatedDate: z.union([z.string(), z.date()]).optional().transform((v) => {
-      if (!v) return undefined;
-      if (v instanceof Date) {
-        return new Date(v.getTime() - 9 * 60 * 60 * 1000);
-      }
-      return new Date(v.includes('+') || v.includes('Z') ? v : v + '+09:00');
-    }),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
     draft: z.boolean().default(false),
     // 독서 카테고리 전용
     bookTitle: z.string().optional(),
