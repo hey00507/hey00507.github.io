@@ -31,9 +31,9 @@
 
 | # | 작업 | 수정 파일 | 상세 |
 |---|------|-----------|------|
-| 1-1 | lastmod 추가 | `astro.config.mjs` | `serialize` 콜백에서 포스트 URL → `updatedDate ?? pubDate` 매핑 |
-| 1-2 | changefreq 설정 | `astro.config.mjs` | 포스트: `monthly`, 카테고리/태그: `weekly`, 홈: `daily` |
-| 1-3 | priority 설정 | `astro.config.mjs` | 포스트: `0.8`, 카테고리: `0.6`, 태그: `0.4`, 기타: `0.3` |
+| 1-1 | ~~lastmod 추가~~ | `astro.config.mjs` | ✅ 완료 — `serialize` 콜백에서 포스트 URL → `updatedDate ?? pubDate` 매핑 |
+| 1-2 | ~~changefreq 설정~~ | `astro.config.mjs` | ✅ 완료 — 포스트: `monthly`, 카테고리/태그: `weekly`, 홈: `daily` |
+| 1-3 | ~~priority 설정~~ | `astro.config.mjs` | ✅ 완료 — 포스트: `0.8`, 카테고리: `0.6`, 태그: `0.4`, 기타: `0.3` |
 
 ### 구현 방식
 
