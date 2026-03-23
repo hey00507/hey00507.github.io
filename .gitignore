@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# generated WebP images (built from originals via scripts/generate-webp.mjs)
+public/images/**/*.webp
+
 # macOS-specific files
 .DS_Store
 

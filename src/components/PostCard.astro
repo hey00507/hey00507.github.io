@@ -67,12 +67,15 @@ const thumbnail = heroImage || extractFirstImage(body);
     </div>
     {thumbnail && (
       <div class="hidden sm:block shrink-0">
-        <img
-          src={thumbnail}
-          alt=""
-          class="w-24 h-24 rounded-lg object-cover border border-(--color-border)"
-          loading="lazy"
-        />
+        <picture>
+          <source srcset={thumbnail.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+          <img
+            src={thumbnail}
+            alt={title}
+            class="w-24 h-24 rounded-lg object-cover border border-(--color-border)"
+            loading="lazy"
+          />
+        </picture>
       </div>
     )}
   </a>

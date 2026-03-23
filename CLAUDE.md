@@ -52,6 +52,7 @@ draft: false
 - HEIC/PNG → JPEG 변환: `sips -s format jpeg`
 - 크기 제한: 원본 대신 적절한 `max-width` 지정 (보통 200~350px)
 - alt 텍스트: 반드시 의미 있는 설명 포함
+- WebP 자동 변환: 빌드 시 `scripts/generate-webp.mjs`가 jpg/jpeg/png → webp 자동 생성. 원본만 커밋하면 됨 (webp는 .gitignore)
 
 ## 영상 규칙
 

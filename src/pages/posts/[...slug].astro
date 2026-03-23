@@ -117,12 +117,15 @@ const jsonLd = {
 
     {/* 히어로 이미지 (heroImageOnly면 본문에서 숨김 — PostCard 썸네일로만 사용) */}
     {heroImage && !heroImageOnly && (
-      <img
-        src={heroImage}
-        alt={title}
-        class="w-full rounded-xl border border-(--color-border) mb-8"
-        loading="eager"
-      />
+      <picture>
+        <source srcset={heroImage.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+        <img
+          src={heroImage}
+          alt={title}
+          class="w-full rounded-xl border border-(--color-border) mb-8"
+          loading="eager"
+        />
+      </picture>
     )}
 
     {/* 시리즈 네비게이션 */}
