@@ -14,6 +14,7 @@ const posts = allPosts
 ---
 
 <BaseLayout title="일상 - Ethan's Blog" description="일상 기록, 생각 정리, 에세이">
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '일상', description: '일상 기록, 생각 정리, 에세이', url: `${Astro.site}essay/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
   <h1 class="text-3xl font-bold mb-2">✍️ 일상</h1>
   <p class="text-(--color-text-secondary) mb-4">일상 기록, 생각 정리, 에세이</p>
   <SubcategoryNav category="essay" />

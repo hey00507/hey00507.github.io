@@ -20,7 +20,9 @@ const { page } = Astro.props;
 const slugMap = Astro.props.slugMap as Record<string, string>;
 ---
 
-<BaseLayout title={page.currentPage === 1 ? "Ethan's Blog" : `Ethan's Blog - ${page.currentPage}페이지`}>
+<BaseLayout title={page.currentPage === 1 ? "Ethan's Blog" : `Ethan's Blog - ${page.currentPage}페이지`} description={page.currentPage === 1 ? '독서, 일상, 코딩에 대한 기록' : `${page.currentPage}페이지 - 최신 글 목록`}>
+  {page.url.prev && <link rel="prev" href={new URL(page.url.prev, Astro.site).href} slot="head" />}
+  {page.url.next && <link rel="next" href={new URL(page.url.next, Astro.site).href} slot="head" />}
   <h1 class="text-3xl font-bold mb-2">Blog</h1>
   <p class="text-(--color-text-secondary) mb-8">독서, 일상, 코딩에 대한 기록</p>
   <div class="space-y-4">

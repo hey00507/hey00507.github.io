@@ -31,6 +31,7 @@ for (const [, sp] of seriesMap) {
 ---
 
 <BaseLayout title="코딩 - Ethan's Blog" description="기술 학습, 개발 경험, 트러블슈팅">
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '코딩', description: '기술 학습, 개발 경험, 트러블슈팅', url: `${Astro.site}dev/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
   <h1 class="text-3xl font-bold mb-2">💻 코딩</h1>
   <p class="text-(--color-text-secondary) mb-4">기술 학습, 개발 경험, 트러블슈팅</p>
   <SubcategoryNav category="dev" />

@@ -62,9 +62,9 @@ astro.config.mjs
 
 | # | 작업 | 수정 파일 | 상세 |
 |---|------|-----------|------|
-| 2-1 | WebSite schema | `BaseLayout.astro` | 사이트 전체에 WebSite + SearchAction (Pagefind 연동) |
-| 2-2 | CollectionPage schema | 카테고리/태그 페이지 (6개) | 카테고리·태그 목록 페이지에 CollectionPage 타입 |
-| 2-3 | BreadcrumbList schema | `BaseLayout.astro` 또는 별도 컴포넌트 | 홈 > 카테고리 > 서브카테고리 > 포스트 경로 |
+| 2-1 | ~~WebSite schema~~ | `BaseLayout.astro` | ✅ 완료 — 사이트 전체에 WebSite schema 적용 |
+| 2-2 | ~~CollectionPage schema~~ | 카테고리/태그/아카이브 (7개) | ✅ 완료 — CollectionPage + ItemList numberOfItems |
+| 2-3 | ~~BreadcrumbList schema~~ | `posts/[...slug].astro` | ✅ 완료 — 홈 > 카테고리 > 포스트 경로 |
 
 ### 수정 대상 파일
 
@@ -89,10 +89,10 @@ astro.config.mjs
 
 | # | 작업 | 수정 파일 | 상세 |
 |---|------|-----------|------|
-| 3-1 | 태그 페이지 description | `tags/index.astro`, `tags/[tag].astro` | 태그별 글 수 포함한 동적 description |
-| 3-2 | 아카이브 description | `archive.astro` | "전체 N개 글 아카이브" |
-| 3-3 | 페이지네이션 description | `[...page].astro` | "N페이지 - 최신 글 목록" |
-| 3-4 | rel prev/next | `[...page].astro` | 페이지네이션 링크 관계 명시 |
+| 3-1 | ~~태그 페이지 description~~ | `tags/index.astro`, `tags/[tag].astro` | ✅ 완료 — 태그별 글 수 포함한 동적 description |
+| 3-2 | ~~아카이브 description~~ | `archive.astro` | ✅ 완료 — "전체 N개 글 아카이브" |
+| 3-3 | ~~페이지네이션 description~~ | `[...page].astro` | ✅ 완료 — "N페이지 - 최신 글 목록" |
+| 3-4 | ~~rel prev/next~~ | `[...page].astro` | ✅ 완료 — 페이지네이션 링크 관계 명시 |
 
 ### 현재 문제
 
@@ -115,8 +115,8 @@ astro.config.mjs
 
 | # | 작업 | 수정 파일 | 상세 |
 |---|------|-----------|------|
-| 4-1 | Cache-Control 개선 | `BaseLayout.astro` | `no-cache` → GitHub Pages 기본 캐시 활용 (meta 태그 제거) |
-| 4-2 | 이미지 alt 텍스트 | 개별 포스트 + 컴포넌트 | PostCard 등 빈 alt 보완 |
+| 4-1 | ~~Cache-Control 개선~~ | `BaseLayout.astro` | ✅ 완료 — no-cache 메타 태그 3줄 제거 |
+| 4-2 | 이미지 alt 텍스트 | 개별 포스트 + 컴포넌트 | 추후 — PostCard 등 빈 alt 보완 |
 
 ### Cache-Control 상세
 

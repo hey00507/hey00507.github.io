@@ -14,6 +14,7 @@ const posts = allPosts
 ---
 
 <BaseLayout title="독서 - Ethan's Blog" description="책 리뷰, 독후감, 인상 깊은 구절">
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '독서', description: '책 리뷰, 독후감, 인상 깊은 구절', url: `${Astro.site}reading/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
   <div class="flex items-center justify-between mb-2">
     <h1 class="text-3xl font-bold">📖 독서</h1>
     <a href="/reading/dashboard/" class="text-sm px-3 py-1.5 rounded-lg bg-(--color-bg-secondary) border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-accent-reading) hover:border-(--color-accent-reading) transition-colors">

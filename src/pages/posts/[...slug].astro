@@ -42,6 +42,16 @@ const currentSlug = slugMap.get(post.id)!;
 const bodyImage = extractFirstImage(post.body);
 const ogImage = bodyImage || `/og/${currentSlug}.png`;
 
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: Astro.site?.href },
+    { '@type': 'ListItem', position: 2, name: cat.label, item: `${Astro.site}${category}/` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${Astro.site}posts/${currentSlug}/` },
+  ],
+};
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -75,6 +85,7 @@ const jsonLd = {
 
 <BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={ogImage}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} slot="head" />
   <article>
     {/* 메타 정보 */}
     <header class="mb-8">

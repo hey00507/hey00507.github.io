@@ -20,7 +20,8 @@ for (const post of posts) {
 }
 ---
 
-<BaseLayout title="아카이브 - Ethan's Blog">
+<BaseLayout title="아카이브 - Ethan's Blog" description={`전체 ${posts.length}개 글 아카이브`}>
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '아카이브', description: `전체 ${posts.length}개 글 아카이브`, url: `${Astro.site}archive/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
   <h1 class="text-3xl font-bold mb-8">📚 아카이브</h1>
   {[...grouped.entries()].map(([year, yearPosts]) => (
     <section class="mb-10">
