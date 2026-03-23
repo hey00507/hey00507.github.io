@@ -20,6 +20,8 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#3b82f6" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
@@ -50,11 +52,13 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     })} />
     <slot name="head" />
     <script is:inline>
-      // Prevent flash of wrong theme
+      // Prevent flash of wrong theme + sync theme-color
       (function() {
         const theme = localStorage.getItem('theme') ||
           (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         if (theme === 'dark') document.documentElement.classList.add('dark');
+        var tc = document.querySelector('meta[name="theme-color"]');
+        if (tc) tc.content = theme === 'dark' ? '#0f172a' : '#3b82f6';
       })();
     </script>
   </head>
@@ -114,5 +118,10 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       })();
     </script>
     <script data-goatcounter="https://ethan-blog.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
   </body>
 </html>

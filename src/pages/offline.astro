@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="오프라인 - Ethan's Blog" description="인터넷 연결이 필요합니다">
+  <div class="flex flex-col items-center justify-center py-20 text-center">
+    <p class="text-5xl mb-4">📡</p>
+    <p class="text-lg font-semibold mb-2">오프라인 상태입니다</p>
+    <p class="text-sm text-(--color-text-secondary) mb-8">이전에 방문한 페이지는 오프라인에서도 볼 수 있어요.</p>
+    <a href="/" class="px-4 py-2 rounded-lg bg-(--color-accent-dev) text-white text-sm hover:opacity-90 transition-opacity">
+      홈으로 (캐시된 버전)
+    </a>
+  </div>
+</BaseLayout>
