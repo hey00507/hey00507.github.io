@@ -27,7 +27,7 @@ const { tag } = Astro.params;
 const { posts, slugMap } = Astro.props;
 ---
 
-<BaseLayout title={`#${tag} - Ethan's Blog`} description={`#${tag} 태그가 포함된 ${posts.length}개의 글`}>
+<BaseLayout title={`#${tag} - Ethan's Blog`} description={`#${tag} 태그가 포함된 ${posts.length}개의 글`} noindex>
   <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: `#${tag}`, description: `#${tag} 태그가 포함된 ${posts.length}개의 글`, url: `${Astro.site}tags/${tag}/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
   <div class="mb-8">
     <a href="/tags/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 전체 태그</a>

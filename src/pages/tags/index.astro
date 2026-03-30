@@ -13,7 +13,7 @@ for (const post of posts) {
 const tags = [...tagMap.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
-<BaseLayout title="태그 - Ethan's Blog" description={`${tags.length}개 태그로 분류된 블로그 글 모음`}>
+<BaseLayout title="태그 - Ethan's Blog" description={`${tags.length}개 태그로 분류된 블로그 글 모음`} noindex>
   <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '태그', description: `${tags.length}개 태그로 분류된 블로그 글 모음`, url: `${Astro.site}tags/` })} slot="head" />
   <h1 class="text-3xl font-bold mb-8">🏷️ 태그</h1>
   <div class="flex flex-wrap gap-2">

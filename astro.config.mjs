@@ -73,6 +73,10 @@ const lastmodMap = buildLastmodMap();
 export default defineConfig({
   site: 'https://hey00507.github.io',
   integrations: [sitemap({
+    filter(page) {
+      // 태그 페이지는 noindex이므로 sitemap에서도 제외
+      return !page.includes('/tags/');
+    },
     serialize(item) {
       const url = item.url;
 
@@ -92,11 +96,6 @@ export default defineConfig({
       // 카테고리 페이지: /dev/, /reading/, /essay/
       if (/\/(dev|reading|essay)\/$/.test(url)) {
         return { ...item, changefreq: 'weekly', priority: 0.6 };
-      }
-
-      // 태그 페이지
-      if (/\/tags\//.test(url)) {
-        return { ...item, changefreq: 'weekly', priority: 0.4 };
       }
 
       // 페이지네이션
