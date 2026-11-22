@@ -5,19 +5,12 @@ export interface Subcategory {
   label: string;
 }
 
+/** 블로그의 세 갈래. 상단 메뉴와 /dev/{slug}/ 페이지가 이 목록으로 만들어진다. */
 export const subcategories: Record<Category, Subcategory[]> = {
-  reading: [
-    { slug: 'review', label: '서평' },
-    { slug: 'note', label: '독서노트' },
-  ],
-  essay: [
-    { slug: 'workout', label: '운동' },
-    { slug: 'retrospective', label: '회고' },
-    { slug: 'diary', label: '일기' },
-  ],
   dev: [
-    { slug: 'work', label: '업무' },
-    { slug: 'til', label: 'TIL' },
+    { slug: 'work', label: '업무·문제 해결' },
+    { slug: 'project', label: '개인 프로젝트' },
+    { slug: 'til', label: '공부' },
   ],
 };
 

@@ -11,7 +11,7 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description = "Ethan's personal blog", ogImage, showProgress = false, noindex = false } = Astro.props;
+const { title, description = "업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그", ogImage, showProgress = false, noindex = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 ---
@@ -28,7 +28,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" type="application/rss+xml" title="Ethan's Blog" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Ethan's 개발log" href="/rss.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
@@ -46,9 +46,9 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: "Ethan's Blog",
+      name: "Ethan's 개발log",
       url: Astro.site?.href,
-      description: '독서, 일상, 코딩에 대한 기록',
+      description: '업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그',
       author: { '@type': 'Person', name: 'Ethan Kim' },
       inLanguage: 'ko',
     })} />

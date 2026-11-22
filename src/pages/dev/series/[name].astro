@@ -30,7 +30,7 @@ export async function getStaticPaths() {
 const { name, posts, slugMap } = Astro.props;
 ---
 
-<BaseLayout title={`${name} - Ethan's Blog`} description={`시리즈: ${name}`}>
+<BaseLayout title={`${name} - Ethan's 개발log`} description={`시리즈: ${name}`}>
   <div class="mb-8">
     <a href="/dev/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 코딩</a>
     <h1 class="text-3xl font-bold mt-2">📂 {name}</h1>

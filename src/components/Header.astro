@@ -11,9 +11,8 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: '독서', href: '/reading', category: 'reading' },
-  { label: '일상', href: '/essay', category: 'essay' },
-  { label: '코딩', href: '/dev', category: 'dev' },
+  // 블로그의 세 갈래: 업무·문제 해결 / 개인 프로젝트 / 공부
+  ...subcategories.dev.map((sub) => ({ label: sub.label, href: `/dev/${sub.slug}` })),
   { label: 'About', href: '/about' },
 ];
 
@@ -23,7 +22,7 @@ const currentPath = Astro.url.pathname;
 <header class="border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-sm sticky top-0 z-50">
   <nav class="max-w-3xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
     <a href="/" class="text-lg sm:text-xl font-bold hover:text-(--color-accent-dev) transition-colors shrink-0">
-      Ethan's Blog
+      Ethan's 개발log
     </a>
 
     {/* 데스크톱 네비게이션 */}

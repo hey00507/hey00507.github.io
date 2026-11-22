@@ -9,21 +9,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const CATEGORY_GRADIENTS: Record<string, [string, string]> = {
-  reading: ['#7c3aed', '#a855f7'], // 보라
-  essay: ['#d97706', '#f59e0b'],   // 노랑/앰버
   dev: ['#2563eb', '#3b82f6'],     // 파랑
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
-  reading: '독서',
-  essay: '일상',
-  dev: '코딩',
+  dev: '개발',
 };
 
 const SUBCATEGORY_LABELS: Record<string, Record<string, string>> = {
-  reading: { review: '서평', note: '독서노트' },
-  essay: { workout: '운동', retrospective: '회고', diary: '일기' },
-  dev: { work: '업무', til: 'TIL' },
+  dev: { work: '업무·문제 해결', project: '개인 프로젝트', til: '공부' },
 };
 
 // Noto Sans KR Bold 폰트 (프로젝트 내 번들)
@@ -165,7 +159,7 @@ export async function GET({ props }: APIContext) {
                   type: 'span',
                   props: {
                     style: { fontSize: '22px', color: 'rgba(255,255,255,0.8)' },
-                    children: "Ethan's Blog",
+                    children: "Ethan's 개발log",
                   },
                 },
                 {
