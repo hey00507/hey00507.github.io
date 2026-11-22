@@ -28,10 +28,12 @@ for (const post of posts) {
 for (const [, sp] of seriesMap) {
   sp.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
 }
+// slot 안에서는 Astro 전역을 쓸 수 없어서(Astro 7) 미리 꺼내 둔다
+const siteUrl = Astro.site;
 ---
 
 <BaseLayout title="전체 글 - Ethan's 개발log" description="업무에서 푼 문제, 개인 프로젝트, 공부 기록">
-  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '전체 글', description: '업무에서 푼 문제, 개인 프로젝트, 공부 기록', url: `${Astro.site}dev/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '전체 글', description: '업무에서 푼 문제, 개인 프로젝트, 공부 기록', url: `${siteUrl}dev/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
   <h1 class="text-3xl font-bold mb-2">전체 글</h1>
   <p class="text-(--color-text-secondary) mb-4">업무에서 푼 문제, 개인 프로젝트, 공부 기록</p>
   <SubcategoryNav category="dev" />

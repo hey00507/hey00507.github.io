@@ -18,11 +18,13 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 const slugMap = Astro.props.slugMap as Record<string, string>;
+// slot 안에서는 Astro 전역을 쓸 수 없어서(Astro 7) 미리 꺼내 둔다
+const siteUrl = Astro.site;
 ---
 
 <BaseLayout title={page.currentPage === 1 ? "Ethan's 개발log" : `Ethan's 개발log - ${page.currentPage}페이지`} description={page.currentPage === 1 ? '업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그' : `${page.currentPage}페이지 - 최신 글 목록`}>
-  {page.url.prev && <link rel="prev" href={new URL(page.url.prev, Astro.site).href} slot="head" />}
-  {page.url.next && <link rel="next" href={new URL(page.url.next, Astro.site).href} slot="head" />}
+  {page.url.prev && <link rel="prev" href={new URL(page.url.prev, siteUrl).href} slot="head" />}
+  {page.url.next && <link rel="next" href={new URL(page.url.next, siteUrl).href} slot="head" />}
   <h1 class="text-3xl font-bold mb-2">Blog</h1>
   <p class="text-(--color-text-secondary) mb-8">업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그</p>
   <div class="space-y-4">

@@ -83,6 +83,8 @@ export default defineConfig({
     },
   })],
   markdown: {
+    // 한글 조사 앞뒤에서 따옴표 방향을 잘못 바꾸는 일이 있어 자동 변환을 끈다
+    smartypants: false,
     shikiConfig: {
       themes: {
         light: 'github-light',
