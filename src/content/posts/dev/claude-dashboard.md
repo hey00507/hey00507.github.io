@@ -5,11 +5,12 @@ category: dev
 subcategory: "project"
 tags: ["claude-code", "typescript", "fastify", "sse", "vanilla-js", "dashboard"]
 pubDate: 2026-03-17T10:51:00
+updatedDate: 2026-11-22T19:44:30
 urlSlug: "20260317-2"
 series: "Claude Productivity"
 ---
 
-Claude Code로 작업할 때, 나는 보통 3~5개 세션을 동시에 띄운다. 프로젝트마다 하나씩, 병렬로 돌리면 생산성이 확 올라간다.
+Claude Code로 작업할 때, 나는 보통 3~5개 세션을 동시에 띄운다. 프로젝트마다 하나씩 병렬로 돌리는 식이다.
 
 문제는 **어떤 세션이 입력을 기다리고 있는지 파악하기 어렵다**는 것이다. 터미널 탭을 하나씩 클릭해서 확인하다 보면, 10분 넘게 방치된 세션이 발견되기도 한다. 그래서 만들었다.
 
@@ -30,7 +31,7 @@ Claude Code 세션 → hook event (JSON)
     → 브라우저 실시간 갱신
 ```
 
-핵심 설계 원칙은 **비간섭**이다. hook 스크립트가 서버에 POST를 보내되, 서버가 꺼져 있으면 그냥 무시한다. Claude Code 성능에 영향 0.
+핵심 설계 원칙은 **비간섭**이다. hook 스크립트가 서버에 POST를 보내되, 서버가 꺼져 있으면 그냥 무시한다. curl에도 1초 timeout을 걸어서, 대시보드 때문에 Claude Code 작업이 멈추지 않게 했다.
 
 6개 hook 이벤트를 수신한다:
 
@@ -85,11 +86,11 @@ claude-dash open    # 서버 시작 + 브라우저 열기
 | Storage | 로컬 파일시스템 (JSON + JSONL) | DB 없이 즉시 사용 가능 |
 | Test | Vitest (41개) | TypeScript 네이티브 지원 |
 
-프론트엔드를 React나 Vue 대신 Vanilla JS로 만든 이유는 **번들 사이즈 0**을 유지하고 싶었기 때문이다. `public/` 폴더의 파일을 그대로 서빙하면 끝이다. 7개 ES Module로 분리해서 유지보수성도 확보했다.
+프론트엔드를 React나 Vue 대신 Vanilla JS로 만든 이유는 **번들 사이즈 0**을 유지하고 싶었기 때문이다. `public/` 폴더의 파일을 그대로 서빙하면 끝이다. 코드는 7개 ES Module로 나눠서 관리한다.
 
 ## GitHub
 
 - Repository: [hey00507/claude-multiple-dashboard](https://github.com/hey00507/claude-multiple-dashboard)
 - npm: `claude-multiple-dashboard@0.3.1`
 
-Claude Code를 멀티 세션으로 쓰는 사람이라면 한번 써보길 추천한다. 설치 3줄이면 끝이고, 한번 세팅하면 알아서 돌아간다.
+Claude Code를 멀티 세션으로 쓰는 사람이라면 설치 3줄로 바로 써볼 수 있다.

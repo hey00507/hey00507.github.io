@@ -6,6 +6,7 @@ subcategory: "project"
 tags: ["node-pty", "xterm", "kitty-protocol", "unix-process", "macos", "css"]
 series: "Claude Dashboard 개발기"
 pubDate: 2026-03-17T18:06:00
+updatedDate: 2026-11-22T19:44:30
 urlSlug: "20260317-4"
 draft: false
 ---
@@ -50,7 +51,7 @@ Parent (PID 100) ──fork──▶ Child (PID 200)
 
 ### Self-kill — 서버가 자기 자신을 종료한 사건
 
-오늘의 하이라이트. 세션 종료 기능에서 `ps aux | grep claude`로 대상 프로세스를 찾았는데, `claude-dash`(대시보드 서버 자체)도 `claude` 문자열을 포함하고 있었다. 서버가 자기 자신에게 `SIGTERM`을 보내서 죽어버렸다.
+세션 종료 기능에서 `ps aux | grep claude`로 대상 프로세스를 찾았는데, `claude-dash`(대시보드 서버 자체)도 `claude` 문자열을 포함하고 있었다. 서버가 자기 자신에게 `SIGTERM`을 보내서 죽어버렸다.
 
 ```c
 kill(getpid(), SIGTERM);  // 의도치 않은 자기 종료
@@ -168,4 +169,4 @@ CSS의 `display: flex`가 HTML `hidden` 속성의 `display: none`보다 우선�
 | 대시보드 깨짐 | CSS display:flex가 hidden 무시 | `[hidden]` + `!important` |
 | 세션 상태 오류 | macOS lsof 부정확 | 프로세스 존재 여부만 확인 |
 
-브라우저 터미널이라는 하나의 기능을 넣는데, OS 프로세스 관리부터 터미널 프로토콜, CSS specificity까지 건드리게 될 줄은 몰랐다. 하나를 깊이 파면 결국 전부 연결돼 있다.
+브라우저 터미널이라는 하나의 기능을 넣는데, OS 프로세스 관리부터 터미널 프로토콜, CSS specificity까지 건드리게 될 줄은 몰랐다.

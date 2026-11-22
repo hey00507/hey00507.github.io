@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "til"
 tags: ["spring-boot", "jpa", "jpa-auditing", "findmyvibe", "테스트"]
 pubDate: 2026-03-24T22:31:00
+updatedDate: 2026-11-22T19:44:56
 urlSlug: "20260324-2"
 series: "FindMyVibe"
 ---
@@ -141,7 +142,7 @@ private LocalDateTime createdAt = LocalDateTime.now();  // 이게 핵심
 - **단위 테스트** (`new Entity()`): 초기값 `LocalDateTime.now()`가 쓰인다 → null 아님
 - **JPA persist** (`entityManager.persist()`): `@CreatedDate`가 정확한 시점으로 덮어쓴다
 
-초기값은 "안전망"이고, 실제 운영에서는 JPA가 덮어쓰니까 문제없음!
+초기값은 "안전망"이고, 실제 운영에서는 JPA가 덮어쓰니까 문제가 없다.
 
 ### 함정 2: `@DataJpaTest`에서 Config 클래스가 안 잡힌다
 
@@ -180,7 +181,7 @@ class JpaAuditingIntegrationTest {
 ```
 
 `@SpringBootTest`를 쓰면 전체 컨텍스트가 올라가니까 이런 문제가 없다.</br>
-하지만 슬라이스 테스트의 장점(속도)을 포기하고 싶지 않았기 때문에 `@Import`로 해결!
+하지만 슬라이스 테스트의 장점(속도)을 포기하고 싶지 않았기 때문에 `@Import`로 해결했다.
 
 ### 함정 3: `entityManager.clear()` 빠뜨리기
 
@@ -210,7 +211,7 @@ Session found = entityManager.find(Session.class, session.getId());
 // → DB에서 다시 읽어옴 → Auditing이 실제로 동작했는지 검증 가능
 ```
 
-`clear()` 한 줄 차이로 테스트의 신뢰성이 완전히 달라진다.</br>
+`clear()` 한 줄 차이로 테스트가 실제로 검증하는 대상이 달라진다.</br>
 이걸 모르고 넘어가면 "테스트는 통과하는데 실제로는 Auditing이 안 걸려 있는" 상황이 생길 수 있다.
 
 ## H2와 PostgreSQL 호환 문제
@@ -250,7 +251,7 @@ Hibernate가 DB 방언(Dialect)에 따라 알아서 처리해준다.
 | 보일러플레이트 제거 (4필드 x N테이블) | 암묵적 동작 — 디버깅 시 흐름 추적 한 단계 추가 |
 | 누락 방지 (수동 setter 불필요) | JPA 없는 단위 테스트와의 간극 |
 | AuditorAware 교체로 확장 용이 | 모든 Entity에 *By 컬럼 강제 (불필요할 수도) |
-| Spring 생태계 표준 패턴 | Java 단일 상속 제약 (BaseEntity에 계속 쌓임) |
+| Spring 프로젝트에서 널리 쓰이는 패턴 | Java 단일 상속 제약 (BaseEntity에 계속 쌓임) |
 
 "모든 Entity에 *By 컬럼이 강제된다"는 점은 좀 아쉬운 부분이다.  
 어떤 Entity는 "누가" 만들었는지가 중요하지 않을 수 있는데, BaseEntity를 상속받는 순간 `createdBy`, `modifiedBy` 컬럼이 무조건 생긴다.

@@ -5,13 +5,14 @@ category: dev
 subcategory: "project"
 tags: ["swift", "swiftui", "firebase", "tdd", "ios", "xcodegen"]
 pubDate: 2026-03-17T10:30:00
+updatedDate: 2026-11-22T19:44:56
 urlSlug: "20260317-1"
 series: "HabitFlow 개발기"
 ---
 
 매일의 습관을 기록하고, GitHub 스타일 잔디로 시각화하는 개인용 앱을 만들고 있다. 이름은 **HabitFlow**. [마이루틴](https://myroutine.today)에서 아이디어를 착안했고, SwiftUI + Firebase Firestore 조합으로 개발 중이다.
 
-오늘 Phase 1a(기본 동작)를 하루 만에 전부 구현했다. Swift를 처음 써보는 상태에서 시작했는데, Claude Code와 함께 작업하니 생각보다 빠르게 진행됐다.
+오늘 Phase 1a(기본 동작)를 하루 만에 전부 구현했다. Swift를 처음 써보는 상태에서 시작했고, Claude Code를 보조 도구로 쓰면서 진행했다.
 
 ## 데모 영상
 

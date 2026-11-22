@@ -1,17 +1,16 @@
 ---
-title: "SwiftUI 앱을 macOS로 이식하기 — 코드 2줄의 마법 + WidgetKit + Google 로그인"
+title: "SwiftUI 앱을 macOS로 이식하기 — 빌드까지 소스 변경 2줄, WidgetKit, Google 로그인"
 description: "iOS 전용 SwiftUI 습관 트래커를 macOS 멀티플랫폼으로 확장하고, WidgetKit 위젯과 Google Sign-In 크로스 디바이스 동기화를 추가한 개발기"
 category: "dev"
 subcategory: "project"
 tags: ["swift", "swiftui", "macos", "widgetkit", "firebase", "google-signin", "habitflow", "multiplatform"]
 pubDate: 2026-03-19T11:24:00
+updatedDate: 2026-11-22T19:44:56
 urlSlug: "20260319"
 draft: false
 ---
 
-# SwiftUI 앱을 macOS로 이식하기 — 코드 2줄의 마법
-
-개인 습관 트래커 HabitFlow를 만들면서, 어느 순간 "이거 Mac에서도 쓰고 싶은데?"라는 생각이 들었다. SwiftUI라서 멀티플랫폼이 쉽다고는 들었는데, 실제로 해보니 **소스 코드 변경이 정말 2줄**이면 충분했다.
+개인 습관 트래커 HabitFlow를 만들면서, 어느 순간 "이거 Mac에서도 쓰고 싶은데?"라는 생각이 들었다. SwiftUI라서 멀티플랫폼이 쉽다고는 들었는데, 실제로 해보니 macOS 빌드를 통과시키는 데 필요한 **소스 코드 변경은 2줄**이었다.
 
 ## 1. macOS 타겟 추가 — project.yml 한 블록
 
@@ -23,7 +22,7 @@ HabitFlow-macOS:
   platform: macOS
   deploymentTarget: "14.0"
   sources:
-    - path: HabitFlow/Sources    # iOS와 동일 소스!
+    - path: HabitFlow/Sources    # iOS와 동일 소스
     - path: HabitFlow/Resources
   dependencies:
     - package: firebase-ios-sdk
@@ -34,7 +33,7 @@ HabitFlow-macOS:
 
 iOS 타겟과 **같은 소스 디렉토리**를 공유한다. `xcodegen generate` → Xcode 프로젝트 재생성 → 빌드.
 
-## 2. 코드 변경 — 딱 2줄
+## 2. 코드 변경 — 2줄
 
 빌드해보니 에러가 2개 나왔다:
 
@@ -94,7 +93,7 @@ NavigationSplitView {
     List(selection: $selectedTab) {
         ForEach(MacTab.allCases) { tab in
             Label(tab.rawValue, systemImage: tab.icon)
-                .tag(tab)  // macOS List는 .tag() 필수!
+                .tag(tab)  // macOS List는 .tag() 필수
         }
     }
 } detail: {
@@ -188,10 +187,10 @@ func toggleCheck(_ item: TodayHabitItem) async {
 
 | 항목 | 수치 |
 |------|------|
-| macOS 이식에 필요한 소스 변경 | **2줄** |
+| macOS 빌드 통과에 필요한 소스 변경 | **2줄** |
 | 위젯 | Small (진행률) + Medium (잔디) |
 | 전체 테스트 | **113개 통과** |
 | iOS 빌드 | 성공 |
 | macOS 빌드 | 성공 |
 
-SwiftUI로 앱을 만들면 멀티플랫폼은 생각보다 쉽다. 진짜 시간이 걸리는 건 macOS다운 UX를 만드는 것 — 사이드바, 폼 스타일, 윈도우 크기 제약 같은 디테일이다. 하지만 그것도 `#if os(macOS)` 몇 줄이면 해결된다.
+이번 앱에서는 macOS에서 빌드가 되기까지는 금방이었다. 시간이 더 걸린 건 macOS다운 UX를 만드는 것 — 사이드바, 폼 스타일, 윈도우 크기 제약 같은 디테일이었고, 이 부분은 `#if os(macOS)` 분기로 처리했다.

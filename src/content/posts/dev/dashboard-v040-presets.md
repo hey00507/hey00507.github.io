@@ -4,13 +4,14 @@ description: "여러 세션을 구분하기 위한 이름/색상 시스템, 대�
 category: "dev"
 subcategory: "project"
 pubDate: "2026-03-18T01:20:00.000Z"
+updatedDate: 2026-11-22T19:44:30
 urlSlug: "20260318-3"
 tags: ["claude-code", "typescript", "fastify", "macos", "process-detection", "statusline"]
 series: "Claude Productivity"
 draft: false
 ---
 
-[지난 글](/posts/dev/claude-dashboard)에서 Claude Multiple Dashboard의 v0.3.0까지 만든 이야기를 했다. 오늘은 v0.4.0에서 가장 체감이 컸던 기능 — 세션 이름/색상 시스템과 그 자동화 과정을 정리한다.
+[지난 글](/posts/20260317-2/)에서 Claude Multiple Dashboard의 v0.3.0까지 만든 이야기를 했다. 오늘은 v0.4.0에서 가장 체감이 컸던 기능 — 세션 이름/색상 시스템과 그 자동화 과정을 정리한다.
 
 ## 문제: 멀티세션은 편한데, 구분이 안 된다
 
@@ -49,7 +50,7 @@ Claude Code의 **statusline**을 커스텀할 수 있다는 걸 활용했다. st
 
 ![대시보드 — 이름/색상 적용 후](/images/posts/dashboard-v040/session-colors.png)
 
-## 해결 3단계: 매번 치기 귀찮다 — 프리셋 자동화
+## 매번 치기 귀찮다 — 프리셋 자동화
 
 문제가 하나 남았다. 세션을 열 때마다 `/session-setting`을 쳐야 한다는 것. 같은 프로젝트에서 매번 같은 이름/색상을 쓰는데.
 
@@ -64,8 +65,8 @@ Claude Code의 **statusline**을 커스텀할 수 있다는 걸 활용했다. st
 ```json
 {
   "sessionDefaults": {
-    "/Users/me/dashboard": { "name": "대시보드", "color": "red" },
-    "/Users/me/cloudpocket": { "name": "가계부", "color": "blue" }
+    "/path/to/dashboard": { "name": "대시보드", "color": "red" },
+    "/path/to/cloudpocket": { "name": "가계부", "color": "blue" }
   }
 }
 ```
