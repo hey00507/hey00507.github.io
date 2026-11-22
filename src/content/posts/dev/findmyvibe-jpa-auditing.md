@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "til"
 tags: ["spring-boot", "jpa", "jpa-auditing", "findmyvibe", "테스트"]
 pubDate: 2026-03-24T22:31:00
+urlSlug: "20260324-2"
 series: "FindMyVibe"
 ---
 

@@ -35,10 +35,16 @@ category: "essay"          # essay, dev, reading 중 택 1
 subcategory: "workout"     # 소카테고리 (위 표 참조)
 tags: ["태그1", "태그2"]
 pubDate: 2026-03-21T21:30:00  # 반드시 현재 시각의 시·분·초까지 정확히 맞출 것
+urlSlug: "20260321"        # 글 주소 /posts/{urlSlug}/ — 발행할 때 한 번 정하고 절대 바꾸지 않는다
 updatedDate: 2026-03-23T10:00:00  # 기존 글 수정 시 추가 (선택)
 draft: false
 ---
 ```
+
+- `urlSlug`는 필수. 발행일 `YYYYMMDD`로 정한다. 그날 이미 쓰인 값이 있으면 `-2`, `-3`을 붙인다
+  - 확인: `grep -rh '^urlSlug:' src/content/posts | grep 20260321`
+  - 이미 공개된 글의 `urlSlug`는 바꾸지 않는다. 글을 지워도 다른 글의 값은 그대로 둔다 (주소·조회수·댓글이 이 값에 묶여 있다)
+  - 중복이거나 빠지면 빌드가 실패한다
 
 - `pubDate`는 반드시 **글 작성 시점의 현재 시각**(시·분·초)을 `date` 명령으로 확인하여 설정 (미래 시간이면 글이 안 보임, 임의의 시간 금지)
 - `subcategory`는 반드시 위 표의 slug 값 사용

@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "work"
 tags: ["devops", "github-actions", "n8n", "tomcat", "automation", "zetta"]
 pubDate: 2026-04-14T20:53:01
+urlSlug: "20260414-2"
 draft: false
 series: "Zetta CMS Homepage 배포 파이프라인"
 ---

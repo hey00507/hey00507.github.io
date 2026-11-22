@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "project"
 tags: ["swift", "swiftui", "macos", "widgetkit", "firebase", "google-signin", "habitflow", "multiplatform"]
 pubDate: 2026-03-19T11:24:00
+urlSlug: "20260319"
 draft: false
 ---
 

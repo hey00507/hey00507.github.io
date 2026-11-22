@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "project"
 tags: ["spring-boot", "exception", "architecture", "refactoring", "ddd"]
 pubDate: 2026-04-14T20:53:01
+urlSlug: "20260414-1"
 draft: false
 series: "Custom Exception Hierarchy"
 ---

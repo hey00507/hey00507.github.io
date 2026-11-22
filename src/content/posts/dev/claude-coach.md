@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "project"
 tags: ["claude-code", "obsidian", "health", "러닝", "생산성"]
 pubDate: 2026-03-23T22:30:00
+urlSlug: "20260323-2"
 series: "Claude Productivity"
 ---
 

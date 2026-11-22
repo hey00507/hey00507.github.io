@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "project"
 tags: ["spring-boot", "testcontainers", "postgresql", "integration-test", "devops"]
 pubDate: 2026-04-28T16:49:03
+urlSlug: "20260428"
 draft: false
 ---
 

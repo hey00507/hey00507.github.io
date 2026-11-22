@@ -4,6 +4,7 @@ description: "Astro와 Tailwind를 활용한 개인 블로그 구축 과정"
 category: dev
 tags: ["astro", "tailwind", "블로그", "github-pages"]
 pubDate: 2026-03-13T14:30:00
+urlSlug: "20260313-2"
 series: "블로그 구축기"
 ---
 

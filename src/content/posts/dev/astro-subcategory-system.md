@@ -5,6 +5,7 @@ category: dev
 subcategory: til
 tags: ["astro", "블로그", "라우팅", "content-collections"]
 pubDate: 2026-03-16T19:00:00
+urlSlug: "20260316-1"
 series: "블로그 구축기"
 ---
 

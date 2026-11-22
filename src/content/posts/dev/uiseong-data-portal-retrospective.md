@@ -5,6 +5,7 @@ category: dev
 subcategory: work
 tags: ["spring-boot", "java", "security", "jpa", "retrospective", "cwe"]
 pubDate: 2026-02-01T14:30:00
+urlSlug: "20260201"
 series: "프로젝트 회고"
 ---
 

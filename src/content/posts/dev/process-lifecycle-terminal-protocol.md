@@ -6,6 +6,7 @@ subcategory: "til"
 tags: ["node-pty", "xterm", "kitty-protocol", "unix-process", "macos", "css"]
 series: "Claude Dashboard 개발기"
 pubDate: 2026-03-17T18:06:00
+urlSlug: "20260317-4"
 draft: false
 ---
 

@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "project"
 tags: ["spring-boot", "ddd", "architecture", "convention", "tdd"]
 pubDate: 2026-04-02T16:57:00
+urlSlug: "20260402"
 draft: false
 ---
 

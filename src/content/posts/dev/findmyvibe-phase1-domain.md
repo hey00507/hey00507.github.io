@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "project"
 tags: ["spring-boot", "jpa", "tdd", "findmyvibe", "사이드프로젝트"]
 pubDate: 2026-03-24T22:12:00
+urlSlug: "20260324-1"
 series: "FindMyVibe"
 ---
 

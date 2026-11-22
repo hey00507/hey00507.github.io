@@ -4,6 +4,7 @@ description: "Claude Code를 병렬로 3~5개 띄워 작업할 때, 모든 세�
 category: dev
 tags: ["claude-code", "typescript", "fastify", "sse", "vanilla-js", "dashboard"]
 pubDate: 2026-03-17T10:51:00
+urlSlug: "20260317-2"
 series: "Claude Productivity"
 ---
 

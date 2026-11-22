@@ -5,6 +5,7 @@ category: dev
 subcategory: work
 tags: ["spring-boot", "java", "security", "jpa", "postgresql", "portfolio"]
 pubDate: 2026-03-17T13:22:00
+urlSlug: "20260317-3"
 series: "프로젝트 회고"
 ---
 

@@ -4,6 +4,7 @@ description: "Swift를 처음 써보면서 하루 만에 습관 트래커 MVP를
 category: dev
 tags: ["swift", "swiftui", "firebase", "tdd", "ios", "xcodegen"]
 pubDate: 2026-03-17T10:30:00
+urlSlug: "20260317-1"
 series: "HabitFlow 개발기"
 ---
 

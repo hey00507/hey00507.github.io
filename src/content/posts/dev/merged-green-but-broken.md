@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "til"
 tags: ["QA", "E2E", "프론트엔드", "시각검증", "CI"]
 pubDate: 2026-06-17T19:53:11
+urlSlug: "20260617"
 draft: false
 ---
 

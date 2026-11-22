@@ -6,10 +6,12 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    category: z.enum(['reading', 'essay', 'dev']),
+    category: z.enum(['dev']),
     subcategory: z.string().optional(),
     tags: z.array(z.string()).default([]),
     pubDate: z.coerce.date(),
+    // 글 주소 /posts/{urlSlug}/ — 발행할 때 한 번 정하고 바꾸지 않는다 (예: 20260313, 20260313-2)
+    urlSlug: z.string().regex(/^\d{8}(-\d+)?$/, 'urlSlug는 YYYYMMDD 또는 YYYYMMDD-N 형식'),
     updatedDate: z.coerce.date().optional(),
     draft: z.boolean().default(false),
     // 독서 카테고리 전용

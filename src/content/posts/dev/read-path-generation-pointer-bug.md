@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "til"
 tags: ["ZMeta", "리팩토링", "버그", "타입설계", "Oracle"]
 pubDate: 2026-07-24T16:20:47
+urlSlug: "20260724"
 draft: false
 ---
 

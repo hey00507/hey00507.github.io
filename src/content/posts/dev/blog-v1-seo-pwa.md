@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "til"
 tags: ["astro", "seo", "pwa", "webp", "블로그", "performance"]
 pubDate: 2026-03-23T22:00:00
+urlSlug: "20260323-1"
 series: "블로그 구축기"
 ---
 
