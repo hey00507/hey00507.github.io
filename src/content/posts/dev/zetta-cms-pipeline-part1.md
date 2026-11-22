@@ -1,13 +1,13 @@
 ---
-title: "구글 시트 편집만으로 회사 홈페이지 배포하기 — 파이프라인 설계 (1/2)"
-description: "Google Sheets → Apps Script → GitHub Actions → n8n → Tomcat 서버로 이어지는 무인 배포 파이프라인을 어떻게 구성했는지. 빌드 게이트, 아티팩트 전달, rsync 무중단 배포까지의 설계 판단."
+title: "구글 시트 편집만으로 회사 홈페이지 배포하기 — 파이프라인 설계"
+description: "Google Sheets → Apps Script → GitHub Actions → n8n → Tomcat 서버로 이어지는 배포 파이프라인을 어떻게 구성했는지. 빌드 게이트, 아티팩트 전달, rsync 배포, 그리고 구현하면서 바꾼 것들."
 category: "dev"
 subcategory: "work"
 tags: ["devops", "github-actions", "n8n", "tomcat", "automation", "zetta"]
 pubDate: 2026-04-14T20:53:01
+updatedDate: 2026-11-22T19:45:20
 urlSlug: "20260414-2"
 draft: false
-series: "Zetta CMS Homepage 배포 파이프라인"
 ---
 
 ## 들어가며
@@ -21,9 +21,10 @@ series: "Zetta CMS Homepage 배포 파이프라인"
 
 이 흐름에는 **개발자의 시간이 반드시 들어가는 구간** 이 있다. 작은 수정도 마찬가지다. 오타 하나를 고치려고 개발자 워크플로우를 한 번 거치는 건 모두에게 피곤한 일이다.
 
-제타소프트 홈페이지는 이 흐름을 **"구글 시트를 편집하면 3~5분 후에 운영 반영"** 으로 바꿨다. 기획자가 시트만 만지면 된다. 개발자는 끼지 않는다.
+제타소프트 홈페이지에서 이 흐름을 **"구글 시트를 편집하면 몇 분 뒤 서버에 반영"** 되도록 바꾸는 작업을 맡았다.  
+홈페이지 자체는 다른 팀원들이 만들었고, 나는 시트 편집부터 서버 반영까지의 배포 파이프라인을 구성했다. 기존에는 5분마다 시트를 동기화하는 cron 워크플로가 있었는데, 이를 편집 이벤트 기반으로 바꾸고 빌드 검증과 서버 배포를 붙였다.
 
-이 글은 그 파이프라인을 어떻게 구성했는지, 왜 이렇게 설계했는지에 대한 기록이다. **1부에서는 전체 구조와 각 구성 요소의 역할** 을 다룬다. 2부에서는 구현하면서 실제로 부딪힌 함정들 — Tomcat `allowLinking=false` 충돌, rsync 전환, PAT 권한 분리, n8n active version 동기화 — 을 정리할 예정이다.
+이 글은 그 파이프라인을 어떻게 구성했는지, 왜 이렇게 설계했는지에 대한 기록이다.
 
 ## 전체 구조 한 눈에
 
@@ -46,10 +47,10 @@ series: "Zetta CMS Homepage 배포 파이프라인"
 [6] n8n Webhook (publish push 수신)
       │
       ▼
-[7] 50번 서버 rsync 배포 (Tomcat 무중단)
+[7] 사내 WAS 서버 rsync 배포 (Tomcat 재시작 없음)
 ```
 
-시트 편집부터 운영 반영까지 **약 3~5분**. 사람은 시트에만 개입한다.
+디바운스 1분과 빌드, 배포 시간을 합쳐 시트 편집부터 서버 반영까지 몇 분이 걸린다. 사람이 손대는 곳은 시트뿐이다.
 
 ## 각 구성 요소의 역할
 
@@ -119,19 +120,19 @@ Apps Script `onEdit` 트리거 자체에 debounce 가 내장되어 있지 않아
 | 7 | Upload dist artifact | `cms-dist-{sha}` 이름으로 업로드 |
 | 8 | Fast-forward publish | 검증 통과분만 `publish` 브랜치로 |
 
-**게이트의 핵심 원칙**: 빌드가 실패하면 `publish` 브랜치는 **절대 갱신되지 않는다**. 운영 서버는 `publish` 브랜치만 바라보므로, 시트가 깨져도 운영은 이전 버전을 계속 서빙한다. **사고가 전파되지 않는다** 는 게 이 구조의 핵심이다.
+**게이트의 원칙**: 빌드가 실패하면 워크플로가 거기서 멈추고 `publish` 브랜치는 갱신되지 않는다. 서버 배포는 `publish` push 에만 반응하므로, 시트 내용 때문에 빌드가 깨져도 서버는 이전 버전을 계속 서빙한다.
 
-`publish` 브랜치에 fast-forward 만 허용하는 것도 같은 이유다. 누군가가 `publish` 에 직접 commit 하면 빌드 게이트를 우회할 수 있다. fast-forward 제약이 그걸 막는다.
+워크플로는 `publish` 를 fast-forward 로만 옮긴다. 다만 사람이 `publish` 에 직접 push 하면 게이트를 우회하게 되므로, 그것까지 막으려면 브랜치 보호 설정이 따로 필요하다.
 
 ### 4. 아티팩트 전달 — "한 번 빌드, 어디든 배포"
 
-50번 서버에 Node.js 를 깔아서 거기서 빌드할 수도 있었다. 하지만 그렇게 하면:
+서버에 Node.js 를 깔아서 거기서 빌드할 수도 있었다. 하지만 그렇게 하면:
 
-- 50번 서버에 Node.js 버전 관리가 필요
+- 서버에 Node.js 버전 관리가 필요
 - 빌드 환경이 서버마다 달라질 위험
 - 서버 리소스 (메모리, CPU) 가 빌드에 쓰임
 
-대신 **"GitHub Actions 에서 한 번 빌드 → 산출물을 artifact 로 업로드 → 50번 서버는 다운로드만"** 패턴을 택했다. Node.js 는 50번 서버에 깔지 않는다. Tomcat 만 있으면 된다.
+대신 **"GitHub Actions 에서 한 번 빌드 → 산출물을 artifact 로 업로드 → 서버는 다운로드만"** 패턴을 택했다. Node.js 는 서버에 깔지 않는다. Tomcat 만 있으면 된다.
 
 ```yaml
 - name: Upload dist artifact
@@ -144,7 +145,7 @@ Apps Script `onEdit` 트리거 자체에 debounce 가 내장되어 있지 않아
 ```
 
 - **이름에 SHA 포함** — n8n 이 webhook 에서 받은 커밋 SHA 로 정확한 아티팩트를 특정
-- **`if-no-files-found: error`** — 빈 산출물 업로드 방지 (사고 차단)
+- **`if-no-files-found: error`** — 빈 산출물 업로드 방지
 - **`retention-days: 30`** — 한 달 간 롤백 가능
 
 ### 5. n8n — 배포 실행기
@@ -153,7 +154,7 @@ Apps Script `onEdit` 트리거 자체에 debounce 가 내장되어 있지 않아
 
 *7 노드 구성: Webhook → Parse → Find Artifact → Get Signed URL → Extract → SSH Deploy → Smoke Test.*
 
-n8n 은 **"push 이벤트를 받아서 50번 서버에서 배포 스크립트를 실행" 시키는 자동화 허브** 역할만 한다. 로직이 복잡하지 않으니 굳이 별도 코드 서비스를 만들지 않았다.
+n8n 은 **"push 이벤트를 받아서 서버에서 배포 스크립트를 실행"** 시키는 역할만 한다. 로직이 복잡하지 않으니 굳이 별도 코드 서비스를 만들지 않았다.
 
 | 노드 | 역할 |
 |---|---|
@@ -162,10 +163,10 @@ n8n 은 **"push 이벤트를 받아서 50번 서버에서 배포 스크립트를
 | Find Artifact | GitHub API 로 `cms-dist-{sha}` 조회 |
 | Get Signed URL | 302 redirect 로 pre-signed 다운로드 URL 획득 |
 | Extract Signed URL | 응답 헤더에서 URL 파싱 |
-| Deploy via SSH | 50번 서버에서 다운로드 + unzip + rsync |
-| Smoke Test | 배포 직후 `http://192.168.0.50:8080/` 200 확인 |
+| Deploy via SSH | 서버에서 다운로드 + unzip + rsync |
+| Smoke Test | 배포 직후 홈페이지 주소로 요청해 200 확인 |
 
-**재미있는 구간은 "Get Signed URL"**. GitHub artifacts API 는 인증된 요청에 대해 302 redirect 로 Azure Blob Storage 의 pre-signed URL 을 내려준다. 이 URL 은 1분간 유효하다. `follow_redirects: false` 로 설정해서 리다이렉트를 타지 않고 Location 헤더를 직접 캡처한 뒤, 다음 노드에서 그 URL 로 다운로드한다.
+**신경 쓴 구간은 "Get Signed URL"** 이다. GitHub artifacts API 는 인증된 요청에 대해 302 redirect 로 Azure Blob Storage 의 pre-signed URL 을 내려준다. 이 URL 은 1분간 유효하다. `follow_redirects: false` 로 설정해서 리다이렉트를 타지 않고 Location 헤더를 직접 캡처한 뒤, 다음 노드에서 그 URL 로 다운로드한다.
 
 이렇게 분리한 이유는 **SSH 노드에서는 PAT 을 굳이 서버에 전달하지 않기 위해서** 다. n8n 이 signed URL 만 SSH 로 넘기면, 서버 입장에서는 "짧은 시간 유효한 URL 로 zip 을 다운로드" 하는 것이고 GitHub 인증 정보는 n8n 안에만 머문다.
 
@@ -178,15 +179,14 @@ n8n 은 **"push 이벤트를 받아서 50번 서버에서 배포 스크립트를
 롤백은 **자동화하지 않는다**. "이전 버전으로 되돌리겠다" 는 결정 자체가 사람의 판단이 필요하기 때문이다. 대신 실행 자체는 원클릭으로 가능하게 해뒀다.
 
 - `targetRelease` 비움 → `.current` 마커에 기록된 것을 제외하고 가장 최근 release 자동 선택
-- `targetRelease` 지정 → 특정 release 이름(예: `20260414_100507_4db0da0`) 으로 롤백
+- `targetRelease` 지정 → 특정 release 이름(`{날짜}_{시각}_{커밋}` 형식)으로 롤백
 
-### 6. 50번 서버 — Tomcat 무중단 배포
+### 6. 사내 WAS 서버 — Tomcat 재시작 없는 배포
 
-- **서버**: 192.168.0.50
-- **WAS**: Apache Tomcat 9.0.55
-- **서빙 경로**: `/var/lib/apache-tomcat-9.0.55/webapps/zs-homepage/`
+- **WAS**: Apache Tomcat 9
+- **서빙 경로**: `{TOMCAT_HOME}/webapps/zs-homepage/`
 
-배포 방식은 **rsync 무중단** 이다. Tomcat 을 내리지 않고 파일만 교체한다. 가능한 이유는 Vite 가 생성하는 **해시 파일명** 때문이다.
+배포는 **rsync 로 파일만 교체** 한다. Tomcat 을 내리지 않는다. 이렇게 할 수 있는 이유는 Vite 가 생성하는 **해시 파일명** 때문이다.
 
 ```
 assets/
@@ -195,12 +195,12 @@ assets/
 └── logo-9aK2Np4b.png
 ```
 
-파일 교체 중간에 구버전 HTML 이 신버전 JS 를 참조하거나 그 반대가 되어도, 해시가 다르므로 **물리적으로 다른 파일** 이다. 충돌하지 않는다. 이 특성 덕분에 rsync 의 부분 원자성(파일 단위 atomic rename)으로 충분하다.
+버전이 바뀌면 JS, CSS 파일 이름이 달라지므로 새 파일이 옛 파일을 덮어쓰지 않는다. 그래서 파일 단위로 교체하는 rsync 로도 정적 홈페이지에는 충분하다고 판단했다.
 
 #### 디렉토리 구조
 
 ```
-/var/lib/apache-tomcat-9.0.55/
+{TOMCAT_HOME}/
 ├── webapps/
 │   └── zs-homepage/     ← 현재 서빙 대상 (rsync 로 갱신)
 └── releases/
@@ -214,17 +214,17 @@ assets/
 - **최근 5개만 보존** — 6번째 배포부터 가장 오래된 것 자동 삭제
 - **`.current` 마커** — 롤백 워크플로우가 "현재 제외하고 직전" 을 찾는 기준
 
-## 설계에서 의식적으로 피한 것들
+## 쓰지 않기로 한 것들
 
-### 🚫 Kubernetes / 컨테이너
+### Kubernetes / 컨테이너
 
 회사 홈페이지 하나 띄우는데 k8s 를 끌어오지 않는다. Tomcat + rsync 로 충분하고, 장애 포인트가 훨씬 적다.
 
-### 🚫 blue/green 로드밸런서 전환
+### blue/green 로드밸런서 전환
 
-blue/green 을 쓰려면 로드밸런서 레이어가 필요하고, 그것도 관리 대상이 된다. **파일 교체만으로 무중단이 가능한 상황** 이라면 더 단순한 게 맞다.
+blue/green 을 쓰려면 로드밸런서 레이어가 필요하고, 그것도 관리 대상이 된다. 파일 교체만으로 되는 정적 사이트라면 더 단순한 쪽이 맞다고 봤다.
 
-### 🚫 별도 CMS 시스템
+### 별도 CMS 시스템
 
 Strapi, Contentful, Sanity 같은 CMS 를 깔 수도 있었다. 하지만 그러면:
 
@@ -234,23 +234,27 @@ Strapi, Contentful, Sanity 같은 CMS 를 깔 수도 있었다. 하지만 그러
 
 구글 시트 하나로 해결되는데 굳이 레이어를 늘리지 않는다.
 
-### 🚫 Webhook 직접 호출
+### Apps Script 에서 서버 직접 호출
 
-Apps Script 에서 50번 서버를 직접 호출하는 건 이론적으로 가능하지만 안 했다. **빌드 검증 단계가 사라지기 때문**. GitHub Actions 를 중간에 끼우면 "코드가 깨진 채로 배포되는 것" 을 구조적으로 막을 수 있다.
+Apps Script 에서 서버를 직접 호출하는 것도 가능하지만 하지 않았다. **빌드 검증 단계가 사라지기 때문** 이다. GitHub Actions 를 중간에 두면 빌드가 깨진 상태로 배포되는 것을 막을 수 있다.
 
-## 1부 요약
+## 구현하면서 바꾼 것
 
-- 구글 시트 편집 → 3~5분 후 운영 반영되는 파이프라인을 7단계로 구성
-- **빌드 게이트** 가 핵심 안전장치: 실패 시 `publish` 브랜치는 갱신되지 않아 운영에 전파되지 않음
-- GitHub Actions artifact 를 매개로 **"한 번 빌드, 어디든 배포"** 원칙을 지킴. 50번 서버에 Node 불필요
-- n8n 은 webhook 수신과 SSH 실행기 역할만. 로직이 단순해서 별도 코드 서비스 불필요
-- 배포는 **rsync 무중단**. Vite 해시 파일명 덕분에 파일 교체 중에도 충돌 없음
-- 롤백은 자동화하지 않고 **원클릭 수동** 으로 유지. 판단은 사람의 몫
+**symlink 전환을 포기하고 rsync 로 갔다.**  
+처음에는 release 디렉토리를 만들고 symlink 만 바꿔 끼우는 방식을 생각했다. 그런데 Tomcat 은 기본 설정(`allowLinking=false`)에서 symlink 를 따라가지 않는다. 이 설정을 풀기보다 배포 방식을 rsync 로 바꾸는 쪽을 택했다.
 
-2부에서 다룰 것:
+**`releases/` 를 `webapps/` 밖으로 뺐다.**  
+위 디렉토리 구조에 적은 대로, Tomcat 이 `webapps/` 아래 디렉토리를 전부 웹앱 후보로 보기 때문이다.
 
-- Tomcat `allowLinking=false` 와 symlink 전략의 충돌, 그리고 rsync 로의 전환
-- PAT 권한 분리 (Apps Script 용 Contents:Write vs n8n 용 Actions:Read)
-- n8n active version 미동기화 이슈와 deactivate/activate 강제 토글
-- `webapps/` 밖으로 `releases/` 를 이동하게 된 이유
-- 인계 문서(SETUP.md, 운영 가이드) 작성과 장애 시나리오 정리
+**토큰을 용도별로 나눴다.**  
+Apps Script 가 쓰는 토큰은 저장소 dispatch 용(Contents: Write), n8n 이 쓰는 토큰은 아티팩트 조회용(Actions: Read)으로 따로 발급했다. 한쪽이 노출돼도 다른 쪽 권한까지 넘어가지 않는다.
+
+## 정리
+
+- 구글 시트 편집 → 몇 분 뒤 서버 반영까지를 7단계로 구성했다
+- **빌드 게이트**: 빌드가 실패하면 `publish` 브랜치가 갱신되지 않아 서버에 반영되지 않는다
+- GitHub Actions 에서 한 번 빌드하고 아티팩트로 전달한다. 서버에는 Node 가 필요 없다
+- n8n 은 webhook 수신과 SSH 실행만 맡는다
+- 배포는 rsync 로 파일만 교체하고, 롤백은 사람이 판단해서 수동으로 실행한다
+
+2026년 4월 14일에 시트 편집부터 서버 반영, 롤백까지 테스트를 통과했다. 이 글은 그 시점의 구성을 적은 것이다.
