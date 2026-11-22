@@ -13,6 +13,8 @@
 | dev | project | `/dev/project/` | 개인 프로젝트 | 사이드 프로젝트 개발기 |
 | dev | til | `/dev/til/` | 공부 | 개념 정리, 학습 기록 |
 
+`til`(공부)은 아직 글이 없어 메뉴에서 숨겨 두었다. 첫 글을 올릴 때 `src/utils/subcategories.ts`의 주석을 풀어 다시 켠다.
+
 ## 브랜치·커밋·배포
 
 `main`에 push하면 GitHub Actions가 바로 배포한다. 그래서 `main`에는 직접 커밋하지 않는다.

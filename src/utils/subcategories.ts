@@ -5,12 +5,13 @@ export interface Subcategory {
   label: string;
 }
 
-/** 블로그의 세 갈래. 상단 메뉴와 /dev/{slug}/ 페이지가 이 목록으로 만들어진다. */
+/** 블로그의 갈래. 상단 메뉴와 /dev/{slug}/ 페이지가 이 목록으로 만들어진다. */
 export const subcategories: Record<Category, Subcategory[]> = {
   dev: [
     { slug: 'work', label: '업무·문제 해결' },
     { slug: 'project', label: '개인 프로젝트' },
-    { slug: 'til', label: '공부' },
+    // 공부 갈래는 글이 생기면 다시 켠다. 아래 줄의 주석을 풀면 메뉴와 /dev/til/ 페이지가 생긴다.
+    // { slug: 'til', label: '공부' },
   ],
 };
 
