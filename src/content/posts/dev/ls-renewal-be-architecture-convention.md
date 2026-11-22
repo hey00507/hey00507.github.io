@@ -1,19 +1,22 @@
 ---
-title: "Spring Boot DDD 프로젝트에서 개발 컨벤션 정립하기"
-description: "LS Renewal 프로젝트에서 팀과 함께 정립한 6가지 BE 아키텍처 규칙 — DTO 위치, Entity 도메인 로직, Lombok 최소화, HTTP 메서드, 용도별 Update 분리, 일급 컬렉션"
+title: "프로젝트 초기에 BE 규칙 6가지를 샘플 코드와 ArchUnit으로 남기기"
+description: "LS전선 리뉴얼 프로젝트 초기에 BE 구조를 잡으면서 정한 규칙 6가지와 그 이유. DTO 위치, Entity 도메인 로직, Lombok 최소화, HTTP 메서드, 용도별 Update 분리, 일급 컬렉션. 세팅 이후 확인하지 못한 것도 함께 적었다."
 category: "dev"
 subcategory: "work"
-tags: ["spring-boot", "ddd", "architecture", "convention", "tdd"]
+tags: ["spring-boot", "ddd", "architecture", "convention", "archunit"]
 pubDate: 2026-04-02T16:57:00
+updatedDate: 2026-11-22T19:40:27
 urlSlug: "20260402"
 draft: false
 ---
 
 ## 들어가며
 
-새 프로젝트를 시작할 때 가장 먼저 해야 할 일이 뭘까? 기능 구현? 아니다. **팀이 같은 방향으로 코드를 쓸 수 있는 규칙을 먼저 세우는 것**이다.
+LS전선 리뉴얼 프로젝트(Spring Boot 4.0, Java 21)에서 내가 맡은 일은 초기 BE 구조를 잡는 것이었다.  
+도메인 개발은 팀원들이 진행했고, 나는 그 전에 패키지 구조를 DDD Layered 로 바꾸고, ArchUnit 규칙과 샘플 도메인 하나를 만들어 두었다.
 
-LS전선 리뉴얼 프로젝트(Spring Boot 4.0, Java 21)에서 BE 개발을 시작하면서, 샘플 도메인 하나를 기준으로 6가지 아키텍처 컨벤션을 정립했다. 이 글은 "왜 이렇게 정했는지"에 초점을 맞춘다.
+여러 사람이 동시에 도메인을 만들기 시작하면 사람마다 구조가 달라진다. 그래서 샘플 도메인에 규칙 6가지를 적용해 두고, 새 도메인은 그걸 복사해서 시작하게 했다.  
+이 글은 각 규칙을 "왜 이렇게 정했는지"에 초점을 맞춘다.
 
 ## 1. DTO는 domain 레이어에 둔다
 
@@ -120,7 +123,7 @@ POST /api/sample/{id}/modify-status ← 상태 변경
 POST /api/sample/{id}/remove        ← 삭제
 ```
 
-순수 REST 원칙에서는 벗어나지만, Google API Design Guide에서도 Custom Methods 패턴을 공식 인정하고 있다. **REST는 규칙이 아니라 아키텍처 스타일**이다. 인프라 제약 하에서 팀 내 일관성만 유지하면 된다.
+순수 REST 원칙에서는 벗어난다. 다만 Google API Design Guide 의 Custom Methods 처럼 URL 에 동작을 드러내는 방식도 쓰이고 있어서, 제약 안에서 URL 규칙을 하나로 통일하는 쪽을 택했다.
 
 ## 5. 용도별 Update를 분리한다
 
@@ -140,7 +143,7 @@ POST /api/sample/{id}/modify         // 기본 정보
 POST /api/sample/{id}/modify-status  // 상태 변경
 ```
 
-**하나의 거대한 update 메서드에 모든 경우를 때려넣는 건 안티패턴이다.** 각 메서드가 하나의 "도메인 행위"를 표현하면, Validation도 DTO별로 다르게 적용할 수 있고, 테스트도 명확해진다.
+update 메서드 하나에 모든 경우를 넣으면 어떤 화면이 어떤 필드를 바꾸는지 코드에서 보이지 않는다. 각 메서드가 하나의 "도메인 행위"를 표현하면, Validation도 DTO별로 다르게 적용할 수 있고, 테스트도 명확해진다.
 
 ## 6. 일급 컬렉션으로 컬렉션 로직을 응집한다
 
@@ -177,19 +180,26 @@ public List<SampleResponseDto> findAll() {
 
 네이밍은 `{Domain}s` 복수형(`Samples`, `Users`)으로 통일했다. `Collections.unmodifiableList()`로 불변성을 보장하면 외부에서 `.add()`로 내부 상태를 변경하는 실수도 방지한다.
 
-## TDD로 검증한다
+## 규칙을 테스트로 고정한다
 
-이 모든 규칙은 테스트로 뒷받침된다.
+샘플 도메인에는 테스트를 같이 넣었다.
 
 - **Entity 테스트**: `fromCreateDto`, `update`, `updateStatus`, `toResponseDto`
 - **일급 컬렉션 테스트**: `filterActive`, `filterInactive`, 불변성 검증
 - **Service 테스트**: CRUD 전체 + 예외 케이스
-- **ArchUnit 테스트**: 레이어 의존성 규칙 자동 강제
+- **ArchUnit 테스트**: 레이어 의존성, 네이밍 규칙
 
-총 30건의 테스트가 모두 통과한 상태에서 PR을 올렸다. **테스트 없는 비즈니스 로직 PR은 머지하지 않는다**는 규칙도 함께.
+샘플 도메인 기준으로 테스트 30건이 통과한 상태에서 PR 을 올렸다.
 
-## 마무리
+## 마무리 — 세팅 이후에 확인하지 못한 것
 
-컨벤션은 "정답"이 아니라 "합의"다. 중요한 건 팀원들이 동의하고, 일관되게 따를 수 있느냐다. 그래서 규칙을 코드(ArchUnit)와 문서(CLAUDE.md)로 동시에 남겼다.
+규칙은 코드(ArchUnit, 샘플 도메인)와 문서(가이드 문서, `CLAUDE.md`) 양쪽에 남겼다.
 
-이 6가지 규칙이 앞으로 모든 도메인 개발의 템플릿이 된다. 새 도메인을 추가할 때 sample 패키지를 복사해서 시작하면, 자연스럽게 이 규칙을 따르게 된다.
+돌아보면 두 종류의 규칙이 섞여 있었다.
+
+- **빌드가 확인하는 규칙**: 레이어 의존 방향, 네이밍. 어기면 ArchUnit 테스트가 실패한다
+- **문서와 샘플로만 남긴 규칙**: Lombok 사용 범위, 용도별 Update 분리, 일급 컬렉션, 테스트를 함께 작성하는 것
+
+나는 세팅까지 했고 이후 도메인 개발은 팀원들이 이어갔다. 두 번째 종류의 규칙이 실제로 지켜졌는지는 끝까지 따라가 보지 못했다.
+
+이 경험 때문에 다음 프로젝트부터는 지키게 하고 싶은 규칙을 가능한 한 빌드에 걸었다. 문서에 적은 규칙은 읽은 사람만 지키지만, 테스트로 건 규칙은 모두에게 똑같이 적용된다.
