@@ -10,7 +10,7 @@ tags: ["swift", "swiftui", "ios", "tdd", "notification"]
 draft: false
 ---
 
-[지난 글](/posts/20260317-1/)에서 HabitFlow의 Phase 1a (Firestore CRUD + 기본 UI)를 TDD로 만든 이야기를 했다. 그 뒤로 GitHub 잔디 스타일 히트맵(M6)과 연속 달성 Streak(M7)도 구현했는데, 스크린샷이 아직 없어서 다음에 따로 다루겠다. 오늘은 가장 크게 손이 갔던 M9 — iOS 로컬 알림 구현을 정리한다.
+[지난 글](/posts/20260317-1/)에서 HabitFlow의 Phase 1a (Firestore CRUD + 기본 UI)를 TDD로 만든 이야기를 했다. 그 뒤로 GitHub 잔디 스타일 히트맵(M6)과 연속 달성 Streak(M7)도 구현했다. 이 글에서는 가장 크게 손이 갔던 M9 — iOS 로컬 알림 구현을 정리한다.
 
 ## 습관 앱과 알림
 

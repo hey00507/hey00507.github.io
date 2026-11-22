@@ -277,5 +277,3 @@ JPA Auditing은 설정 자체는 쉽다.
 하지만 이번에 테스트를 작성하면서 "왜 이렇게 동작하는지"를 이해하게 된 것 같다.
 
 특히 `@DataJpaTest` + `@Import`, `entityManager.clear()`, BaseEntity 필드 초기화 — 이 세 가지는 JPA Auditing을 테스트할 때 꼭 알아야 하는 포인트라고 생각한다.
-
-다음에는 Flyway 마이그레이션과 ArchUnit 아키텍처 테스트를 마무리하고, Phase 1의 나머지 이야기를 정리할 예정이다.

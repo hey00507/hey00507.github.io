@@ -258,5 +258,4 @@ assertThat(found.getCreatedAt()).isNotNull();  // clear 해야 의미 있음
 - **Flyway 마이그레이션** — DDL 스크립트 작성. 지금은 Hibernate 자동 생성이지만 운영은 Flyway로.
 - **ArchUnit** — 도메인이 인프라에 의존하지 않는지, 순환 참조 검증.
 
-내일 마무리할 예정이다.
-도메인 레이어가 깔렸으니, API → Claude 연결 → 캐시는 그 다음 이야기가 될 것 같다.
+도메인 레이어 다음 순서는 API → Claude 연결 → 캐시다.

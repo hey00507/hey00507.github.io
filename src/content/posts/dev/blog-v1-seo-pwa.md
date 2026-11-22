@@ -166,6 +166,4 @@ Google Search Console에 sitemap을 제출하고 Naver에도 등록했는데, �
 
 이제 인프라는 v1으로 마무리. 앞으로는 포스팅에 집중할 차례다.
 
-다음 글에서는 Claude를 개인 PT 코치로 만든 `/coach` 스킬 이야기를 다뤄보겠다.
-
 (이후 기술 블로그로 정리하면서 essay, reading 카테고리는 없앴다. 본문의 sitemap 코드는 당시 기준이다.)
