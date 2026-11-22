@@ -2,7 +2,7 @@
 title: "Astro 블로그 v1 완성 — SEO, 반응형, WebP, PWA까지 하루 만에"
 description: "sitemap 최적화, 구조화 데이터, WebP 자동 변환, Service Worker까지. 개인 블로그를 검색엔진과 모바일에 제대로 대응시킨 과정을 정리한다."
 category: "dev"
-subcategory: "til"
+subcategory: "project"
 tags: ["astro", "seo", "pwa", "webp", "블로그", "performance"]
 pubDate: 2026-03-23T22:00:00
 urlSlug: "20260323-1"

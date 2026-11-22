@@ -2,6 +2,7 @@
 title: "CloudPocket — Google Sheets 시트 분리와 UX 리팩토링"
 description: "엑셀 가계부를 앱으로 옮기면서 겪은 Google Sheets API 충돌 문제, 시트 분리 전략, 그리고 설정 UX 개선"
 category: "dev"
+subcategory: "project"
 pubDate: "2026-03-18T01:18:00.000Z"
 urlSlug: "20260318-1"
 tags: ["react-native", "expo", "google-sheets", "ux", "refactoring", "tdd"]

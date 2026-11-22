@@ -2,7 +2,7 @@
 title: "Spring Boot 프로젝트에 Custom Exception 계층 도입하기 (1/2)"
 description: "단일 BusinessException + ErrorCode enum 구조의 한계를 인식하고, 도메인별 구체 예외 클래스로 계층을 확장하는 과정. 설계 판단, 마이그레이션 전략, 실제 13개 도메인 치환까지."
 category: "dev"
-subcategory: "project"
+subcategory: "work"
 tags: ["spring-boot", "exception", "architecture", "refactoring", "ddd"]
 pubDate: 2026-04-13T17:35:00
 urlSlug: "20260413"

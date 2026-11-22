@@ -2,6 +2,7 @@
 title: "Astro 5 + Tailwind CSS 4로 블로그 만들기"
 description: "Astro와 Tailwind를 활용한 개인 블로그 구축 과정"
 category: dev
+subcategory: "project"
 tags: ["astro", "tailwind", "블로그", "github-pages"]
 pubDate: 2026-03-13T14:30:00
 urlSlug: "20260313-2"

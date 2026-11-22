@@ -2,6 +2,7 @@
 title: "HabitFlow M9 — iOS 로컬 알림 3종 구현기 (TDD)"
 description: "SwiftUI 습관 트래커에 사전/미완료/종합 알림을 TDD로 구현하고, iOS 64개 제한을 우회하기까지"
 category: "dev"
+subcategory: "project"
 pubDate: "2026-03-18T01:19:00.000Z"
 urlSlug: "20260318-2"
 tags: ["swift", "swiftui", "ios", "tdd", "notification"]

@@ -2,7 +2,7 @@
 title: "프로세스 생명주기와 터미널 프로토콜 — 브라우저 터미널 구현 삽질기"
 description: "Claude Dashboard에 node-pty + xterm.js 브라우저 터미널을 구현하면서 만난 Orphan Process, Zombie Process, Kitty Protocol, CSS hidden 함정까지 정리"
 category: "dev"
-subcategory: "til"
+subcategory: "project"
 tags: ["node-pty", "xterm", "kitty-protocol", "unix-process", "macos", "css"]
 series: "Claude Dashboard 개발기"
 pubDate: 2026-03-17T18:06:00

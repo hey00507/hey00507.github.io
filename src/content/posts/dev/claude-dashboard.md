@@ -2,6 +2,7 @@
 title: "Claude Multiple Dashboard — 멀티 세션 관제탑 만들기"
 description: "Claude Code를 병렬로 3~5개 띄워 작업할 때, 모든 세션을 한 화면에서 실시간 모니터링하는 웹 대시보드를 만들었다."
 category: dev
+subcategory: "project"
 tags: ["claude-code", "typescript", "fastify", "sse", "vanilla-js", "dashboard"]
 pubDate: 2026-03-17T10:51:00
 urlSlug: "20260317-2"

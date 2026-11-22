@@ -2,7 +2,7 @@
 title: "Astro 블로그에 소카테고리 시스템 추가하기"
 description: "Content Collections 스키마 확장과 동적 라우팅으로 소카테고리를 구현한 과정"
 category: dev
-subcategory: til
+subcategory: "project"
 tags: ["astro", "블로그", "라우팅", "content-collections"]
 pubDate: 2026-03-16T19:00:00
 urlSlug: "20260316-1"

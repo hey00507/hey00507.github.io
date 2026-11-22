@@ -2,7 +2,7 @@
 title: "Spring Boot DDD 프로젝트에서 개발 컨벤션 정립하기"
 description: "LS Renewal 프로젝트에서 팀과 함께 정립한 6가지 BE 아키텍처 규칙 — DTO 위치, Entity 도메인 로직, Lombok 최소화, HTTP 메서드, 용도별 Update 분리, 일급 컬렉션"
 category: "dev"
-subcategory: "project"
+subcategory: "work"
 tags: ["spring-boot", "ddd", "architecture", "convention", "tdd"]
 pubDate: 2026-04-02T16:57:00
 urlSlug: "20260402"

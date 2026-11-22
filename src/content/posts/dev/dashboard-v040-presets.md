@@ -2,6 +2,7 @@
 title: "Claude Dashboard v0.4.0 — 세션 프리셋과 3-tier Fallback"
 description: "여러 세션을 구분하기 위한 이름/색상 시스템, 대시보드 연동, 그리고 컨텍스트 압축에도 살아남는 3-tier fallback 설계"
 category: "dev"
+subcategory: "project"
 pubDate: "2026-03-18T01:20:00.000Z"
 urlSlug: "20260318-3"
 tags: ["claude-code", "typescript", "fastify", "macos", "process-detection", "statusline"]

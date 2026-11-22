@@ -2,7 +2,7 @@
 title: "읽기 경로가 세대 포인터 해석을 까먹은 버그: 타입 경계의 힘"
 description: "의미가 다른 두 id를 똑같이 Long으로 두면, 새 읽기 경로가 조용히 같은 버그를 재도입한다. 산출물 정의서 '미지원' 버그를 파고든 기록."
 category: "dev"
-subcategory: "til"
+subcategory: "work"
 tags: ["ZMeta", "리팩토링", "버그", "타입설계", "Oracle"]
 pubDate: 2026-07-24T16:20:47
 urlSlug: "20260724"

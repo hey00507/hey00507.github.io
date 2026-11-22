@@ -2,7 +2,7 @@
 title: "merged·CI green인데 실화면에선 죽어있던 버그"
 description: "CI를 통과한 CSS 수정이 실제 화면에선 동작하지 않았다. 통합 E2E가 잡아낸 이 사례에서 얻은, 머지 기준에 대한 교훈."
 category: "dev"
-subcategory: "til"
+subcategory: "work"
 tags: ["QA", "E2E", "프론트엔드", "시각검증", "CI"]
 pubDate: 2026-06-17T19:53:11
 urlSlug: "20260617"

@@ -2,7 +2,7 @@
 title: "Spring Boot 4.0 테스트 격리 — Testcontainers @ServiceConnection 패턴"
 description: "./gradlew test 가 운영 PostgreSQL 에 직접 연결되던 사고를 Testcontainers 로 막은 이야기. H2 가 아니라 Testcontainers 를 고른 이유, @ServiceConnection 으로 보일러플레이트를 줄인 방법, 그리고 베이스 클래스로 회귀를 자동 차단한 패턴."
 category: "dev"
-subcategory: "project"
+subcategory: "work"
 tags: ["spring-boot", "testcontainers", "postgresql", "integration-test", "devops"]
 pubDate: 2026-04-28T16:49:03
 urlSlug: "20260428"

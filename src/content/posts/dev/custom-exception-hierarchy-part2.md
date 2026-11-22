@@ -2,7 +2,7 @@
 title: "도메인별 구체 예외 클래스, 정말 필요할까? (2/2)"
 description: "도메인별 구체 예외 클래스 11개를 만들어 놓고 다시 지운 이야기. 가치/비용 분석, 중간 클래스 non-abstract 전환, `(ErrorCode, detail)` 생성자 패턴, 그리고 이미 한 작업을 되돌리는 결정의 타이밍."
 category: "dev"
-subcategory: "project"
+subcategory: "work"
 tags: ["spring-boot", "exception", "architecture", "refactoring", "ddd"]
 pubDate: 2026-04-14T20:53:01
 urlSlug: "20260414-1"
