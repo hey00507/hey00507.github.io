@@ -1,131 +1,97 @@
 ---
-title: "의성데이터포털 — 0에서 운영까지, 백엔드 7개월 회고"
-description: "농업 데이터 거버넌스 포털의 백엔드 API 서버를 구축부터 운영까지 담당하며 배운 보안, 아키텍처, 코드 품질에 대한 실전 경험을 정리했다."
+title: "의성데이터포털 — 코딩 지침 검출 2,851건을 종결하기까지"
+description: "공공 데이터 포털 백엔드에서 감리의 코딩 지침 검출 2,851건과 보안 취약점 6개 유형에 대응한 과정을 문제, 검토한 방안, 조치 순으로 정리했다."
 category: dev
 subcategory: "work"
-tags: ["spring-boot", "java", "security", "jpa", "postgresql", "portfolio"]
+tags: ["spring-boot", "java", "security", "jpa", "postgresql", "cwe"]
 pubDate: 2026-03-17T13:22:00
+updatedDate: 2026-11-22T19:34:48
 urlSlug: "20260317-3"
 series: "프로젝트 회고"
 ---
 
-의성데이터포털은 의성군의 농업 데이터를 수집·저장·공유·진단하는 통합 플랫폼이다. 나는 이 프로젝트의 **백엔드 API 서버를 0에서부터 구축**하고, 보안 점검과 감리를 거쳐 운영까지 이끌었다.
+의성데이터포털은 의성군의 농업 데이터를 수집·저장·공유·진단하는 공공 포털이다.  
+나는 이 프로젝트의 PL이었고, 백엔드는 나를 포함해 2명이 개발했다.
 
-총 621 커밋 중 509건(82%)을 작성했고, 2025년 8월부터 2026년 3월까지 약 7개월간 진행했다.
+코드 작업은 2025년 8월부터 2026년 3월 초까지 했고, 백엔드 레포 커밋 약 990건 중 621건을 작성했다.  
+스택은 Java 8, Spring Boot 2.7, Spring Data JPA, PostgreSQL이다.
 
-## 기술 스택
-
-| 구분 | 기술 |
-|------|------|
-| Language | Java 8 |
-| Framework | Spring Boot 2.7.18 |
-| Database | PostgreSQL + HikariCP |
-| ORM | Spring Data JPA / Hibernate |
-| Auth | JWT (jjwt 0.11.5) + Spring Security |
-| Encryption | CubeOneAPI (AES/SHA) |
-| API Docs | Swagger/OpenAPI 3 |
-| Email | AWS SES |
-| Build | Gradle + WAR (외장 Tomcat) |
-| Code Quality | Spotless (Eclipse JDT) |
-
-## 내가 한 일 — 타임라인
-
-### Phase 1: 프로젝트 구축 (2025.08)
-
-Spring Boot 프로젝트 초기 세팅부터 시작했다.
-
-- DB 설정 및 JWT 인증 시스템 구현
-- 사용자 로그인 / 비밀번호 검증 기능 개발
-- 권한/유저-권한 매핑 API, 메뉴 관리 기능 개발
-- Swagger 등록 및 API 문서화
-
-기존 프로젝트가 Mybatis 기반이었지만, **JPA로 전환**하기로 결정했다. 데이터 거버넌스 도메인은 표준사전(용어, 단어, 도메인, 코드) 같은 도메인 객체 중심의 CRUD가 많아서, JPA의 `JpaRepository`가 더 적합하다고 판단했다.
-
-### Phase 2: 데이터 표준 관리 (2025.09)
-
-핵심 비즈니스 로직 — **표준사전 4종**(용어, 단어, 도메인, 코드)의 전체 CRUD API를 개발했다.
-
-- 패키지 구조를 DataGovernance 규격에 맞게 전면 재편
-- DB 스키마 변경에 따른 Entity 전환 (복합키 → 단일 PK + Unique 검증)
-- SoftDelete 전환, BatchDeletionResult 구현
-- ResultEntity 통합 응답 체계 설계
-
-PK 설계에서 **복합키 vs 단일 PK**를 두고 고민했다. 초기에는 복합키를 사용했지만, JPA에서의 관리 복잡도와 향후 확장성을 고려해 SerialNo 단일 PK + Repository 레벨의 유니크 검증 방식으로 전환했다.
-
-### Phase 3: 데이터 공유/연계 시스템 (2025.10 ~ 11 초)
-
-- 데이터 공유 관리 시스템 (파일 업로드/다운로드, 데이터 검색)
-- 연계 데이터 수집/메타데이터 관리
-- 배치 작업, 품질 진단 시스템 연동
-- 데이터 변경 이력 적재 및 조회 기능 개발
-
-### Phase 4: 보안 강화 + 코딩 가이드라인 (2025.11)
-
-**프로젝트에서 가장 밀도 높았던 시기.** 보안 취약점 점검, 암호화, 감리 대응이 동시에 진행되었다. 아래에서 자세히 다룬다.
-
-### Phase 5~6: 감리 대응 + 코딩 표준 심화 (2025.12)
-
-- 감리 지적사항 대응 — Exception 구체화, `printStackTrace` → `log.error` 전환
-- 예외별 세부 대응 처리 (전 영역 60건+)
-- TTAK.KO-11.0183 기반 규칙별 분석 및 수정
-- 보안 취약점 최종 보고서 작성
-
-### Phase 7: 유지보수 (2026.01 ~ 03)
-
-- DB 커넥션 풀 최적화 (주말 유휴 커넥션 유지)
-- 메타데이터 상세 데이터 추출 API 신규 개발
-- 마스킹 처리 세밀 조정 (관리자 조회 시 마스킹 해제)
+공공 사업이라 개발이 끝난 뒤 보안 취약점 점검과 감리를 거쳐야 했다.  
+이 글은 그 과정에서 풀었던 문제들을 `문제 → 검토한 방안 → 조치` 순서로 적은 기록이다.
 
 ---
 
-## 설계 고민 1 — 통합 응답 체계
+## 1. 코딩 지침 검출 2,851건
 
-각 API가 서로 다른 형태로 응답하면 프론트엔드 파싱이 지옥이 된다. 제네릭 `ResultEntity<T>`를 만들어 **모든 API의 응답을 통일**했다.
+### 문제
 
-```java
-// 성공: { success: true, code: 200, data: {...} }
-public static <T> ResultEntity<T> success(T data) {
-    return new ResultEntity<>(true, 200, "요청이 성공적으로 처리되었습니다.", data, null);
-}
+감리 항목 중에 TTAK.KO-11.0183 표준 기반의 코딩 지침 준수가 있었다.  
+점검 도구를 돌리자 **2,851건**이 검출됐다. 시급도별로는 상 330건, 중 1,165건, 하 1,356건.
 
-// 검증 실패: { success: false, code: 400, errors: [{field, message}] }
-public static <T> ResultEntity<T> validationError(List<FieldError> errors) {
-    return new ResultEntity<>(false, 400, "입력값 검증에 실패했습니다.", null, errors);
-}
+전부를 위반으로 보고 하나씩 고치기에는 양이 많았고, 살펴보니 위반이 아닌 항목도 섞여 있었다.
 
-// 부분 성공 (일괄 삭제에서 일부만 성공한 경우)
-public static <T> ResultEntity<T> partialSuccess(String message, T data) {
-    return new ResultEntity<>(true, 206, message, data, null);
-}
-```
+### 검토한 방안
 
-**206 Partial Content**를 추가한 건 실무에서 꼭 필요했다. 일괄 삭제에서 일부만 성공한 경우, 200이면 "왜 일부만 삭제됐지?"를 알 수 없고, 400이면 "성공한 건 뭐야?"가 모호해진다.
+전부 수정하는 대신 먼저 **분류**하기로 했다. 검출 항목을 세 갈래로 나눴다.
 
-교훈: 통합 응답 객체는 **프로젝트 초기**에 만들어야 한다. 나중에 도입하면 기존 API 전부 수정해야 한다.
+- **조치 가능**: 실제 위반이고 코드를 고치면 되는 것
+- **오검출**: 도구가 위반으로 봤지만 위반이 아닌 것
+- **조치 불필요**: 위반으로 잡히지만 쓰는 라이브러리와 맞물려 고칠 수 없는 것
+
+### 조치
+
+**자동으로 고칠 수 있는 것부터 처리했다.**  
+들여쓰기, import 정렬, 라인 길이는 Spotless로 일괄 수정했다.  
+처음에는 Google Java Format을 적용했는데 들여쓰기가 2칸이라 지침의 4칸과 충돌했다. Eclipse JDT 포맷터로 바꿔 4칸, 120자 제한에 맞췄다.
+
+**오검출은 근거를 붙여 소명했다.**  
+시급도 '중' 1,165건을 전부 확인했더니 696건이 오검출이었다. 전체로는 1,035건.  
+대표적인 것이 한 줄 길이 제한이다. Spring Data JPA는 메서드 이름으로 쿼리를 만들기 때문에 조회 조건이 늘면 이름이 길어진다. 서비스 메서드 이름을 축약어 없이 풀어 쓴 것도 같은 규칙에 걸렸다.  
+이런 항목은 "왜 위반이 아닌지"를 의견서로 정리해서 제출했다.
+
+**실제 위반 1,816건은 코드를 고쳤다.**  
+매직 넘버 상수화, 빈 catch 블록 처리, `Exception`을 구체 예외로 교체, `printStackTrace`를 `log.error`로 전환하는 작업이었다.
+
+**고칠 수 없는 항목은 예외 승인을 받았다.**  
+시급도 '하'의 상당수는 Lombok과 맞물린 것이었다. Lombok을 쓰면 소스에는 필드만 있고 생성자와 getter가 없어서 도구가 위반으로 본다.  
+이 항목들은 사유를 정리해 예외로 요청했고 승인받았다.
+
+결과적으로 검출 항목은 **수정, 오검출 소명, 예외 승인** 세 갈래로 전건 종결됐다.
+
+돌아보면 도구가 뱉은 숫자를 그대로 작업량으로 받아들이지 않은 것이 가장 중요했다.  
+2,851건 중 3분의 1 이상이 고칠 필요가 없는 항목이었다.
 
 ---
 
-## 설계 고민 2 — 보안 취약점 대응 (CWE)
+## 2. 오류 메시지로 내부 정보가 노출되는 문제 (CWE-209)
 
-### 오류 메시지 정보 노출 (CWE-209)
+### 문제
 
-가장 많이 수정한 취약점이다. `e.getMessage()`를 그대로 응답에 담으면 **DB 경로, 쿼리, 서버 경로**가 다 노출된다.
+가장 많이 수정한 취약점이다.  
+`e.getMessage()`를 응답에 그대로 담으면 DB 정보, 쿼리, 서버 경로가 사용자에게 보인다.
 
-`SecureLogUtil`을 만들어 환경별로 에러 메시지를 분기했다.
+### 검토한 방안
+
+메시지를 숨기기만 하면 운영 중에 어떤 오류였는지 추적하기 어려워진다.  
+그래서 응답에는 **에러 ID만** 내려주고, 서버 로그에서 그 ID로 원인을 찾는 방식을 택했다.
+
+### 조치
+
+`SecureLogUtil`을 만들어 환경별로 메시지를 분기했다.
 
 ```java
 public static String getSafeMessage(Exception ex) {
     String errorId = generateErrorId(); // UUID 8자리
     if (PROD_PROFILE.equals(profile)) {
-        // 프로덕션: 에러 ID만 반환
+        // 운영: 에러 ID만 반환
         return String.format("오류가 발생했습니다. (에러ID: %s)", errorId);
     }
-    // 개발: 민감정보 마스킹 후 반환
+    // 개발: 민감정보를 가린 뒤 반환
     return maskSensitiveData(ex.getMessage());
 }
 ```
 
-마스킹은 정규식으로 **파일 경로, DB 정보, IP, 이메일**을 자동으로 잡아낸다.
+개발 환경에서도 파일 경로, DB 정보, IP, 이메일은 정규식으로 가린다.
 
 ```java
 result = FILE_PATH_PATTERN.matcher(result).replaceAll("[PATH]");
@@ -134,15 +100,31 @@ result = IP_PATTERN.matcher(result).replaceAll("[IP]");
 result = EMAIL_PATTERN.matcher(result).replaceAll("[EMAIL]");
 ```
 
-에러 ID로 서버 로그를 역추적할 수 있어 디버깅에도 문제 없다.
+접속 로그를 남길 때도 같은 유틸을 거치게 해서, 로그 테이블에 민감정보가 쌓이지 않게 했다.
 
-### 무차별 대입 공격 (CWE-307)
+---
 
-로그인 API에 Rate Limiting이 없으면 무한 시도가 가능하다. **IP 기반 LoginRateLimiter**를 구현했다.
+## 3. 로그인 무차별 대입 (CWE-307)
+
+### 문제
+
+로그인 API에 시도 횟수 제한이 없었다.
+
+### 검토한 방안
+
+제한 기준을 **계정**으로 할지 **IP**로 할지가 갈림길이었다.
+
+계정 기준이면 공격자가 남의 계정으로 일부러 실패를 반복해서 그 계정을 잠글 수 있다.  
+IP 기준이면 공격자 자신만 차단된다. 대신 여러 사람이 같은 IP를 쓰는 환경에서는 한 사람의 실패가 다른 사람에게 영향을 준다.
+
+이 한계를 알고 IP 기준을 골랐다.
+
+### 조치
+
+IP별 시도 횟수를 `ConcurrentHashMap`으로 추적하는 `LoginRateLimiter`를 구현했다.
 
 ```java
-// ConcurrentHashMap으로 IP별 시도 횟수를 추적
-// 10회 초과 시 5분 차단, 10분 후 자동 리셋
+// 허용 횟수를 넘으면 일정 시간 차단, 이후 자동으로 풀린다
 attemptCache.compute(ipAddress, (key, existingInfo) -> {
     if (existingInfo == null) return new LoginAttemptInfo();
     existingInfo.incrementAttempts();
@@ -153,17 +135,28 @@ attemptCache.compute(ipAddress, (key, existingInfo) -> {
 });
 ```
 
-Username이 아닌 **IP 기반**으로 추적한 이유: Username 기반이면 공격자가 타인의 계정을 의도적으로 잠글 수 있다(DoS). IP 기반이면 공격자 자신만 차단된다. 다만 공유 IP 환경에서의 trade-off는 인지하고 있다.
+서버 메모리에 두는 방식이라 서버가 여러 대면 횟수가 서버마다 따로 세어진다.  
+분산 환경에서도 동작하게 하려면 Redis 같은 외부 저장소로 옮겨야 하는데, 여기까지는 하지 못했다.
 
-### 파일 업로드 — 3중 방어
+---
 
-1. **확장자 블랙리스트** (exe, php, jsp 등 40종+)
-2. **확장자 화이트리스트** (csv, json, xml만 허용)
-3. **파일 내용 파싱 검증** (CSV Injection, XXE 공격 방지)
+## 4. 파일 업로드 검증
 
-블랙리스트만으로는 부족하다. 새로운 위험한 확장자가 나올 수 있기 때문에 화이트리스트와 반드시 병행해야 한다.
+### 문제
 
-XML 파서에는 XXE 공격 방지 설정이 필수다.
+데이터 공유 기능에서 사용자가 올린 파일을 서버가 열어서 읽는다.  
+실행 파일이 올라오는 것도 문제지만, 허용된 형식 안에 공격 코드가 들어오는 것도 막아야 했다.
+
+### 조치
+
+검증을 세 단계로 뒀다.
+
+1. **확장자 차단 목록**: 실행 가능한 확장자를 거부
+2. **확장자 허용 목록**: 데이터 파일 형식만 통과
+3. **내용 파싱 검증**: CSV Injection, XXE 방지
+
+차단 목록만으로는 새로 나오는 확장자를 놓치기 때문에 허용 목록과 같이 썼다.  
+XML은 파서 설정으로 외부 엔티티를 막았다.
 
 ```java
 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -174,22 +167,24 @@ factory.setXIncludeAware(false);
 factory.setExpandEntityReferences(false);
 ```
 
-### 전체 보안 대응 요약
+### 보안 대응 요약
 
-| CWE 코드 | 취약점 | 대응 |
-|-----------|--------|------|
-| CWE-209 | 오류 메시지 정보 노출 | SecureLogUtil — 환경별 에러 메시지 분기 |
-| CWE-307 | 무차별 대입 공격 | IP 기반 LoginRateLimiter |
+| CWE | 취약점 | 대응 |
+|-----|--------|------|
+| CWE-209 | 오류 메시지 정보 노출 | 환경별 메시지 분기, 운영은 에러 ID만 반환 |
+| CWE-307 | 무차별 대입 | IP 기준 로그인 시도 제한 |
 | CWE-807 | 신뢰할 수 없는 입력 | JWT 토큰 형식 검증 강화 |
-| CWE-495 | Mutable 객체 노출 | 방어적 복사 + unmodifiableList |
-| CWE-539/614 | 쿠키 보안 | Secure/HttpOnly 속성 추가 |
-| CWE-390 | 빈 catch 블록 | 전 영역 예외별 세부 대응 (60건+) |
+| CWE-495 | 변경 가능한 객체 노출 | 방어적 복사, 수정 불가 리스트 반환 |
+| CWE-539/614 | 쿠키 보안 | Secure, HttpOnly 속성 추가 |
+| CWE-390 | 빈 catch 블록 | 예외별로 처리 방식을 나눠 수정 |
 
 ---
 
-## 설계 고민 3 — 개인정보 마스킹
+## 5. 개인정보 마스킹을 어디서 할 것인가
 
-하나의 마스킹 규칙으로는 안 된다. 관리자 화면, 일반 사용자 화면, 엑셀 다운로드에서 각각 다른 수준의 마스킹이 필요했다.
+### 문제
+
+같은 개인정보라도 화면에 따라 보여야 하는 수준이 달랐다.
 
 | 데이터 | 일반 조회 | 관리자 조회 | 엑셀 다운로드 |
 |--------|----------|------------|------------|
@@ -197,91 +192,54 @@ factory.setExpandEntityReferences(false);
 | 전화번호 | `010****5678` | 원본 | 암호화된 값 |
 | 이름 | `홍*동` | 원본 | 암호화된 값 |
 
-```java
-public static String maskName(String name) {
-    if (name == null || name.isEmpty()) return name;
-    if (name.length() == 2) return name.charAt(0) + "*";
-    if (name.length() >= 3) {
-        StringBuilder masked = new StringBuilder();
-        masked.append(name.charAt(0));
-        for (int i = 0; i < name.length() - 2; i++) masked.append("*");
-        masked.append(name.charAt(name.length() - 1));
-        return masked.toString();
-    }
-    return name;
-}
-```
+### 검토한 방안
 
-마스킹은 **어디서 하느냐**가 중요하다. Entity 레벨에서 하면 관리자도 볼 수 없게 된다. Response DTO 레벨에서 해야 유연하게 제어할 수 있다.
+Entity에서 마스킹하면 구현은 한 곳으로 끝나지만 관리자도 원본을 볼 수 없게 된다.
+
+### 조치
+
+마스킹을 **응답 DTO 단계**에 뒀다. 같은 Entity에서 화면별 DTO가 각자 필요한 수준으로 가린다.  
+2026년 초 유지보수 때 관리자 조회에서는 마스킹을 풀도록 조정했다.
 
 ---
 
-## 설계 고민 4 — AOP 기반 요청 로깅
+## 6. MyBatis에서 JPA로, 복합키에서 단일 PK로
 
-모든 API에 접속 로그를 남겨야 하는데, 각 Controller에 로깅 코드를 넣으면 중복이 심하고 빠뜨리기 쉽다.
+### 문제
 
-`@Around` 어드바이스로 모든 `@RestController` 메서드를 감싸는 AOP Aspect를 구현했다.
+프로젝트에는 MyBatis가 설정돼 있었다.  
+그런데 이 포털의 핵심인 표준사전 4종(용어, 단어, 도메인, 코드)은 대부분 도메인 객체 단위의 CRUD였다.
 
-```java
-@Around("execution(* com.api..*.*(..)) && @within(RestController)")
-```
+### 조치
 
-각 API 호출마다 클라이언트 IP, 브라우저, JWT 토큰 정보, 메뉴 ID, 요청 파라미터를 추출해서 DB에 적재한다. `@Operation` 어노테이션에서 API 설명을 자동 추출하기 때문에, **Swagger 문서화와 로깅이 자연스럽게 동기화**된다.
+MyBatis를 걷어내고 JPA로 전환했다. 표준사전 CRUD는 `JpaRepository`로 처리하고, 복잡한 통계 조회만 Native Query로 보완했다.
 
-에러 메시지는 `SecureLogUtil`로 마스킹해서 로깅하므로, 접속 로그 테이블에 민감정보가 남지 않는다.
-
----
-
-## 설계 고민 5 — DB 커넥션 풀
-
-월요일 아침에 API가 먹통이 되는 현상이 있었다. 주말 동안 트래픽이 0이면 DB 커넥션이 전부 끊어지고, 월요일에 새 커넥션을 만드는 데 시간이 걸렸다.
-
-HikariCP의 `keepaliveTime`을 5분으로 설정해서 해결했다.
-
-```yaml
-maximum-pool-size: 20
-minimum-idle: 5
-keepalive-time: 300000    # 5분마다 keepalive
-max-lifetime: 1800000     # 30분
-leak-detection-threshold: 60000  # 커넥션 누수 60초 감지
-```
-
-`idleTimeout`만 설정하면 커넥션이 살아는 있지만, **DB 측에서** 끊을 수 있다. `keepaliveTime`은 클라이언트(앱) 측에서 능동적으로 커넥션을 검증하는 것이다.
+PK도 바꿨다. 초기 스키마는 복합키였는데, JPA에서 `@IdClass`로 다루기가 번거롭고, 키 구성이 바뀌면 참조하는 쪽까지 고쳐야 했다.  
+일련번호 단일 PK로 바꾸고, 원래 복합키가 보장하던 유일성은 유니크 검증으로 옮겼다.
 
 ---
 
-## 설계 고민 6 — 코딩 가이드라인과 자동화의 한계
+## 7. 접속 로그를 빠뜨리지 않는 방법
 
-TTAK.KO-11.0183 국가 표준 기반 코딩 가이드라인을 전체에 적용해야 했다. 검출 도구가 **2,851건**을 뱉었다.
+### 문제
 
-접근 방식:
-1. **자동 수정 가능한 것 먼저** — Spotless(Eclipse JDT)로 들여쓰기, import 정렬, 라인 길이 일괄 처리
-2. **카테고리별 샘플링** — 중 시급도 1,165건을 전수 조사했더니 696건이 거짓 양성
-3. **오검출 의견서 작성** — "왜 이것이 위반이 아닌지"를 근거와 함께 문서화
-4. **실제 위반만 수정** — 매직 넘버 상수화, 빈 catch 블록 처리, Exception 구체화 등
+개인정보를 다루는 포털이라 누가 어떤 API를 호출했는지 전부 남겨야 했다.  
+Controller마다 로깅 코드를 넣으면 새 API를 만들 때 빠뜨리기 쉽다.
 
-처음에 Google Java Format을 적용했다가 **들여쓰기 충돌**이 발생했다. Google은 2 space, 가이드라인은 4 space. Eclipse JDT 포맷터로 전환하여 4 space + 120자 라인 제한을 맞췄다.
+### 조치
 
-교훈: 자동화 도구의 결과를 **맹신하지 말 것**. 의견서/문서화가 감리 대응에서 가장 강력한 무기였다.
+`@RestController`의 모든 메서드를 감싸는 AOP Aspect를 만들었다.  
+호출마다 클라이언트 IP, 브라우저, 토큰의 사용자 정보, 메뉴, 요청 파라미터를 추출해 DB에 적재한다.
 
----
-
-## 숫자로 보는 프로젝트
-
-| 항목 | 수치 |
-|------|------|
-| 총 커밋 수 | 621개 |
-| 내 커밋 수 | 509개 (82%) |
-| 프로젝트 기간 | 7개월 (2025.08 ~ 2026.03) |
-| Java 파일 수 | 295+ |
-| 보안 취약점 조치 | CWE 6개 유형 |
-| 코딩 가이드 검출 | 2,851건 (처리 완료) |
-| API 그룹 | 10개+ (Swagger 기준) |
+API 설명은 Swagger의 `@Operation`에서 가져오게 해서, 문서에 적은 설명이 접속 로그의 "수행 업무"로 그대로 남는다.  
+관리자 화면의 개인정보 조회 이력이 이 로그를 읽는다.
 
 ---
 
 ## 마무리
 
-이 프로젝트에서 가장 크게 성장한 부분은 **보안 의식**이다. CWE 코드를 실제로 찾아보고, 내 코드에 어떤 취약점이 있는지 분석하고, 하나씩 조치하는 과정이 이론으로 배운 것과는 차원이 달랐다. 특히 `e.getMessage()`를 그냥 반환하는 것이 얼마나 위험한지, SecureLogUtil을 만들면서 체감했다.
+이 프로젝트에서 가장 많이 배운 것은 **검출 결과를 다루는 방법**이다.  
+2,851건이라는 숫자를 받았을 때 바로 고치기 시작하지 않고 분류부터 한 것, 고치지 않기로 한 항목에 근거를 남긴 것이 감리를 끝낼 수 있었던 이유라고 생각한다.
 
-두 번째는 **감리/검수 대응 능력**이다. 자동화 도구의 결과를 분석하고, 오검출을 근거와 함께 문서화하는 것이 실무에서 매우 중요하다는 걸 배웠다. 2,851건이라는 숫자에 압도당하지 않고, 체계적으로 분류하고 우선순위를 매기는 과정 자체가 성장이었다.
+보안 쪽은 CWE 항목을 하나씩 찾아보고 내 코드의 어느 줄이 해당하는지 확인하는 과정이 도움이 됐다.  
+`e.getMessage()`를 그대로 반환하는 한 줄이 왜 문제인지는 직접 고쳐 보고 나서야 제대로 이해한 것 같다.
