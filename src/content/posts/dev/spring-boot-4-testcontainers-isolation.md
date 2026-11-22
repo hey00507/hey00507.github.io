@@ -5,6 +5,7 @@ category: "dev"
 subcategory: "work"
 tags: ["spring-boot", "testcontainers", "postgresql", "integration-test", "devops"]
 pubDate: 2026-04-28T16:49:03
+updatedDate: 2026-11-22T19:06:58
 urlSlug: "20260428"
 draft: false
 ---
@@ -19,9 +20,9 @@ PoC 백엔드(Spring Boot 4.0.5 + Java 21)에서 통합 테스트를 한 번 돌
 # application.yml (local 프로파일)
 spring:
   datasource:
-    url: jdbc:postgresql://125.131.207.125:29997/airportdb
-    username: zettadev
-    password: zetta12345
+    url: jdbc:postgresql://{운영 DB 호스트}:{포트}/{DB명}
+    username: {계정}
+    password: {비밀번호}
 ```
 
 `local` 프로파일의 datasource 가 **운영 PG 를 가리키고 있었고**, 통합 테스트에 별도 프로파일이 없었다. 그러니 `@SpringBootTest` 가 부팅하는 컨텍스트는 그 datasource 로 그대로 연결됐다. `@Transactional` 로 트랜잭션 롤백을 걸어도 Flyway 마이그레이션은 commit 되어 있어서 schema 변경은 누적됐다.
