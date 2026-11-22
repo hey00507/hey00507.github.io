@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About - Ethan's 개발log" description="서비스가 안정적으로 돌아가는 방법을 고민하는 백엔드 개발자">
+<BaseLayout title="About - Ethan's 개발log" description="운영 리스크를 줄이는 구조를 만드는 백엔드 엔지니어">
   <div class="max-w-2xl">
     {/* 프로필 */}
     <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-10">
@@ -14,8 +14,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="text-center sm:text-left">
         <h1 class="text-2xl sm:text-3xl font-bold mb-2">Ethan Kim</h1>
         <p class="text-(--color-text-secondary) leading-relaxed">
-          서비스가 안정적으로 돌아가는 방법을 고민하는 백엔드 개발자.<br />
-          책을 읽고, 달리고, 코드를 씁니다.
+          운영 리스크를 줄이는 구조를 만드는 백엔드 엔지니어.
         </p>
       </div>
     </div>
@@ -25,12 +24,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="text-xl font-bold mb-4">소개</h2>
       <div class="space-y-3 text-(--color-text-secondary) leading-relaxed">
         <p>
-          국제통상을 전공하고 개발의 세계에 뛰어든 백엔드 개발자입니다.
-          비전공자로 시작했지만, 코드를 짜는 일이 재밌어서 여기까지 왔습니다.
+          국제통상을 전공하고 개발을 시작한 백엔드 엔지니어입니다.
+          공공·엔터프라이즈 프로젝트에서 요구사항 정리부터 운영까지 맡아 왔습니다.
         </p>
         <p>
-          서비스가 안정적으로 운영될 수 있는 방법을 고민하는 것을 좋아합니다.
-          화려한 기술보다는, 잘 돌아가는 시스템을 만드는 데 관심이 많습니다.
+          만든 것이 운영에서 문제를 일으키지 않게 하는 구조에 집중합니다.
+          화려한 기술보다 잘 돌아가는 시스템에 관심이 많습니다.
         </p>
         <p>
           이 블로그에는 업무에서 푼 문제, 개인 프로젝트, 공부한 내용을 적습니다.
@@ -41,42 +40,63 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
-    {/* 관심사 */}
+    {/* 일하는 방식 */}
     <section class="mb-10">
-      <h2 class="text-xl font-bold mb-4">관심사</h2>
+      <h2 class="text-xl font-bold mb-4">일하는 방식</h2>
       <div class="space-y-6">
         <div>
-          <h3 class="font-semibold mb-1">
-            📖 독서
-          </h3>
+          <h3 class="font-semibold mb-1">요구사항은 추적할 수 있게 정리합니다</h3>
           <p class="text-(--color-text-secondary) leading-relaxed">
-            AI로 모든 것이 이뤄지는 시대에, 스스로 주체성을 잃지 않는 가장 좋은 방법이 독서라고 생각합니다.
-            엄청 즐긴다고 말하기엔 아직 민망하지만, 독서의 중요성을 깨닫고 꾸준히 노력 중입니다.
-            2026년에는 30권 이상 읽겠다는 개인적인 목표가 있습니다.
+            RFP를 기능과 API, 이슈로 나누고 서로 연결해, 무엇이 빠졌는지 확인할 수 있게 합니다.
           </p>
         </div>
         <div>
-          <h3 class="font-semibold mb-1">
-            🏃 러닝
-          </h3>
+          <h3 class="font-semibold mb-1">규칙은 빌드와 테스트로 강제합니다</h3>
           <p class="text-(--color-text-secondary) leading-relaxed">
-            건강해지려고 시작한 취미입니다. 선천적으로 헬스 같은 근력운동을 좋아하지 않았는데,
-            러닝은 저에게 가장 맞는 운동인 것 같습니다.
-            정신건강에도 큰 도움이 되고, 무엇보다 정직한 운동이라는 점이 좋습니다.
-            노력한 만큼 효과가 바로 나타나니까요.
+            레이어 규칙과 코드 컨벤션을 문서로만 두지 않고 ArchUnit과 CI에 겁니다.
           </p>
         </div>
         <div>
-          <h3 class="font-semibold mb-1">
-            <a href="/dev/" class="hover:text-(--color-accent-dev) transition-colors">💻 코딩</a>
-          </h3>
+          <h3 class="font-semibold mb-1">문제는 원인까지 추적하고 재발을 테스트로 막습니다</h3>
           <p class="text-(--color-text-secondary) leading-relaxed">
-            재밌어서 시작했고, 재밌는 것이 업이라 행복했는데 — AI와 함께 코딩하면서 그 재미가 잠시 식었던 것 같습니다.
-            요즘은 AI를 활용한 생산성 높이기에 진심입니다.
-            그만큼의 잉여시간을 다른 곳에 집중할 수 있다는 게 매력적이고, 앞으로 나아가야 할 방향이라고 생각합니다.
+            느린 화면은 구간별로 측정해 원인을 찾고, 고친 뒤에는 같은 문제가 다시 생기면 실패하는 테스트를 남깁니다.
           </p>
         </div>
       </div>
+    </section>
+
+    {/* 경력 */}
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4">경력</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-(--color-text-secondary)">
+          <tbody>
+            <tr class="border-b border-(--color-border)">
+              <td class="py-2 pr-4 font-medium text-(--color-text)">제타소프트</td>
+              <td class="py-2 pr-4 whitespace-nowrap">2023.05 – 재직 중</td>
+              <td class="py-2">Backend Engineer · 팀장</td>
+            </tr>
+            <tr class="border-b border-(--color-border)">
+              <td class="py-2 pr-4 font-medium text-(--color-text)">트라이캐치</td>
+              <td class="py-2 pr-4 whitespace-nowrap">2022.07 – 2023.04</td>
+              <td class="py-2">Backend Engineer · 파트장</td>
+            </tr>
+            <tr class="border-b border-(--color-border)">
+              <td class="py-2 pr-4 font-medium text-(--color-text)">이파트</td>
+              <td class="py-2 pr-4 whitespace-nowrap">2021.03 – 2022.07</td>
+              <td class="py-2">Backend Engineer · 팀장</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {/* 기술 */}
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4">기술</h2>
+      <p class="text-(--color-text-secondary) leading-relaxed">
+        Java, Spring Boot, JPA, QueryDSL · PostgreSQL, Oracle, MySQL, Redis · Docker, GitHub Actions, n8n, Linux
+      </p>
     </section>
 
     {/* 연락처 */}
@@ -91,15 +111,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         >
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
           GitHub
-        </a>
-        <a
-          href="https://instagram.com/kimjonggu__"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
-        >
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
-          Instagram
         </a>
         <a
           href="https://blog.naver.com/hey00507"
