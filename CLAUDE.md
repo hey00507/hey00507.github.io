@@ -5,24 +5,33 @@
 
 ## 카테고리 & 소카테고리
 
-| category | subcategory | slug | 용도 |
-|----------|-------------|------|------|
-| essay | workout | `/essay/workout/` | 러닝, 운동 기록 |
-| essay | retrospective | `/essay/retrospective/` | 주간/월간 회고 |
-| essay | diary | `/essay/diary/` | 일기, 일상 에세이 |
-| dev | work | `/dev/work/` | 업무 프로젝트 회고 |
-| dev | til | `/dev/til/` | Today I Learned |
-| dev | project | `/dev/project/` | 사이드 프로젝트 개발기 |
-| reading | review | `/reading/review/` | 서평 |
-| reading | note | `/reading/note/` | 독서 노트 |
+기술 블로그다. 일상 글(일기·운동·주간 회고·서평)은 네이버 블로그에 쓰고 여기에는 올리지 않는다.
+
+| category | subcategory | slug | 메뉴 이름 | 용도 |
+|----------|-------------|------|----------|------|
+| dev | work | `/dev/work/` | 업무·문제 해결 | 회사 업무에서 푼 문제 |
+| dev | project | `/dev/project/` | 개인 프로젝트 | 사이드 프로젝트 개발기 |
+| dev | til | `/dev/til/` | 공부 | 개념 정리, 학습 기록 |
+
+## 브랜치·커밋·배포
+
+`main`에 push하면 GitHub Actions가 바로 배포한다. 그래서 `main`에는 직접 커밋하지 않는다.
+
+| 작업 | 브랜치 | 예시 |
+|------|--------|------|
+| 새 글 기고 | `write` | 글 작성, 이미지 추가 |
+| 기존 글·페이지 수정 | `edit` | 오탈자, 문장 수정, About 수정 |
+| 구조 개선·인프라 변경 | 내용에 맞는 이름 | `tech-blog-cleanup`, `ci-build-check` |
+
+- 브랜치는 `main`에서 새로 만들고, `main`에 합친 뒤 지운다. 다음 작업 때 같은 이름으로 다시 만든다 (오래 두면 `main`과 어긋난다)
+- 작업 단위마다 바로 커밋한다. push는 모아서 한 번에 해도 된다
+- `main`에 합치기 전에 `pnpm build`가 통과하는지 확인한다
+- push와 `main` 병합은 사용자 확인을 받고 한다
 
 ## 글 제목 규칙
 
 | 유형 | 제목 형식 | 예시 |
 |------|----------|------|
-| 주간 회고 | `{연도}년 {N}주차 회고` | 2026년 12주차 회고 |
-| 러닝/운동 | `{월} {N}째주 러닝 로그` | 3월 3째주 러닝 로그 |
-| 일기 | 자유 (날짜 불필요) | 레이스 다음 날, 귀요미 버블헤드 |
 | 개발 | 자유 | HabitFlow — SwiftUI + Firebase로 습관 트래커 만들기 |
 
 ## Frontmatter 필수 사항
@@ -31,8 +40,8 @@
 ---
 title: "제목"
 description: "1~2줄 설명"
-category: "essay"          # essay, dev, reading 중 택 1
-subcategory: "workout"     # 소카테고리 (위 표 참조)
+category: "dev"            # dev 고정
+subcategory: "work"        # work, project, til 중 택 1 (위 표 참조)
 tags: ["태그1", "태그2"]
 pubDate: 2026-03-21T21:30:00  # 반드시 현재 시각의 시·분·초까지 정확히 맞출 것
 urlSlug: "20260321"        # 글 주소 /posts/{urlSlug}/ — 발행할 때 한 번 정하고 절대 바꾸지 않는다
@@ -96,10 +105,3 @@ draft: false
 - **본문에 이미지 + 영상이 함께 있는 경우**:
   - 별도 지정이 없으면 **첫 번째 이미지**를 `heroImage`(썸네일)로 지정
   - 본문에 이미지가 자연스럽게 보이므로 `display:none` 불필요
-
-## 글 분리 원칙
-
-- 회고는 개괄적으로, 세부 내용은 별도 글로 분리
-- 러닝 기록 → `essay/workout` 별도 글 + 회고에서 링크
-- 일기/에세이 → `essay/diary` 별도 글 + 회고에서 링크
-- 회고에서는 각 글로 `>` blockquote 링크 연결
