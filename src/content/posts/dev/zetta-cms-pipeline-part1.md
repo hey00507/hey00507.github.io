@@ -254,9 +254,3 @@ Apps Script 에서 50번 서버를 직접 호출하는 건 이론적으로 가�
 - n8n active version 미동기화 이슈와 deactivate/activate 강제 토글
 - `webapps/` 밖으로 `releases/` 를 이동하게 된 이유
 - 인계 문서(SETUP.md, 운영 가이드) 작성과 장애 시나리오 정리
-
----
-
-## Related
-
-- [[2026-04-14 claude]]

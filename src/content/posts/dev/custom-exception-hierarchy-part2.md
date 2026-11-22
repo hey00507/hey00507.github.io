@@ -12,7 +12,7 @@ series: "Custom Exception Hierarchy"
 
 ## 다시 돌아와서
 
-[1부](/dev/project/custom-exception-hierarchy-part1) 끝에서 던진 질문은 이것이었다.
+[1부](/posts/20260413/) 끝에서 던진 질문은 이것이었다.
 
 > "도메인별로 구체 예외 클래스가 이렇게 많은 게 정말 맞는 구조일까?"
 
@@ -194,4 +194,4 @@ sunk cost 를 버리는 훈련. "어제의 나는 이 구조가 맞다고 생각
 
 ## Related
 
-- [1부 — Spring Boot 프로젝트에 Custom Exception 계층 도입하기](/dev/project/custom-exception-hierarchy-part1)
+- [1부 — Spring Boot 프로젝트에 Custom Exception 계층 도입하기](/posts/20260413/)

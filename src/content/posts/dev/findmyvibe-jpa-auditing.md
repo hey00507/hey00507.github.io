@@ -9,7 +9,7 @@ urlSlug: "20260324-2"
 series: "FindMyVibe"
 ---
 
-> 이 글은 [FindMyVibe Phase 1 개발기](/dev/findmyvibe-phase1-domain/)에서 이어지는 글이다.</br>
+> 이 글은 [FindMyVibe Phase 1 개발기](/posts/20260324-1/)에서 이어지는 글이다.</br>
 > 도메인 레이어를 구축하면서 JPA Auditing을 적용했고, 그 과정에서 꽤 깊이 파보게 된 내용을 정리했다.
 
 ## 왜 이걸 따로 정리하게 됐나

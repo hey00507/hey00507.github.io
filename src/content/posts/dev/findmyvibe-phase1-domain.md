@@ -243,7 +243,7 @@ assertThat(found.getCreatedAt()).isNotNull();  // clear 해야 의미 있음
 
 별도 글로 정리했다.
 
-> 다음 글: **[Spring JPA Auditing 실전 적용 — BaseEntity + AuditorAware 깊이 파보기](/dev/findmyvibe-jpa-auditing/)**
+> 다음 글: **[Spring JPA Auditing 실전 적용 — BaseEntity + AuditorAware 깊이 파보기](/posts/20260324-2/)**
 
 ## 커밋 로그
 
