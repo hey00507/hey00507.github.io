@@ -10,7 +10,7 @@ export async function GET(context: APIContext) {
   const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
-    title: "Ethan's 개발log",
+    title: "Ethan Devlog",
     description: '업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그',
     site: context.site!,
     items: posts.map((post) => ({

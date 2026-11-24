@@ -27,7 +27,7 @@ const posts = allPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title={`${subLabel} - ${catLabel} - Ethan's 개발log`} description={`${catLabel} > ${subLabel}`}>
+<BaseLayout title={`${subLabel} - ${catLabel} - Ethan Devlog`} description={`${catLabel} > ${subLabel}`}>
   <h1 class="text-3xl font-bold mb-2">💻 {catLabel}</h1>
   <p class="text-(--color-text-secondary) mb-4">{subLabel} · {posts.length}편</p>
   <SubcategoryNav category={category} current={subcategory} />

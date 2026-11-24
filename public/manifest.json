@@ -1,6 +1,6 @@
 {
-  "name": "Ethan's 개발log",
-  "short_name": "개발log",
+  "name": "Ethan Devlog",
+  "short_name": "Devlog",
   "description": "업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그",
   "start_url": "/",
   "display": "standalone",

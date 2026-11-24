@@ -28,7 +28,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" type="application/rss+xml" title="Ethan's 개발log" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Ethan Devlog" href="/rss.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
@@ -46,7 +46,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: "Ethan's 개발log",
+      name: "Ethan Devlog",
       url: Astro.site?.href,
       description: '업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그',
       author: { '@type': 'Person', name: 'Ethan Kim' },

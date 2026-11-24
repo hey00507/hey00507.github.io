@@ -1,6 +1,7 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 import Search from './Search.astro';
+import SearchModal from './SearchModal.astro';
 import { subcategories } from '../utils/subcategories';
 import type { Category } from '../utils/categories';
 
@@ -22,7 +23,7 @@ const currentPath = Astro.url.pathname;
 <header class="border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-sm sticky top-0 z-50">
   <nav class="max-w-3xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
     <a href="/" class="text-lg sm:text-xl font-bold hover:text-(--color-accent-dev) transition-colors shrink-0">
-      Ethan's 개발log
+      Ethan Devlog
     </a>
 
     {/* 데스크톱 네비게이션 */}
@@ -182,6 +183,8 @@ const currentPath = Astro.url.pathname;
     </div>
   </div>
 </header>
+
+<SearchModal />
 
 <script is:inline>
   const menuToggle = document.getElementById('menu-toggle');

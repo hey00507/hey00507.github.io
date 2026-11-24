@@ -32,7 +32,7 @@ for (const [, sp] of seriesMap) {
 const siteUrl = Astro.site;
 ---
 
-<BaseLayout title="전체 글 - Ethan's 개발log" description="업무에서 푼 문제, 개인 프로젝트, 공부 기록">
+<BaseLayout title="전체 글 - Ethan Devlog" description="업무에서 푼 문제, 개인 프로젝트, 공부 기록">
   <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '전체 글', description: '업무에서 푼 문제, 개인 프로젝트, 공부 기록', url: `${siteUrl}dev/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
   <h1 class="text-3xl font-bold mb-2">전체 글</h1>
   <p class="text-(--color-text-secondary) mb-4">업무에서 푼 문제, 개인 프로젝트, 공부 기록</p>
