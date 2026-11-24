@@ -47,6 +47,8 @@ export async function GET({ props }: APIContext) {
         style: {
           width: '100%',
           height: '100%',
+          // satori 0.63은 기본이 content-box라 padding만큼 캔버스 밖으로 넘친다
+          boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -114,7 +116,7 @@ export async function GET({ props }: APIContext) {
                       fontWeight: 700,
                       color: 'white',
                       lineHeight: 1.3,
-                      wordBreak: 'break-word',
+                      wordBreak: 'keep-all',
                     },
                     children: title,
                   },
