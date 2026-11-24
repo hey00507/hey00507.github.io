@@ -159,7 +159,7 @@ export async function GET({ props }: APIContext) {
                   type: 'span',
                   props: {
                     style: { fontSize: '22px', color: 'rgba(255,255,255,0.8)' },
-                    children: "Ethan's 개발log",
+                    children: "Ethan Devlog",
                   },
                 },
                 {
