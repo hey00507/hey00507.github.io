@@ -1,6 +1,7 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 import Search from './Search.astro';
+import SearchModal from './SearchModal.astro';
 import { subcategories } from '../utils/subcategories';
 import type { Category } from '../utils/categories';
 
@@ -182,6 +183,8 @@ const currentPath = Astro.url.pathname;
     </div>
   </div>
 </header>
+
+<SearchModal />
 
 <script is:inline>
   const menuToggle = document.getElementById('menu-toggle');

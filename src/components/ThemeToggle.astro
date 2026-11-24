@@ -2,38 +2,44 @@
 ---
 
 <button
-  id="theme-toggle"
+  data-theme-toggle
   type="button"
   aria-label="Toggle dark mode"
   class="p-2 rounded-lg text-(--color-text-secondary) hover:text-(--color-text) hover:bg-(--color-bg-secondary) transition-colors cursor-pointer"
 >
-  <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <svg data-icon-sun class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
   </svg>
-  <svg id="icon-moon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <svg data-icon-moon class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
     <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
   </svg>
 </button>
 
 <script is:inline>
-  function getTheme() {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-      return localStorage.getItem('theme');
+  // 이 컴포넌트는 데스크톱·모바일 헤더에 하나씩 들어가 스크립트도 두 번 실행된다.
+  // 그래서 id 대신 data 속성을 쓰고, 클릭은 바로 앞의 자기 버튼에만 건다.
+  (() => {
+    const button = document.currentScript.previousElementSibling;
+
+    function getTheme() {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
 
-  function applyTheme(theme) {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.getElementById('icon-sun').classList.toggle('hidden', theme !== 'dark');
-    document.getElementById('icon-moon').classList.toggle('hidden', theme === 'dark');
-  }
+    function applyTheme(theme) {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.querySelectorAll('[data-icon-sun]').forEach((el) => el.classList.toggle('hidden', theme !== 'dark'));
+      document.querySelectorAll('[data-icon-moon]').forEach((el) => el.classList.toggle('hidden', theme === 'dark'));
+    }
 
-  applyTheme(getTheme());
+    applyTheme(getTheme());
 
-  document.getElementById('theme-toggle').addEventListener('click', () => {
-    const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
-    localStorage.setItem('theme', next);
-    applyTheme(next);
-  });
+    button.addEventListener('click', () => {
+      const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+  })();
 </script>
