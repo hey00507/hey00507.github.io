@@ -22,7 +22,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#3b82f6" />
+    <meta name="theme-color" content="#fbfbfa" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
@@ -42,6 +42,9 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
@@ -60,15 +63,15 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
           (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         if (theme === 'dark') document.documentElement.classList.add('dark');
         var tc = document.querySelector('meta[name="theme-color"]');
-        if (tc) tc.content = theme === 'dark' ? '#0f172a' : '#3b82f6';
+        if (tc) tc.content = theme === 'dark' ? '#111416' : '#fbfbfa';
       })();
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-(--color-accent-dev) focus:text-white focus:text-sm">본문으로 건너뛰기</a>
-    {showProgress && <div id="reading-progress" class="fixed top-0 left-0 h-0.5 bg-(--color-accent-dev) z-[100] transition-none" style="width: 0%" />}
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-md focus:bg-(--color-accent) focus:text-(--color-on-accent) focus:text-sm">본문으로 건너뛰기</a>
+    {showProgress && <div id="reading-progress" class="fixed top-0 left-0 h-0.5 bg-(--color-accent) z-[100] transition-none" style="width: 0%" />}
     <Header />
-    <main id="main-content" class="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 w-full">
+    <main id="main-content" class="flex-1 max-w-[728px] mx-auto px-6 py-8 sm:py-14 w-full">
       <slot />
     </main>
     <Footer />
@@ -91,7 +94,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         })();
       </script>
     )}
-    <button id="back-to-top" aria-label="맨 위로" class="fixed bottom-6 right-6 w-10 h-10 rounded-full bg-(--color-bg-secondary) border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-all opacity-0 pointer-events-none shadow-md flex items-center justify-center z-50">
+    <button id="back-to-top" aria-label="맨 위로" class="fixed bottom-6 right-6 w-10 h-10 rounded-md bg-(--color-bg-secondary) border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-all opacity-0 pointer-events-none flex items-center justify-center z-50">
       <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
     <script is:inline>

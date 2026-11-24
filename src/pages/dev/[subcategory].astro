@@ -28,13 +28,13 @@ const posts = allPosts
 ---
 
 <BaseLayout title={`${subLabel} - ${catLabel} - Ethan Devlog`} description={`${catLabel} > ${subLabel}`}>
-  <h1 class="text-3xl font-bold mb-2">💻 {catLabel}</h1>
-  <p class="text-(--color-text-secondary) mb-4">{subLabel} · {posts.length}편</p>
+  <h1 class="text-3xl font-bold mb-2">{subLabel}</h1>
+  <p class="meta mb-6">{posts.length}편</p>
   <SubcategoryNav category={category} current={subcategory} />
   {posts.length === 0 ? (
     <p class="text-(--color-text-secondary)">아직 글이 없습니다.</p>
   ) : (
-    <div class="space-y-4">
+    <div class="post-log">
       {posts.map((post) => (
         <PostCard
           title={post.data.title}
@@ -42,10 +42,8 @@ const posts = allPosts
           category={post.data.category}
           subcategory={post.data.subcategory}
           pubDate={post.data.pubDate}
-          tags={post.data.tags}
           slug={slugMap.get(post.id)!}
           body={post.body}
-          heroImage={post.data.heroImage}
         />
       ))}
     </div>

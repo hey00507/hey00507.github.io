@@ -45,27 +45,22 @@ const siteUrl = Astro.site;
       {/* 시리즈 섹션 */}
       {seriesMap.size > 0 && (
         <section class="mb-10">
-          <h2 class="text-lg font-bold mb-4">📂 시리즈</h2>
-          <div class="space-y-3">
+          <h2 class="text-lg font-bold mb-3">시리즈</h2>
+          <ul class="border-b border-(--color-border)">
             {[...seriesMap.entries()].map(([name, seriesPosts]) => (
-              <a href={`/dev/series/${encodeURIComponent(name)}/`} class="group block p-4 rounded-xl border border-(--color-border) hover:border-(--color-accent-dev) transition-colors">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h3 class="font-semibold group-hover:text-(--color-accent-dev) transition-colors">{name}</h3>
-                    <p class="text-sm text-(--color-text-secondary) mt-0.5">{seriesPosts.length}편 · 최근: {seriesPosts[seriesPosts.length - 1].data.title}</p>
-                  </div>
-                  <span class="text-(--color-text-secondary) group-hover:text-(--color-accent-dev) transition-colors">→</span>
-                </div>
-              </a>
+              <li class="border-t border-(--color-border) py-3 flex flex-wrap items-baseline justify-between gap-x-4">
+                <a href={`/dev/series/${encodeURIComponent(name)}/`} class="font-medium hover:text-(--color-accent) transition-colors">{name}</a>
+                <span class="meta">{seriesPosts.length}편</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       )}
 
       {/* 전체 글 목록 */}
       <section>
-        {seriesMap.size > 0 && <h2 class="text-lg font-bold mb-4">📝 전체 글</h2>}
-        <div class="space-y-4">
+        {seriesMap.size > 0 && <h2 class="text-lg font-bold mb-3">전체 글</h2>}
+        <div class="post-log">
           {posts.map((post) => (
             <PostCard
               title={post.data.title}
@@ -73,10 +68,8 @@ const siteUrl = Astro.site;
               category={post.data.category}
               subcategory={post.data.subcategory}
               pubDate={post.data.pubDate}
-              tags={post.data.tags}
               slug={slugMap.get(post.id)!}
               body={post.body}
-          heroImage={post.data.heroImage}
             />
           ))}
         </div>

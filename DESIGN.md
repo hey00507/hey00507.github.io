@@ -148,6 +148,7 @@ components:
 - **로딩:** Pretendard는 jsDelivr의 dynamic subset CSS(`orioncactus/pretendard@v1.3.9`)를 그대로 쓴다. Noto Serif KR(600, 700)과 JetBrains Mono(400, 500)는 Google Fonts `css2`에서 `display=swap`으로 불러온다. 2026-11-24에 세 주소 모두 응답을 확인했다.
 - **크기 단계:** 글 제목 38px, h2 25px, 목록 제목 21px, 본문 17px, 요약 15px, 기록 13px. 제목과 본문은 굵기만이 아니라 크기와 글꼴로 구분한다.
 - 모바일(560px 이하)에서는 본문을 16px로 줄인다.
+- 한글은 단어 중간에서 줄을 바꾸지 않는다(`word-break: keep-all`). 긴 영문과 URL은 넘칠 때만 끊는다.
 
 ## Layout
 
@@ -213,3 +214,4 @@ components:
 | 2026-11-24 | 제목을 명조(Noto Serif KR)로 | "읽는 글"이라는 인상을 준다. 글꼴 로딩이 하나 늘어난다 |
 | 2026-11-24 | 강조색을 파랑에서 초록으로 | 기본 파랑을 벗어나고 글의 성격과 맞는다. OG 이미지와 theme-color를 다시 맞춰야 한다 |
 | 2026-11-24 | 외부 디자인 의견은 받지 않음 | 가볍게 운영하는 블로그라 미리보기를 직접 보고 고치는 편이 빠르다 |
+| 2026-11-24 | 화면에 적용 | 토큰은 `src/styles/global.css`의 `@theme`에 있다. OG 이미지는 초록 단색 바탕으로 바꿨고 글꼴은 Noto Sans KR 그대로다 |

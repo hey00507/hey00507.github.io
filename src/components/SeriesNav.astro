@@ -20,23 +20,21 @@ const currentIndex = seriesPosts.findIndex((p) => p.id === currentId);
 ---
 
 {seriesPosts.length > 1 && (
-  <nav class="mb-8 p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border)">
-    <p class="text-sm font-semibold mb-3">
-      📂 {series} ({currentIndex + 1}/{seriesPosts.length})
-    </p>
+  <nav class="mb-10 p-4 rounded-lg bg-(--color-bg-secondary)" aria-label="시리즈">
+    <p class="meta mb-3">시리즈 · {series} ({currentIndex + 1}/{seriesPosts.length})</p>
     <ol class="space-y-1.5">
       {seriesPosts.map((post, i) => {
         const isCurrent = post.id === currentId;
         const isPast = i < currentIndex;
         return (
           <li class="flex items-center gap-2 text-sm">
-            <span class={`shrink-0 w-5 text-center ${isPast ? 'text-green-500' : isCurrent ? 'text-(--color-accent-dev) font-bold' : 'text-(--color-text-secondary)'}`}>
-              {isPast ? '✓' : isCurrent ? '▸' : `${i + 1}`}
+            <span class={`meta shrink-0 w-5 text-center ${isCurrent ? '!text-(--color-accent)' : ''}`}>
+              {i + 1}
             </span>
             {isCurrent ? (
               <span class="font-medium text-(--color-text)">{post.data.title}</span>
             ) : (
-              <a href={`/posts/${slugMap.get(post.id)}/`} class="text-(--color-text-secondary) hover:text-(--color-accent-dev) transition-colors">
+              <a href={`/posts/${slugMap.get(post.id)}/`} class="text-(--color-text-secondary) hover:text-(--color-accent) transition-colors">
                 {post.data.title}
               </a>
             )}

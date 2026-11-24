@@ -25,9 +25,9 @@ const siteUrl = Astro.site;
 <BaseLayout title={page.currentPage === 1 ? "Ethan Devlog" : `Ethan Devlog - ${page.currentPage}페이지`} description={page.currentPage === 1 ? '업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그' : `${page.currentPage}페이지 - 최신 글 목록`}>
   {page.url.prev && <link rel="prev" href={new URL(page.url.prev, siteUrl).href} slot="head" />}
   {page.url.next && <link rel="next" href={new URL(page.url.next, siteUrl).href} slot="head" />}
-  <h1 class="text-3xl font-bold mb-2">Blog</h1>
+  <h1 class="sr-only">Ethan Devlog</h1>
   <p class="text-(--color-text-secondary) mb-8">업무에서 푼 문제, 개인 프로젝트, 공부를 기록하는 백엔드 개발 블로그</p>
-  <div class="space-y-4">
+  <div class="post-log">
     {page.data.map((post) => (
       <PostCard
         title={post.data.title}
@@ -35,35 +35,30 @@ const siteUrl = Astro.site;
         category={post.data.category}
         subcategory={post.data.subcategory}
         pubDate={post.data.pubDate}
-        tags={post.data.tags}
         slug={slugMap[post.id]}
         body={post.body}
-        heroImage={post.data.heroImage}
-        bookTitle={post.data.bookTitle}
-        bookAuthor={post.data.bookAuthor}
-        rating={post.data.rating}
       />
     ))}
   </div>
 
   {/* 페이지네이션 */}
   {page.lastPage > 1 && (
-    <nav class="flex items-center justify-center gap-2 mt-10" aria-label="페이지네이션">
+    <nav class="meta flex items-center justify-center gap-2 mt-10" aria-label="페이지네이션">
       {page.url.prev ? (
-        <a href={page.url.prev} class="px-3 py-2 rounded-lg border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors">
+        <a href={page.url.prev} class="px-3 py-2 rounded-md border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors">
           ← 이전
         </a>
       ) : (
-        <span class="px-3 py-2 rounded-lg text-sm text-(--color-text-secondary) opacity-30">← 이전</span>
+        <span class="px-3 py-2 rounded-md text-sm text-(--color-text-secondary) opacity-30">← 이전</span>
       )}
 
       {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((num) => (
         <a
           href={num === 1 ? '/' : `/${num}/`}
           class:list={[
-            'w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-colors',
+            'w-9 h-9 flex items-center justify-center rounded-md text-sm font-medium transition-colors',
             num === page.currentPage
-              ? 'bg-(--color-accent-dev) text-white'
+              ? 'bg-(--color-accent) text-(--color-on-accent)'
               : 'border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary)',
           ]}
         >
@@ -72,11 +67,11 @@ const siteUrl = Astro.site;
       ))}
 
       {page.url.next ? (
-        <a href={page.url.next} class="px-3 py-2 rounded-lg border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors">
+        <a href={page.url.next} class="px-3 py-2 rounded-md border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors">
           다음 →
         </a>
       ) : (
-        <span class="px-3 py-2 rounded-lg text-sm text-(--color-text-secondary) opacity-30">다음 →</span>
+        <span class="px-3 py-2 rounded-md text-sm text-(--color-text-secondary) opacity-30">다음 →</span>
       )}
     </nav>
   )}

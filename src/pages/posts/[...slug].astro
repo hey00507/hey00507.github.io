@@ -88,17 +88,17 @@ const jsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} slot="head" />
   <article>
     {/* 메타 정보 */}
-    <header class="mb-8">
-      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3 text-sm">
-        <a href={`/${category}/`} class="px-2 py-0.5 rounded-md text-white text-xs font-medium hover:opacity-90 transition-opacity" style={`background-color: ${cat.color}`}>
-          {cat.label}
-        </a>
-        <span class="text-(--color-text-secondary)">{dateStr}</span>
-        {readingTime && <span class="text-(--color-text-secondary)">· {readingTime}</span>}
-        <span class="text-(--color-text-secondary)">·</span>
+    <header class="mb-10">
+      <p class="meta flex flex-wrap items-center gap-x-2 gap-y-1">
+        <time datetime={pubDate.toISOString()}>{dateStr}</time>
+        <span>·</span>
+        <a href={`/${category}/`} class="hover:text-(--color-accent) transition-colors">{cat.label}</a>
+        {readingTime && <span>· {readingTime}</span>}
+        <span>·</span>
         <ViewCount path={`/posts/${slugMap.get(post.id)}/`} />
-      </div>
-      <h1 class="text-2xl sm:text-3xl font-bold mb-2">{title}</h1>
+      </p>
+      <h1 class="mt-3 text-[clamp(1.75rem,5vw,2.375rem)] leading-[1.35] tracking-[-0.02em]">{title}</h1>
+      <p class="mt-4 text-(--color-text-secondary)">{description}</p>
       {bookTitle && (
         <p class="text-(--color-text-secondary) mb-1">
           📖 {bookTitle} — {bookAuthor}
@@ -107,11 +107,11 @@ const jsonLd = {
       )}
       {series && (
         <p class="text-sm text-(--color-text-secondary)">
-          📂 시리즈: <a href={`/dev/series/${encodeURIComponent(series)}/`} class="hover:text-(--color-accent-dev) transition-colors">{series}</a>
+          시리즈: <a href={`/dev/series/${encodeURIComponent(series)}/`} class="hover:text-(--color-accent) transition-colors">{series}</a>
         </p>
       )}
       {updatedStr && (
-        <p class="text-xs text-(--color-text-secondary) mt-2">수정: {updatedStr}</p>
+        <p class="meta mt-2">수정 {updatedStr}</p>
       )}
     </header>
 
@@ -122,7 +122,7 @@ const jsonLd = {
         <img
           src={heroImage}
           alt={title}
-          class="w-full rounded-xl border border-(--color-border) mb-8"
+          class="w-full rounded-lg border border-(--color-border) mb-8"
           loading="eager"
         />
       </picture>
@@ -133,8 +133,8 @@ const jsonLd = {
 
     {/* 목차 */}
     {tocHeadings.length > 2 && (
-      <nav class="mb-8 p-4 rounded-xl bg-(--color-bg-secondary) border border-(--color-border)">
-        <p class="text-sm font-semibold mb-2">목차</p>
+      <nav class="mb-10 p-4 rounded-lg bg-(--color-bg-secondary)" aria-label="목차">
+        <p class="meta mb-2">목차</p>
         <ul class="space-y-1">
           {tocHeadings.map((h) => (
             <li style={`padding-left: ${(h.depth - 2) * 1}rem`}>
@@ -150,26 +150,21 @@ const jsonLd = {
     {/* 본문 */}
     <div class="prose dark:prose-invert max-w-none
       prose-headings:text-(--color-text) prose-headings:font-bold
-      prose-p:text-(--color-text-secondary) prose-p:leading-relaxed
-      prose-a:text-(--color-accent-dev) prose-a:no-underline hover:prose-a:underline
+      prose-a:text-(--color-accent) prose-a:font-normal prose-a:underline prose-a:decoration-1 prose-a:underline-offset-[3px]
       prose-strong:text-(--color-text)
-      prose-code:text-(--color-accent-dev) prose-code:bg-(--color-bg-secondary) prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
-      [&_pre_code]:!bg-transparent [&_pre_code]:!p-0
-      prose-pre:border-none prose-pre:rounded-xl
-      prose-blockquote:border-l-[var(--color-accent-reading)] prose-blockquote:text-(--color-text-secondary)
-      prose-li:text-(--color-text-secondary)
+      prose-code:font-normal prose-code:text-(--color-text) prose-code:before:content-none prose-code:after:content-none
+      [&_pre_code]:!bg-transparent [&_pre_code]:!p-0 [&_pre_code]:!border-0
       prose-hr:border-(--color-border)
+      prose-img:rounded-lg
     ">
       <Content />
     </div>
 
     {/* 태그 */}
     {tags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mt-8 pt-6 border-t border-(--color-border)">
+      <div class="meta flex flex-wrap gap-x-4 gap-y-1 mt-10 pt-6 border-t border-(--color-border)">
         {tags.map((tag) => (
-          <a href={`/tags/${tag}/`} class="text-xs px-2.5 py-1 rounded-lg bg-(--color-bg-secondary) text-(--color-text-secondary) hover:text-(--color-text) border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
-            #{tag}
-          </a>
+          <a href={`/tags/${tag}/`} class="hover:text-(--color-accent) transition-colors">#{tag}</a>
         ))}
       </div>
     )}
@@ -181,17 +176,17 @@ const jsonLd = {
     <RelatedPosts currentId={post.id} category={category} tags={tags} />
 
     {/* 이전/다음 글 */}
-    <nav class="mt-8 pt-6 border-t border-(--color-border) grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <nav class="mt-8 pt-6 border-t border-(--color-border) grid grid-cols-1 sm:grid-cols-2 gap-6" aria-label="이전·다음 글">
       {prevPost ? (
-        <a href={`/posts/${slugMap.get(prevPost.id)}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors">
-          <span class="text-xs text-(--color-text-secondary)">← 이전 글</span>
-          <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{prevPost.data.title}</p>
+        <a href={`/posts/${slugMap.get(prevPost.id)}/`} class="group">
+          <span class="meta">← 이전 글</span>
+          <p class="text-[0.9375rem] font-medium mt-1 group-hover:text-(--color-accent) transition-colors">{prevPost.data.title}</p>
         </a>
       ) : <div class="hidden sm:block" />}
       {nextPost ? (
-        <a href={`/posts/${slugMap.get(nextPost.id)}/`} class="group p-3 sm:p-4 rounded-xl border border-(--color-border) hover:border-(--color-text-secondary) transition-colors sm:text-right">
-          <span class="text-xs text-(--color-text-secondary)">다음 글 →</span>
-          <p class="text-sm font-medium mt-1 group-hover:text-(--color-accent-dev) transition-colors">{nextPost.data.title}</p>
+        <a href={`/posts/${slugMap.get(nextPost.id)}/`} class="group sm:text-right">
+          <span class="meta">다음 글 →</span>
+          <p class="text-[0.9375rem] font-medium mt-1 group-hover:text-(--color-accent) transition-colors">{nextPost.data.title}</p>
         </a>
       ) : <div class="hidden sm:block" />}
     </nav>

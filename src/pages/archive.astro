@@ -2,8 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getPublishedPosts } from '../utils/posts';
-import { categories } from '../utils/categories';
-import { getSubcategoryLabel } from '../utils/subcategories';
 import { formatMonthDay } from '../utils/formatDate';
 import { buildSlugMap } from '../utils/slugs';
 
@@ -24,32 +22,17 @@ const siteUrl = Astro.site;
 
 <BaseLayout title="아카이브 - Ethan Devlog" description={`전체 ${posts.length}개 글 아카이브`}>
   <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '아카이브', description: `전체 ${posts.length}개 글 아카이브`, url: `${siteUrl}archive/`, mainEntity: { '@type': 'ItemList', numberOfItems: posts.length } })} slot="head" />
-  <h1 class="text-3xl font-bold mb-8">📚 아카이브</h1>
+  <h1 class="text-3xl font-bold mb-8">아카이브</h1>
   {[...grouped.entries()].map(([year, yearPosts]) => (
     <section class="mb-10">
-      <h2 class="text-xl font-bold mb-4 text-(--color-text-secondary)">{year}</h2>
-      <ul class="space-y-3 border-l-2 border-(--color-border) pl-4 sm:pl-6">
-        {yearPosts.map((post) => {
-          const cat = categories[post.data.category];
-          const dateStr = formatMonthDay(post.data.pubDate);
-          return (
-            <li class="relative">
-              <div class="absolute -left-[1.6rem] sm:-left-[1.85rem] top-1.5 w-3 h-3 rounded-full border-2 border-(--color-border) bg-(--color-bg)" />
-              <a href={`/posts/${slugMap.get(post.id)}/`} class="group block sm:flex sm:items-baseline sm:gap-3">
-                <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
-                  <time class="text-sm text-(--color-text-secondary) shrink-0">{dateStr}</time>
-                  <span class="px-1.5 py-0.5 rounded text-xs text-white shrink-0" style={`background-color: ${cat.color}`}>{cat.label}</span>
-                  {post.data.subcategory && (
-                    <span class="px-1.5 py-0.5 rounded text-xs border border-(--color-border) text-(--color-text-secondary) shrink-0">
-                      {getSubcategoryLabel(post.data.category, post.data.subcategory)}
-                    </span>
-                  )}
-                </div>
-                <span class="font-medium group-hover:text-(--color-accent-dev) transition-colors">{post.data.title}</span>
-              </a>
-            </li>
-          );
-        })}
+      <h2 class="text-xl mb-2">{year}</h2>
+      <ul class="border-b border-(--color-border)">
+        {yearPosts.map((post) => (
+          <li class="border-t border-(--color-border) py-2.5 flex items-baseline gap-4">
+            <time class="meta shrink-0" datetime={post.data.pubDate.toISOString()}>{formatMonthDay(post.data.pubDate)}</time>
+            <a href={`/posts/${slugMap.get(post.id)}/`} class="font-medium hover:text-(--color-accent) transition-colors">{post.data.title}</a>
+          </li>
+        ))}
       </ul>
     </section>
   ))}

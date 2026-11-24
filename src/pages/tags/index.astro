@@ -17,14 +17,11 @@ const siteUrl = Astro.site;
 
 <BaseLayout title="태그 - Ethan Devlog" description={`${tags.length}개 태그로 분류된 블로그 글 모음`} noindex>
   <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: '태그', description: `${tags.length}개 태그로 분류된 블로그 글 모음`, url: `${siteUrl}tags/` })} slot="head" />
-  <h1 class="text-3xl font-bold mb-8">🏷️ 태그</h1>
-  <div class="flex flex-wrap gap-2">
+  <h1 class="text-3xl font-bold mb-8">태그</h1>
+  <div class="meta flex flex-wrap gap-x-5 gap-y-2">
     {tags.map(([tag, count]) => (
-      <a
-        href={`/tags/${tag}/`}
-        class="px-3 py-1.5 rounded-lg bg-(--color-bg-secondary) text-(--color-text-secondary) hover:text-(--color-text) border border-(--color-border) hover:border-(--color-text-secondary) transition-colors text-sm"
-      >
-        #{tag} <span class="text-xs opacity-60">({count})</span>
+      <a href={`/tags/${tag}/`} class="hover:text-(--color-accent) transition-colors">
+        #{tag} <span class="opacity-60">{count}</span>
       </a>
     ))}
   </div>

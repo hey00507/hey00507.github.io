@@ -32,30 +32,21 @@ const { name, posts, slugMap } = Astro.props;
 
 <BaseLayout title={`${name} - Ethan Devlog`} description={`시리즈: ${name}`}>
   <div class="mb-8">
-    <a href="/dev/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 코딩</a>
-    <h1 class="text-3xl font-bold mt-2">📂 {name}</h1>
-    <p class="text-(--color-text-secondary) mt-1">총 {posts.length}편</p>
+    <a href="/dev/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 전체 글</a>
+    <h1 class="text-3xl font-bold mt-2">{name}</h1>
+    <p class="meta mt-2">시리즈 · 총 {posts.length}편</p>
   </div>
-  <div class="space-y-4">
-    {posts.map((post, i) => (
-      <div class="flex gap-3 items-start">
-        <span class="shrink-0 w-7 h-7 rounded-full bg-(--color-accent-dev) text-white text-xs font-bold flex items-center justify-center mt-4">
-          {i + 1}
-        </span>
-        <div class="flex-1">
-          <PostCard
-            title={post.data.title}
-            description={post.data.description}
-            category={post.data.category}
-            subcategory={post.data.subcategory}
-            pubDate={post.data.pubDate}
-            tags={post.data.tags}
-            slug={slugMap[post.id]}
-            body={post.body}
-          heroImage={post.data.heroImage}
-          />
-        </div>
-      </div>
+  <div class="post-log">
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        description={post.data.description}
+        category={post.data.category}
+        subcategory={post.data.subcategory}
+        pubDate={post.data.pubDate}
+        slug={slugMap[post.id]}
+        body={post.body}
+      />
     ))}
   </div>
 </BaseLayout>

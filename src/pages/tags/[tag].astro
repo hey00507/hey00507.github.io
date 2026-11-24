@@ -34,9 +34,9 @@ const siteUrl = Astro.site;
   <div class="mb-8">
     <a href="/tags/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 전체 태그</a>
     <h1 class="text-3xl font-bold mt-2">#{tag}</h1>
-    <p class="text-(--color-text-secondary)">{posts.length}개의 글</p>
+    <p class="meta mt-2">{posts.length}편</p>
   </div>
-  <div class="space-y-4">
+  <div class="post-log">
     {posts.map((post) => (
       <PostCard
         title={post.data.title}
@@ -44,13 +44,8 @@ const siteUrl = Astro.site;
         category={post.data.category}
         subcategory={post.data.subcategory}
         pubDate={post.data.pubDate}
-        tags={post.data.tags}
         slug={slugMap[post.id]}
         body={post.body}
-          heroImage={post.data.heroImage}
-        bookTitle={post.data.bookTitle}
-        bookAuthor={post.data.bookAuthor}
-        rating={post.data.rating}
       />
     ))}
   </div>

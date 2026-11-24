@@ -1,8 +1,7 @@
 ---
 import { getPublishedPosts } from '../utils/posts';
-import { categories } from '../utils/categories';
 import { buildSlugMap } from '../utils/slugs';
-import { formatMonthDay } from '../utils/formatDate';
+import { formatDate } from '../utils/formatDate';
 
 interface Props {
   currentId: string;
@@ -27,30 +26,17 @@ const related = scored.slice(0, 3);
 ---
 
 {related.length > 0 && (
-  <section class="mt-8 pt-6 border-t border-(--color-border)">
-    <h2 class="text-base font-bold mb-4">관련 글</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      {related.map(({ post }) => {
-        const cat = categories[post.data.category];
-        const dateStr = formatMonthDay(post.data.pubDate);
-        return (
-          <a
-            href={`/posts/${slugMap.get(post.id)}/`}
-            class="group p-3 rounded-xl border border-(--color-border) hover:border-[var(--cat-color)] transition-colors"
-            style={`--cat-color: ${cat.color}`}
-          >
-            <div class="flex items-center gap-1.5 mb-1.5">
-              <span class="px-1.5 py-0.5 rounded text-xs text-white" style={`background-color: ${cat.color}`}>
-                {cat.label}
-              </span>
-              <span class="text-xs text-(--color-text-secondary)">{dateStr}</span>
-            </div>
-            <p class="text-sm font-medium group-hover:text-[var(--cat-color)] transition-colors line-clamp-2">
-              {post.data.title}
-            </p>
+  <section class="mt-10 pt-6 border-t border-(--color-border)">
+    <h2 class="text-lg mb-3">관련 글</h2>
+    <ul>
+      {related.map(({ post }) => (
+        <li class="flex items-baseline gap-4 py-1.5">
+          <time class="meta shrink-0" datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          <a href={`/posts/${slugMap.get(post.id)}/`} class="text-[0.9375rem] font-medium hover:text-(--color-accent) transition-colors">
+            {post.data.title}
           </a>
-        );
-      })}
-    </div>
+        </li>
+      ))}
+    </ul>
   </section>
 )}

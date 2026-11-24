@@ -9,32 +9,27 @@ interface Props {
 
 const { category, current } = Astro.props;
 const subs = subcategories[category];
-const accentVar = `--color-accent-${category}`;
 ---
 
-<nav class="flex flex-wrap gap-2 mb-8">
+<nav class="flex flex-wrap gap-x-5 gap-y-1 mb-6 text-[0.9375rem]">
   <a
     href={`/${category}/`}
+    aria-current={!current ? 'page' : undefined}
     class:list={[
-      'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border',
-      !current
-        ? 'border-current bg-(--color-bg-secondary)'
-        : 'border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary)',
+      'transition-colors',
+      !current ? 'text-(--color-text) font-semibold' : 'text-(--color-text-secondary) hover:text-(--color-text)',
     ]}
-    style={!current ? `color: var(${accentVar})` : undefined}
   >
     전체
   </a>
   {subs.map((sub) => (
     <a
       href={`/${category}/${sub.slug}/`}
+      aria-current={current === sub.slug ? 'page' : undefined}
       class:list={[
-        'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border',
-        current === sub.slug
-          ? 'border-current bg-(--color-bg-secondary)'
-          : 'border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary)',
+        'transition-colors',
+        current === sub.slug ? 'text-(--color-text) font-semibold' : 'text-(--color-text-secondary) hover:text-(--color-text)',
       ]}
-      style={current === sub.slug ? `color: var(${accentVar})` : undefined}
     >
       {sub.label}
     </a>

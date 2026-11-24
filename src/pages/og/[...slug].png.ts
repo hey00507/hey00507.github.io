@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const CATEGORY_GRADIENTS: Record<string, [string, string]> = {
-  dev: ['#2563eb', '#3b82f6'],     // 파랑
+  dev: ['#0e7a53', '#0e7a53'],     // 강조색 한 가지 (DESIGN.md accent)
 };
 
 const CATEGORY_LABELS: Record<string, string> = {

@@ -112,4 +112,4 @@ draft: false
 
 시각·UI 작업 전에 [DESIGN.md](./DESIGN.md)를 읽는다. 글꼴, 색, 간격, 디자인 방향이 정의되어 있다. 여기서 벗어나려면 먼저 사용자에게 묻는다. UI를 리뷰하거나 QA할 때는 DESIGN.md와 맞지 않는 코드를 알린다.
 
-DESIGN.md는 방향을 정한 문서이고, 2026-11-24 기준으로 실제 화면에는 아직 적용되지 않았다.
+색·글꼴 토큰은 `src/styles/global.css`의 `@theme`에 있다. 값을 바꿀 때는 DESIGN.md와 함께 고친다.
